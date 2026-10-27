@@ -501,7 +501,8 @@ update_status() {
 
     local active_cnt=0
     if [ -f "$DNSMASQ_CONF" ]; then
-        active_cnt=$(grep -c '^server=' "$DNSMASQ_CONF" 2>/dev/null || echo "0")
+        active_cnt=$(grep -c '^server=' "$DNSMASQ_CONF" 2>/dev/null || true)
+        [ -n "$active_cnt" ] || active_cnt=0
     fi
 
     local wan_ips=$(get_wan_dns)
