@@ -1,0 +1,40 @@
+# Antigravity & Teamwork metadata (contains working logs and instructions)
+.agents/
+
+# Internal planning and task tracking files
+implementation_plan.md
+task.md
+plan.md
+*.plan
+scratchpad.md
+notes.md
+
+# Temporary and test runtime files
+/tmp/
+/scratch/
+test_temp*
+*.tmp
+*.bak
+*.swp
+*~
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.venv
+venv/
+ENV/
+
+# OS and Editor metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+
+# Local build / package outputs
+dist/
+build/
+*.egg-info/

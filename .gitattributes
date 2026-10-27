@@ -1,0 +1,23 @@
+# Enforce UNIX LF line endings across all text files
+* text=auto eol=lf
+
+# Explicitly ensure shell scripts, web files, and configurations never get CRLF
+*.sh text eol=lf
+*.asp text eol=lf
+*.htm text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.conf text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.py text eol=lf
+LICENSE text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.ico binary
+*.tar.gz binary
