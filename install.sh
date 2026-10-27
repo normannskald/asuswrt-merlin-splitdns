@@ -25,7 +25,9 @@ log_err() {
 }
 
 check_root() {
-    if [ "$(whoami 2>/dev/null)" != "admin" ] && [ "$(whoami 2>/dev/null)" != "root" ] && [ "$(id -u 2>/dev/null)" != "0" ]; then
+    local u=$(whoami 2>/dev/null || echo "$USER")
+    [ -n "$u" ] || u="admin"
+    if [ "$u" != "admin" ] && [ "$u" != "root" ] && [ ! -w /jffs ]; then
         log_err "This installer must be run as root (admin)."
         exit 1
     fi
@@ -99,7 +101,7 @@ cmd_install() {
     chmod 644 "${PAGE_PATH}"
 
     # Save local copy of install.sh
-    if [ -f "$0" ]; then
+    if [ -f "$0" ] && grep -q "Split DNS Installer" "$0" 2>/dev/null; then
         cp -f "$0" "${ADDON_DIR}/install.sh" 2>/dev/null || true
     else
         curl -fsSL "${RAW_URL}/install.sh" -o "${ADDON_DIR}/install.sh" 2>/dev/null || true
