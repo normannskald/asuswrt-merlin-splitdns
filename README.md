@@ -46,6 +46,7 @@
 5. **Готовые пресеты и 6 профилей DNS-серверов**
    - **Пресет 1 — Национальные доменные зоны**: `.ru`, `.рф` (`xn--p1ai`), `.su`, `.москва` (`xn--80adxhks`), `.рус` (`xn--p1acf`), `.tatar`, `.дети` (`xn--d1acj3b`).
    - **Пресет 2 — Государственные и социально значимые ресурсы РФ**: встроенный каталог из 54 доменов (Госуслуги, ФНС `lkfl2.nalog.ru`, Банк России, суды, министерства, РЖД, Почта России, НСПК Мир, крупнейшие банки и УЦ).
+   - **Удобные кнопки-помощники пресетов**: кнопки пресетов расположены непосредственно над единой таблицей правил — нажатие предзаполняет строку ввода (`+`), позволяя гибко выбрать целевой DNS-профиль и отредактировать список доменов перед добавлением.
    - **6 профилей апстрим-резолверов**:
      - `Яндекс.DNS Базовый` (`77.88.8.8`, `77.88.8.1`)
      - `Яндекс.DNS Безопасный` (`77.88.8.88`, `77.88.8.2` — защита от фишинга и вредоносных сайтов)
@@ -54,7 +55,8 @@
      - `DNS интернет-провайдера (WAN)` (автоматическое получение DNS с WAN-интерфейса роутера)
      - `Свой DNS-сервер` (произвольный IPv4 и порт, например `192.168.50.2#5353`)
 
-6. **Таблица пользовательских правил, группировка доменов и исключения DoT (`127.0.1.1`)**
+6. **Единая таблица правил, редактирование, Drag-and-Drop и исключения DoT (`127.0.1.1`)**
+   - **Удобное управление и приоритет правил**: редактирование существующих записей прямо в строке добавления по нажатию на кнопку «карандаш» (`.edit_btn`) и свободное перетаскивание строк Drag-and-Drop (`⋮⋮`). При совпадении доменов приоритет отдается правилам выше по таблице, а `dnsmasq` автоматически разрешает более специфичные поддомены приоритетнее родительских зон.
    - Поддержка как одиночных доменов, так и **групп доменов** в одном правиле (через запятую или пробел).
    - Автоматическая конвертация кириллических доменов (`.рф`, `.рус`, `.москва`, `.дети`) в стандарт **RFC 3490 Punycode** (`xn--...`).
    - **3 режима маршрутизации для каждого правила**:
@@ -62,11 +64,11 @@
      2. *Штатный DNS роутера / DoT (`127.0.1.1` — исключение)* — благодаря правилу наиболее длинного суффикса (`longest suffix match`) в `dnsmasq`, позволяет вывести конкретный сайт `.ru` из-под действия пресета `.ru` обратно в шифрованный DoT (Stubby).
      3. *Свой IP (`IPv4#порт`)* — направляет домены на указанный локальный или внешний DNS-сервер (например, корпоративный контроллер домена, AdGuard Home или Pi-hole).
 
-7. **Встроенная живая диагностика (Live DNS Diagnostic), обновления и хирургический сброс**
-   - **Live DNS Diagnostic**: проверка разрешения любого домена (по умолчанию `lkfl2.nalog.ru`) прямо из веб-интерфейса с отображением полученных IP-адресов, использованного резолвера и времени отклика в миллисекундах.
+7. **Диагностика в стиле Network Tools, управление в стиле Administration и обновления**
+   - **Живая DNS-диагностика в нативном стиле Asuswrt (*Network Tools -> Netstat*)**: проверка разрешения любого домена (по умолчанию `lkfl2.nalog.ru`) прямо из интерфейса с отображением IP-адресов, времени отклика и резолвера в моноширинной консольной области.
+   - **Управление настройками в нативном стиле Asuswrt (*Administration -> Restore/Save/Upload Setting*)**: выгрузка настроек и правил в файл JSON (`Save`), загрузка из файла (`Upload`) и безопасный сброс параметров к фабричным (`Restore Default`).
+   - **Хирургический сброс (Surgical Reset)**: безопасный сброс настроек аддона **без использования снимков начального состояния (snapshots)**. Очищает исключительно правила и конфигурацию Split DNS, не затрагивая настройки WAN, VPN, DoT или других аддонов.
    - **Проверка обновлений и обновление в 1 клик**: сравнение установленной версии с репозиторием GitHub и обновление прямо из браузера с сохранением всех настроек.
-   - **Экспорт / Импорт (JSON)**: сохранение резервной копии настроек и правил в файл `.json` и восстановление в один клик.
-   - **Хирургический сброс (Surgical Reset)**: безопасный сброс настроек аддона **без использования снимков начального состояния (snapshots)**. Очищает исключительно правила и конфигурацию Split DNS, не затрагивая настройки WAN, VPN, DoT или других аддонов, которые вы могли менять параллельно.
 
 ---
 
@@ -136,16 +138,18 @@ When **DNS Privacy (DNS-over-TLS / Stubby)** with international resolvers (Cloud
 - **Built-in Presets & 6 Upstream Profiles**:
   - **National Domain Zones Preset**: `.ru`, `.рф` (`xn--p1ai`), `.su`, `.москва` (`xn--80adxhks`), `.рус` (`xn--p1acf`), `.tatar`, `.дети` (`xn--d1acj3b`).
   - **Government & Social Services Preset**: Curated catalog of 54 essential domains (`gosuslugi.ru`, `lkfl2.nalog.ru`, `cbr.ru`, `mos.ru`, `rzd.ru`, `sberbank.ru`, etc.).
+  - **Convenient Preset Helper Buttons**: Presets are helper buttons located right above the unified rules table; clicking them pre-fills the input row (`+`), allowing you to select the upstream profile and modify domains before saving.
   - **6 DNS Profiles**: Yandex Basic (`77.88.8.8`), Yandex Safe (`77.88.8.88`), Yandex Family (`77.88.8.7`), NSDI / MSK-IX (`195.208.4.1`), Auto ISP WAN DNS, and Custom IPv4 (`IP#port`).
-- **Custom Rules, Domain Grouping, Cyrillic IDN Punycode & DoT Exceptions (`127.0.1.1`)**:
+- **Unified Rules Table, In-Place Editing, Drag-and-Drop & DoT Exceptions (`127.0.1.1`)**:
+  - Full rule lifecycle: edit existing rules using the pencil button (`.edit_btn`) and reorder rules via Drag-and-Drop handles (`⋮⋮`). Rules located higher in the table take priority for identical domains, while `dnsmasq` naturally prioritizes more specific subdomains over parent zones.
   - Group multiple domains in a single rule (comma or space separated).
   - Automatic client-side **RFC 3490 Punycode** conversion for Cyrillic domains.
   - Three target modes per rule: **Profile Default**, **Router DoT Exception (`127.0.1.1`)** (leverages `dnsmasq` longest-suffix matching to exclude specific `.ru` domains from the national preset back to Stubby DoT), and **Custom Server (`IP#port`)**.
-- **Live DNS Diagnostic, In-UI Updater, JSON Backup/Restore & Surgical Reset**:
-  - Test any domain (default placeholder: `lkfl2.nalog.ru`) directly from the Web UI.
-  - Check for new releases on GitHub and update in one click from the Web UI.
-  - Export and import full JSON backups.
+- **Native Network Tools Diagnostics, Administration Settings Management & In-UI Updater**:
+  - **Native Network Tools Style Diagnostics**: Live domain resolution check (default: `lkfl2.nalog.ru`) styled cleanly after Asuswrt's *Network Tools -> Netstat*, displaying DNS answers, query latency, and authoritative resolvers in a monospace output area.
+  - **Native Administration Style Settings Management**: Backup, restore, and reset styled cleanly after Asuswrt's *Administration -> Restore/Save/Upload Setting* with dedicated Save (Export), Upload (Import), and Restore Default (Surgical Reset) controls.
   - **Surgical Reset**: Resets only Split DNS settings and rules without using state snapshots, ensuring zero conflict with parallel changes made in the stock Asuswrt-Merlin UI or other addons.
+  - **In-UI Updates**: Check for new releases on GitHub and update in one click from the Web UI.
 
 ---
 

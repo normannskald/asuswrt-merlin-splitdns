@@ -141,7 +141,7 @@ class TestWebUiXhtmlAndTagBalancer(unittest.TestCase):
 
         self.assertEqual(root.tag, "{http://www.w3.org/1999/xhtml}html")
         all_elements = list(root.iter())
-        self.assertGreater(len(all_elements), 200, "Document should parse into a rich DOM tree (>200 nodes)")
+        self.assertGreater(len(all_elements), 180, "Document should parse into a rich DOM tree (>180 nodes)")
 
     def test_cdata_encapsulation_for_scripts_and_styles(self):
         """Verify all <script> and <style> blocks contain proper CDATA encapsulation."""

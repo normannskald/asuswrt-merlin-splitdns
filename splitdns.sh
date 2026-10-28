@@ -22,7 +22,7 @@ STATUS_FILE="/www/user/splitdns_status.htm"
 PAGE_SOURCE="$ADDON_DIR/splitdns_page.asp"
 LOCKFILE="/tmp/.splitdns_menutree.lock"
 GLOBAL_LOCK="/tmp/.splitdns_lock"
-VERSION="1.0.0"
+VERSION="1.1.0"
 GITHUB_REPO="normannskald/asuswrt-merlin-splitdns"
 RAW_URL="https://raw.githubusercontent.com/${GITHUB_REPO}/main"
 ROUTER_DOT_IP="127.0.1.1"
@@ -34,8 +34,6 @@ DNS_PRIMARY="77.88.8.8"
 DNS_SECONDARY="77.88.8.1"
 CUSTOM_DNS_PRIMARY=""
 CUSTOM_DNS_SECONDARY=""
-PRESET_NATIONAL_ZONES="1"
-PRESET_GOV_SERVICES="1"
 SLOT="none"
 RULES_COUNT="0"
 
@@ -125,8 +123,6 @@ load_config() {
     DNS_SECONDARY="77.88.8.1"
     CUSTOM_DNS_PRIMARY=""
     CUSTOM_DNS_SECONDARY=""
-    PRESET_NATIONAL_ZONES="1"
-    PRESET_GOV_SERVICES="1"
     SLOT="none"
     RULES_COUNT="0"
 
@@ -145,8 +141,6 @@ DNS_PRIMARY="${DNS_PRIMARY:-77.88.8.8}"
 DNS_SECONDARY="${DNS_SECONDARY:-77.88.8.1}"
 CUSTOM_DNS_PRIMARY="${CUSTOM_DNS_PRIMARY:-}"
 CUSTOM_DNS_SECONDARY="${CUSTOM_DNS_SECONDARY:-}"
-PRESET_NATIONAL_ZONES="${PRESET_NATIONAL_ZONES:-1}"
-PRESET_GOV_SERVICES="${PRESET_GOV_SERVICES:-1}"
 SLOT="${SLOT:-none}"
 RULES_COUNT="${RULES_COUNT:-0}"
 VERSION="$VERSION"
@@ -193,16 +187,6 @@ parse_transient_settings() {
                 ;;
             splitdns_custom_dns2)
                 CUSTOM_DNS_SECONDARY=$(echo "$val" | tr -cd '0-9a-fA-F.:#')
-                config_changed=1
-                ;;
-            splitdns_preset_national)
-                local raw_nat=$(echo "$val" | tr -cd '01')
-                [ "$raw_nat" = "1" ] && PRESET_NATIONAL_ZONES="1" || PRESET_NATIONAL_ZONES="0"
-                config_changed=1
-                ;;
-            splitdns_preset_gov)
-                local raw_gov=$(echo "$val" | tr -cd '01')
-                [ "$raw_gov" = "1" ] && PRESET_GOV_SERVICES="1" || PRESET_GOV_SERVICES="0"
                 config_changed=1
                 ;;
             splitdns_rules_b64)
@@ -257,37 +241,7 @@ generate_dnsmasq_rules() {
 
 EOF
 
-    # 1. Preset: National Domain Zones (RFC 3490 Punycode)
-    if [ "${PRESET_NATIONAL_ZONES:-1}" = "1" ]; then
-        echo "# Preset: National Domain Zones" >> "$tmp_conf"
-        for zone in ru xn--p1ai su xn--80adxhks xn--p1acf tatar xn--d1acj3b; do
-            echo "server=/$zone/$p_dns1" >> "$tmp_conf"
-            [ -n "$p_dns2" ] && echo "server=/$zone/$p_dns2" >> "$tmp_conf"
-        done
-        echo "" >> "$tmp_conf"
-    fi
-
-    # 2. Preset: Russian Government & Social Services
-    if [ "${PRESET_GOV_SERVICES:-1}" = "1" ]; then
-        echo "# Preset: Russian Government & Social Services" >> "$tmp_conf"
-        for dom in gosuslugi.ru esia.gosuslugi.ru gu-st.ru gov.ru government.ru \
-                   kremlin.ru duma.gov.ru duma.ru council.gov.ru sudrf.ru genproc.gov.ru \
-                   nalog.ru nalog.gov.ru lkfl2.nalog.ru cbr.ru minfin.gov.ru economy.gov.ru \
-                   fas.gov.ru customs.gov.ru customs.ru rosreestr.gov.ru rosreestr.ru \
-                   zakupki.gov.ru gost.ru sfr.gov.ru pfr.gov.ru fss.ru rospotrebnadzor.ru \
-                   edu.ru minobrnauki.gov.ru rosminzdrav.ru mvd.ru mvd.gov.ru mchs.gov.ru \
-                   fssp.gov.ru mos.ru mosreg.ru spb.ru gov.spb.ru emias.info rzd.ru \
-                   ticket.rzd.ru pass.rzd.ru pochta.ru aeroflot.ru digital.gov.ru rkn.gov.ru \
-                   nspk.ru mironline.ru sberbank.ru sber.ru vtb.ru tinkoff.ru tbank.ru \
-                   alfabank.ru gazprombank.ru psbank.ru rshb.ru uc-osnovanie.ru \
-                   e-trust.gosuslugi.ru; do
-            echo "server=/$dom/$p_dns1" >> "$tmp_conf"
-            [ -n "$p_dns2" ] && echo "server=/$dom/$p_dns2" >> "$tmp_conf"
-        done
-        echo "" >> "$tmp_conf"
-    fi
-
-    # 3. Custom User Rules & Exceptions via Awk
+    # Custom User Rules & Exceptions via Awk (top-to-bottom priority)
     if [ -f "$RULES_FILE" ] && [ -s "$RULES_FILE" ]; then
         echo "# Custom User Rules & Exceptions" >> "$tmp_conf"
         awk -v dns1="$p_dns1" -v dns2="$p_dns2" -v dot_ip="$ROUTER_DOT_IP" '
@@ -328,12 +282,22 @@ EOF
                 gsub(/[,; \t\r\n]+/, " ", domains)
                 n = split(domains, dom_arr, /[ ]/)
                 for (i = 1; i <= n; i++) {
-                    d = tolower(dom_arr[i])
+                    d = dom_arr[i]
+                    sub(/^\*\./, "", d)
+                    sub(/^[.]+/, "", d)
+                    sub(/[.]+$/, "", d)
+                    if (d == "рф" || d == "РФ") d = "xn--p1ai"
+                    else if (d == "москва" || d == "МОСКВА") d = "xn--80adxhks"
+                    else if (d == "рус" || d == "РУС") d = "xn--p1acf"
+                    else if (d == "дети" || d == "ДЕТИ") d = "xn--d1acj3b"
+                    else if (d == "бел" || d == "БЕЛ") d = "xn--90ais"
+                    d = tolower(d)
                     gsub(/[^a-zA-Z0-9._-]/, "", d)
                     gsub(/[.]+[.]+/, ".", d)
                     sub(/^[.]+/, "", d)
                     sub(/[.]+$/, "", d)
                     if (d == "" || d == "." || d !~ /[a-zA-Z0-9]/) continue
+                    if (seen[d]++) continue
                     print "server=/" d "/" ip1
                     if (ip2 != "" && ip2 != ip1) {
                         print "server=/" d "/" ip2
@@ -527,8 +491,6 @@ update_status() {
   "custom_dns_secondary": "${CUSTOM_DNS_SECONDARY:-}",
   "wan_dns1": "$w1",
   "wan_dns2": "$w2",
-  "preset_national_zones": ${PRESET_NATIONAL_ZONES:-1},
-  "preset_gov_services": ${PRESET_GOV_SERVICES:-1},
   "rules": $r_json,
   "dnsmasq_running": $running,
   "dnsmasq_pid": ${pid:-0},
@@ -668,8 +630,6 @@ cmd_reset() {
     DNS_SECONDARY="77.88.8.1"
     CUSTOM_DNS_PRIMARY=""
     CUSTOM_DNS_SECONDARY=""
-    PRESET_NATIONAL_ZONES="1"
-    PRESET_GOV_SERVICES="1"
     RULES_COUNT="0"
     SLOT="${SLOT:-none}"
     save_config

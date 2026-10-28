@@ -4,7 +4,6 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="-1" />
 <link rel="shortcut icon" href="/images/favicon.png" />
@@ -12,837 +11,729 @@
 <title>Split DNS</title>
 <link rel="stylesheet" type="text/css" href="/index_style.css" />
 <link rel="stylesheet" type="text/css" href="/form_style.css" />
-<script type="text/javascript" src="/js/jquery.js"></script>
-<script type="text/javascript" src="/help.js"></script>
+<link rel="stylesheet" type="text/css" href="/other.css" />
 <script type="text/javascript" src="/state.js"></script>
 <script type="text/javascript" src="/general.js"></script>
 <script type="text/javascript" src="/popup.js"></script>
+<script type="text/javascript" src="/help.js"></script>
 <script type="text/javascript" src="/validator.js"></script>
+<script type="text/javascript" src="/js/jquery.js"></script>
 <style type="text/css">
 /* <![CDATA[ */
+.splitdns-subtext {
+    font-size: 11px;
+    color: #CCCCCC;
+    margin-top: 3px;
+    line-height: 1.35;
+}
 .splitdns-badge {
-    padding: 4px 10px;
-    border-radius: 3px;
-    font-weight: bold;
-    display: inline-block;
-    font-size: 11px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-}
-.splitdns-badge.running {
-    background: #1a6e2e;
-    color: #ffffff;
-    border: 1px solid #2a8b42;
-}
-.splitdns-badge.stopped {
-    background: #4a5358;
-    color: #ffffff;
-    border: 1px solid #6b7780;
-}
-.splitdns-badge.warning {
-    background: #3a2e1a;
-    color: #f0ad4e;
-    border: 1px solid #f0ad4e;
-}
-.splitdns-badge.error {
-    background: #8b0000;
-    color: #ffffff;
-    border: 1px solid #a00;
-}
-.splitdns-card {
-    background: #1b2a33;
-    border: 1px solid #2e88c7;
-    border-radius: 4px;
-    padding: 10px 14px;
-    margin: 8px 0;
-    font-size: 12px;
-    line-height: 1.5;
-    color: #c9d6df;
-}
-.splitdns-table-rules {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 8px;
-    font-size: 12px;
-}
-.splitdns-table-rules th {
-    background-color: #1F2D35;
-    color: #FFFFFF;
-    padding: 7px 6px;
-    border: 1px solid #222;
-    text-align: left;
-}
-.splitdns-table-rules td {
-    background-color: #2F3A3E;
-    color: #FFFFFF;
-    padding: 6px;
-    border: 1px solid #222;
-    vertical-align: middle;
-}
-.rule_row_disabled td {
-    opacity: 0.6;
-}
-.rule_row_editing td {
-    background-color: #24333b;
-}
-.lang-toggle-btn {
-    cursor: pointer;
-    padding: 3px 10px;
-    border-radius: 3px;
-    font-size: 11px;
-    font-weight: bold;
-    border: 1px solid #6b8fa3;
-    background: #1F2D35;
-    color: #FFF;
-    outline: none;
-}
-.lang-toggle-btn.active {
-    background: #2e88c7;
-    border-color: #5bb2ec;
-}
-.target_badge {
-    display: inline-block;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-size: 10px;
-    font-weight: bold;
-}
-.target_badge.badge_profile {
-    background: #1f4258;
-    color: #63b9f3;
-    border: 1px solid #2e88c7;
-}
-.target_badge.badge_router {
-    background: #473215;
-    color: #f39c12;
-    border: 1px solid #e67e22;
-}
-.target_badge.badge_custom {
-    background: #173e35;
-    color: #2ecc71;
-    border: 1px solid #27ae60;
-}
-.hint-icon {
-    display: inline-block;
-    margin-left: 6px;
-    padding: 0 4px;
-    font-size: 11px;
-    font-weight: bold;
-    color: #63b9f3;
-    cursor: pointer;
-    border: 1px solid #2e88c7;
-    border-radius: 3px;
-    background: #1b2a33;
-    line-height: 14px;
-    user-select: none;
-}
-.hint-icon:hover {
-    background: #2e88c7;
-    color: #ffffff;
-}
-.button_gen_sub {
-    cursor: pointer;
-    font-size: 11px;
-    padding: 3px 8px;
-    border-radius: 3px;
-    background: #233438;
-    color: #FFF;
-    border: 1px solid #6b8fa3;
-    outline: none;
-}
-.button_gen_sub:hover {
-    background: #09639C;
-    border-color: #5bb2ec;
-}
-.btn_apply_highlight {
-    background: #09639C !important;
-    border-color: #27ae60 !important;
-    box-shadow: 0 0 6px #27ae60;
-}
-.quick-chip {
-    cursor: pointer;
     display: inline-block;
     padding: 2px 7px;
-    margin: 2px 4px 2px 0;
     border-radius: 3px;
     font-size: 11px;
-    background: #1F2D35;
-    border: 1px solid #6b8fa3;
-    color: #63b9f3;
-}
-.quick-chip:hover {
-    background: #2e88c7;
-    color: #ffffff;
-}
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.75);
-    z-index: 10000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.modal-content {
-    background: #1b2a33;
-    border: 2px solid #2e88c7;
-    border-radius: 6px;
-    padding: 18px 22px;
-    max-width: 620px;
-    width: 90%;
-    max-height: 85vh;
-    overflow-y: auto;
-    color: #ecf0f1;
-    box-shadow: 0 0 25px rgba(0,0,0,0.9);
-}
-.modal-title {
-    font-size: 15px;
     font-weight: bold;
-    color: #63b9f3;
-    border-bottom: 1px solid #34495e;
-    padding-bottom: 8px;
-    margin-bottom: 12px;
+    background-color: #2F3A3E;
+    color: #FFCC00;
+    border: 1px solid #5A6A70;
+    margin-left: 6px;
 }
-.modal-body {
+.splitdns-preset-bar {
+    background-color: #3B474B;
+    border: 1px solid #22292C;
+    padding: 6px 10px;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.splitdns-preset-label {
     font-size: 12px;
-    line-height: 1.6;
-    color: #bdc3c7;
+    color: #FFCC00;
+    font-weight: bold;
+    margin-right: 4px;
 }
-.modal-footer {
-    text-align: right;
-    margin-top: 15px;
-    border-top: 1px solid #34495e;
-    padding-top: 10px;
+.splitdns-drag-handle {
+    cursor: move;
+    color: #99A9B1;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 0 5px 0 2px;
+    user-select: none;
+    vertical-align: middle;
+}
+.splitdns-rule-row:hover .splitdns-drag-handle {
+    color: #FFCC00;
+}
+.splitdns-rule-row.dragging {
+    opacity: 0.45;
+}
+.splitdns-rule-row.drag-over td {
+    border-top: 2px solid #FFCC00 !important;
+}
+.splitdns-domains-cell {
+    text-align: left !important;
+    padding: 4px 8px !important;
+    word-break: break-word;
+    max-height: 56px;
+    overflow-y: auto;
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+.splitdns-comment-cell {
+    text-align: left !important;
+    padding: 4px 8px !important;
+    word-break: break-word;
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+.splitdns-target-cell {
+    padding: 4px 6px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+.textarea_ssh_table {
+    width: 99%;
+    background-color: #1F2D35;
+    color: #FFFFFF;
+    font-family: Courier New, Courier, monospace;
+    font-size: 13px;
+    padding: 8px;
+    border: 1px solid #22292C;
+    box-sizing: border-box;
+    resize: vertical;
 }
 /* ]]> */
 </style>
+</head>
+<body onload="initSplitDnsPage();" onunload="return unload_body();" class="bg">
+<div id="TopBanner"></div>
+<div id="Loading" class="popup_bg"></div>
+
+<iframe name="hidden_frame" id="hidden_frame" src="" width="0" height="0" frameborder="0"></iframe>
+
+<form method="post" name="form" id="splitdns_form" action="/start_apply.htm" target="hidden_frame" onsubmit="return false;">
+<input type="hidden" name="productid" id="nvram_productid" value="" />
+<input type="hidden" name="current_page" value="user3.asp" />
+<input type="hidden" name="next_page" value="user3.asp" />
+<input type="hidden" name="modified" value="0" />
+<input type="hidden" name="action_mode" value="apply" />
+<input type="hidden" name="action_script" value="splitdns_apply" />
+<input type="hidden" name="action_wait" value="3" />
+<input type="hidden" name="preferred_lang" id="preferred_lang" value="" />
+<input type="hidden" name="firmver" id="nvram_firmver" value="" />
+<input type="hidden" name="amng_custom" id="amng_custom" value="" />
+
+<table class="content" align="center" cellpadding="0" cellspacing="0">
+    <tr>
+        <td width="17">&nbsp;</td>
+        <td valign="top" width="202">
+            <div id="mainMenu"></div>
+            <div id="subMenu"></div>
+        </td>
+        <td valign="top">
+            <div id="tabMenu" class="submenuBlock"></div>
+
+            <table width="98%" border="0" align="left" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td align="left" valign="top">
+                        <table width="760px" border="0" cellpadding="5" cellspacing="0" class="FormTitle" id="FormTitle">
+                            <tbody>
+                                <tr>
+                                    <td bgcolor="#4D595D" valign="top">
+                                        <div>&nbsp;</div>
+                                        <div class="formfonttitle" id="ui_page_title" data-i18n="page_title">Интернет - Split DNS</div>
+                                        <div style="margin: 10px 0 10px 5px;" class="splitLine"></div>
+                                        <div class="formfontdesc" id="ui_page_desc" data-i18n="page_desc">
+                                            Маршрутизация DNS-запросов для выбранных доменов и национальных зон через отечественные или пользовательские DNS-серверы в обход глобального DNS-over-TLS (DoT) и VPN-туннелей.
+                                        </div>
+
+                                        <!-- Section 1: Basic Settings -->
+                                        <table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" bordercolor="#6b8fa3" class="FormTable">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="2" data-i18n="sec_main">Основные параметры</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th width="35%">
+                                                        <a class="hintstyle" href="javascript:void(0);" onclick="showHint('hint_enable');"><span data-i18n="lbl_enable">Включить Split DNS</span></a>
+                                                    </th>
+                                                    <td>
+                                                        <label style="margin-right: 14px; cursor: pointer;">
+                                                            <input type="radio" name="splitdns_enable_radio" id="splitdns_enable_1" class="input" value="1" checked="checked" />
+                                                            <span data-i18n="opt_yes">Да</span>
+                                                        </label>
+                                                        <label style="cursor: pointer;">
+                                                            <input type="radio" name="splitdns_enable_radio" id="splitdns_enable_0" class="input" value="0" />
+                                                            <span data-i18n="opt_no">Нет</span>
+                                                        </label>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th>
+                                                        <a class="hintstyle" href="javascript:void(0);" onclick="showHint('hint_version');"><span data-i18n="lbl_version">Версия аддона</span></a>
+                                                    </th>
+                                                    <td>
+                                                        <span id="ui_current_version" style="font-weight: bold; color: #FFFFFF;">v1.1.0</span>
+                                                        <span id="ui_update_badge" class="splitdns-badge" style="display: none;"></span>
+                                                        <input type="button" class="button_gen" id="btn_check_update" value="Проверить обновление" data-i18n-val="btn_check_update" onclick="checkAddonUpdate();" style="margin-left: 10px;" />
+                                                        <input type="button" class="button_gen" id="btn_do_update" value="Обновить" data-i18n-val="btn_do_update" onclick="runAddonUpdate();" style="margin-left: 6px; display: none;" />
+                                                        <div class="splitdns-subtext" id="ui_update_status_text"></div>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th>
+                                                        <a class="hintstyle" href="javascript:void(0);" onclick="showHint('hint_profile');"><span data-i18n="lbl_profile">Целевой профиль DNS</span></a>
+                                                    </th>
+                                                    <td>
+                                                        <select name="splitdns_profile_sel" id="splitdns_profile_sel" class="input_option" onchange="onProfileChange();">
+                                                            <option value="yandex_basic" data-i18n="prof_yandex_basic">Яндекс.DNS Базовый (77.88.8.8, 77.88.8.1)</option>
+                                                            <option value="yandex_safe" data-i18n="prof_yandex_safe">Яндекс.DNS Безопасный (77.88.8.88, 77.88.8.2)</option>
+                                                            <option value="yandex_family" data-i18n="prof_yandex_family">Яндекс.DNS Семейный (77.88.8.7, 77.88.8.3)</option>
+                                                            <option value="nsdi" data-i18n="prof_nsdi">НСДИ / Национальная система (195.208.4.1, 195.208.5.1)</option>
+                                                            <option value="isp" id="opt_prof_isp" data-i18n="prof_isp">DNS интернет-провайдера (WAN DHCP)</option>
+                                                            <option value="custom" data-i18n="prof_custom">Пользовательский DNS (Свой IP)</option>
+                                                        </select>
+                                                        <div class="splitdns-subtext" id="ui_isp_dns_hint"></div>
+                                                    </td>
+                                                </tr>
+
+                                                <tr id="row_custom_dns1" style="display: none;">
+                                                    <th>
+                                                        <a class="hintstyle" href="javascript:void(0);" onclick="showHint('hint_custom_dns');"><span data-i18n="lbl_custom_dns1">Первичный DNS (IPv4 / IP#порт)</span></a>
+                                                    </th>
+                                                    <td>
+                                                        <input type="text" maxlength="32" class="input_20_table" id="splitdns_custom_dns1" name="splitdns_custom_dns1" value="" placeholder="77.88.8.8" autocorrect="off" autocapitalize="off" />
+                                                    </td>
+                                                </tr>
+
+                                                <tr id="row_custom_dns2" style="display: none;">
+                                                    <th>
+                                                        <a class="hintstyle" href="javascript:void(0);" onclick="showHint('hint_custom_dns');"><span data-i18n="lbl_custom_dns2">Вторичный DNS (необязательно)</span></a>
+                                                    </th>
+                                                    <td>
+                                                        <input type="text" maxlength="32" class="input_20_table" id="splitdns_custom_dns2" name="splitdns_custom_dns2" value="" placeholder="77.88.8.1" autocorrect="off" autocapitalize="off" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <!-- Section 2: Addon Settings Backup / Restore / Reset (Advanced_SettingBackup_Content.asp style) -->
+                                        <table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" bordercolor="#6b8fa3" class="FormTable" style="margin-top: 8px;">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="2" data-i18n="sec_backup">Управление настройками аддона</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th width="35%" align="right">
+                                                        <a class="hintstyle" href="javascript:void(0);" onclick="showHint('hint_reset');"><span data-i18n="lbl_factory_reset">Заводские настройки</span></a>
+                                                    </th>
+                                                    <td>
+                                                        <input class="button_gen" onclick="confirmSurgicalReset();" type="button" value="Восстановить" id="btn_reset_settings" data-i18n-val="btn_factory_restore" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th align="right">
+                                                        <a class="hintstyle" href="javascript:void(0);" onclick="showHint('hint_export');"><span data-i18n="lbl_save_settings">Сохранение настроек</span></a>
+                                                    </th>
+                                                    <td>
+                                                        <input class="button_gen" onclick="exportBackupJson();" type="button" value="Сохранение настроек" id="btn_export_backup" data-i18n-val="btn_save_settings" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th align="right">
+                                                        <a class="hintstyle" href="javascript:void(0);" onclick="showHint('hint_import');"><span data-i18n="lbl_restore_settings">Восстановление настроек</span></a>
+                                                    </th>
+                                                    <td>
+                                                        <input class="button_gen" onclick="uploadRestoreFile();" type="button" value="Загрузить" id="btn_import_backup" data-i18n-val="btn_upload_restore" />
+                                                        <input type="file" name="file" class="input" style="color:#FFCC00;" id="backup_restore_file" accept=".json,application/json" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <!-- Section 3: Custom Rules & Exceptions (Advanced_DHCP_Content.asp style) -->
+                                        <div class="formfontdesc" style="margin-top: 14px; margin-bottom: 4px;" id="ui_rules_order_desc" data-i18n="rules_order_desc">
+                                            Порядок правил и приоритет: dnsmasq автоматически отдаёт приоритет более конкретным поддоменам перед родительскими зонами (например, исключение для sub.example.ru важнее правила для зоны ru). При совпадении доменов приоритет имеет правило, расположенное выше в таблице. Вы можете менять порядок правил перетаскиванием строк за значок ⋮⋮ или редактировать их кнопкой с карандашом.
+                                        </div>
+
+                                        <div class="splitdns-preset-bar">
+                                            <span class="splitdns-preset-label" data-i18n="lbl_preset_fill">Подставить пресет в форму:</span>
+                                            <input type="button" class="button_gen" id="btn_preset_national" value="Национальные доменные зоны" data-i18n-val="btn_preset_national" onclick="fillPresetInForm('national');" />
+                                            <input type="button" class="button_gen" id="btn_preset_gov" value="Гос. и соц. ресурсы РФ" data-i18n-val="btn_preset_gov" onclick="fillPresetInForm('gov');" />
+                                        </div>
+
+                                        <table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" class="FormTable_table" style="margin-top: 6px;">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="5" id="ui_rules_table_title" data-i18n="sec_rules">Пользовательские правила и исключения (Максимум : 128)</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th width="10%">
+                                                        <a class="hintstyle" href="javascript:void(0);" onclick="showHint('hint_col_enable');"><span data-i18n="col_enabled">Вкл</span></a>
+                                                    </th>
+                                                    <th width="34%">
+                                                        <a class="hintstyle" href="javascript:void(0);" onclick="showHint('hint_col_domains');"><span data-i18n="col_domains">Домены</span></a>
+                                                    </th>
+                                                    <th width="26%">
+                                                        <a class="hintstyle" href="javascript:void(0);" onclick="showHint('hint_col_target');"><span data-i18n="col_target">Целевой DNS</span></a>
+                                                    </th>
+                                                    <th width="18%">
+                                                        <a class="hintstyle" href="javascript:void(0);" onclick="showHint('hint_col_comment');"><span data-i18n="col_comment">Комментарий</span></a>
+                                                    </th>
+                                                    <th width="12%">
+                                                        <span data-i18n="col_actions">Edit</span>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <td width="10%">
+                                                        <input type="checkbox" id="new_rule_enabled" checked="checked" class="input" />
+                                                    </td>
+                                                    <td width="34%">
+                                                        <input type="text" maxlength="2048" class="input_25_table" id="new_rule_domains" placeholder="example.ru, сервис.рф" autocorrect="off" autocapitalize="off" style="width: 94%;" />
+                                                    </td>
+                                                    <td width="26%">
+                                                        <select id="new_rule_target_type" class="input_option" onchange="onNewRuleTargetChange();" style="width: 96%;">
+                                                            <option value="profile" data-i18n="rule_target_profile">Профиль Split DNS</option>
+                                                            <option value="router" data-i18n="rule_target_router">Исключение (DoT роутера)</option>
+                                                            <option value="custom" data-i18n="rule_target_custom">Свой DNS-сервер</option>
+                                                        </select>
+                                                        <div id="new_rule_custom_ip_wrap" style="display: none; margin-top: 4px;">
+                                                            <input type="text" maxlength="32" class="input_15_table" id="new_rule_target_ip" placeholder="192.168.50.5#53" autocorrect="off" autocapitalize="off" style="width: 90%;" />
+                                                        </div>
+                                                    </td>
+                                                    <td width="18%">
+                                                        <input type="text" maxlength="64" class="input_15_table" id="new_rule_comment" placeholder="Описание" data-i18n-ph="ph_comment" autocorrect="off" autocapitalize="off" style="width: 90%;" />
+                                                    </td>
+                                                    <td width="12%">
+                                                        <input type="button" class="add_btn" id="btn_add_rule" onclick="addCustomRule();" value="" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <div id="custom_rules_block">
+                                            <table width="100%" cellspacing="0" cellpadding="4" align="center" class="list_table" id="custom_rules_table">
+                                                <tbody id="custom_rules_tbody">
+                                                    <tr>
+                                                        <td colspan="5" style="color:#FFCC00; text-align:center;" data-i18n="rules_empty">В таблице нет данных.</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="apply_gen" style="margin-top: 14px; margin-bottom: 14px;">
+                                            <input class="button_gen" id="btn_apply_main" onclick="applySplitDnsSettings();" type="button" value="Применить" data-i18n-val="btn_apply" />
+                                        </div>
+
+                                        <!-- Section 4: Live DNS Diagnostic Tool (Main_Netstat_Content.asp style) -->
+                                        <table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" bordercolor="#6b8fa3" class="FormTable" style="margin-top: 8px;">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="2" data-i18n="sec_diag">Диагностика резолвинга</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th width="20%">
+                                                        <a class="hintstyle" href="javascript:void(0);" onclick="showHint('hint_diag');"><span data-i18n="lbl_diag_domain">Домен для проверки</span></a>
+                                                    </th>
+                                                    <td>
+                                                        <input type="text" maxlength="128" class="input_32_table" id="diag_test_domain" value="lkfl2.nalog.ru" placeholder="lkfl2.nalog.ru" autocorrect="off" autocapitalize="off" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <div class="apply_gen">
+                                            <input class="button_gen" id="btn_diag_test" onclick="runLiveDomainTest();" type="button" value="Проверить" data-i18n-val="btn_test_domain" />
+                                            <img id="loadingIcon" style="display:none; vertical-align:middle; margin-left:8px;" src="/images/InternetScan.gif" alt="" />
+                                        </div>
+
+                                        <div style="margin-top:8px" id="logArea">
+                                            <textarea cols="63" rows="10" wrap="off" readonly="readonly" id="diag_textarea" class="textarea_ssh_table"></textarea>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td width="10" align="center" valign="top">&nbsp;</td>
+    </tr>
+</table>
+</form>
+
+<div id="footer"></div>
+
 <script type="text/javascript">
 /* <![CDATA[ */
-var CURRENT_VERSION = "1.0.0";
-var currentLang = "ru";
-var customRules = [];
-var editingRuleId = null;
-var isFormDirty = false;
-var diagTestStartTime = 0;
-var diagPollTimer = null;
-var activeSlot = "user3.asp";
 
-// --- Localization Dictionaries (Strictly Symmetric) ---
+/* ============================================================================
+ * 1. Localization Dictionaries (Symmetric RU / EN)
+ * ============================================================================ */
 var SPLITDNS_LANG = {
     ru: {
-        page_title: "Split DNS — Условная маршрутизация DNS",
-        page_desc: "Условное перенаправление DNS-запросов (dnsmasq conditional forwarding) для национальных доменных зон, государственных сервисов и пользовательских правил на быстрые локальные резолверы без нарушения работы DNS Privacy (Stubby DoT) и VPN.",
-        tab_title: "Split DNS",
-        lang_selector_label: "Язык:",
-        slot_label: "Слот страницы:",
-        slot_unknown: "Определяется...",
-        status_addon_active: "Активен",
-        status_addon_disabled: "Отключен",
-        status_addon_error: "Ошибка",
-        status_addon_restarting: "Перезапуск",
-        dnsmasq_status_running: "dnsmasq: запущен (PID %s)",
-        dnsmasq_status_stopped: "dnsmasq: не запущен",
-        active_rules_badge: "Активных правил: %s",
-        active_resolver_badge: "Текущий резолвер: %s",
-
-        sec_general_title: "Основные параметры и быстрые пресеты",
-        master_switch_label: "Включить Split DNS",
-        master_switch_desc: "Активирует условную маршрутизацию DNS-запросов через dnsmasq",
-        preset_national_label: "Национальные доменные зоны (.ru, .рф, .su, .москва, .рус, .tatar, .дети)",
-        preset_national_desc: "Перенаправляет запросы ко всем доменам в национальных зонах РФ на выбранный профиль",
-        preset_gov_label: "Государственные и социально значимые ресурсы РФ",
-        preset_gov_desc: "Перенаправляет порталы органов власти, Госуслуги, ФНС, банки, РЖД и реестры доверенных УЦ",
-        btn_view_gov_catalog: "Показать каталог доменов (54)",
-
-        sec_profile_title: "Профиль DNS-серверов (Апстрим)",
-        profile_selector_label: "Выбор апстрим-резолвера",
+        page_title: "Интернет - Split DNS",
+        page_desc: "Маршрутизация DNS-запросов для выбранных доменов и национальных зон через отечественные или пользовательские DNS-серверы в обход глобального DNS-over-TLS (DoT) и VPN-туннелей.",
+        sec_main: "Основные параметры",
+        lbl_enable: "Включить Split DNS",
+        opt_yes: "Да",
+        opt_no: "Нет",
+        lbl_version: "Версия аддона",
+        btn_check_update: "Проверить обновление",
+        btn_do_update: "Обновить",
+        update_checking: "Проверка новой версии на GitHub...",
+        update_up_to_date: "Установлена актуальная версия",
+        update_available_fmt: "Доступна новая версия: v",
+        update_in_progress: "Загрузка и установка обновления...",
+        lbl_profile: "Целевой профиль DNS",
         prof_yandex_basic: "Яндекс.DNS Базовый (77.88.8.8, 77.88.8.1)",
         prof_yandex_safe: "Яндекс.DNS Безопасный (77.88.8.88, 77.88.8.2)",
         prof_yandex_family: "Яндекс.DNS Семейный (77.88.8.7, 77.88.8.3)",
-        prof_nsdi: "НСДИ / MSK-IX (195.208.4.1, 195.208.5.1)",
-        prof_isp: "DNS интернет-провайдера (Автоматически с WAN)",
-        prof_custom: "Свой DNS-сервер (Ручная настройка)",
-        custom_dns1_label: "Основной DNS-сервер",
-        custom_dns2_label: "Резервный DNS-сервер",
-        custom_dns_placeholder: "например, 77.88.8.8 или 192.168.1.53#5353",
-        detected_wan_dns_label: "Обнаруженный WAN DNS провайдера:",
-        wan_dns_fallback_note: "(WAN DNS не определен, используется резерв 77.88.8.8)",
-
-        sec_rules_title: "Пользовательские правила и исключения",
-        sec_rules_desc: "Маршрутизация отдельных доменов и групп доменов на профиль, в обход пресетов (DoT 127.0.1.1) или на выделенный IP.",
-        table_th_status: "Вкл",
-        table_th_domains: "Домены (через запятую/пробел)",
-        table_th_target_type: "Целевой DNS",
-        table_th_target_ip: "Сервер / IP#порт",
-        table_th_comment: "Комментарий",
-        table_th_actions: "Действие",
-        table_empty: "Пользовательские правила отсутствуют. Добавьте первое правило с помощью формы ниже.",
-
-        target_type_profile: "По умолчанию (из профиля выше)",
-        target_type_router: "Штатный DNS роутера / DoT (127.0.1.1 — исключение)",
-        target_type_custom: "Свой IP (IPv4#порт)",
-
-        input_domains_placeholder: "например, lkfl2.nalog.ru, corp.ru, mydomain.com",
-        input_comment_placeholder: "например, Налоговая / Исключение для работы",
-        input_custom_ip_placeholder: "192.168.50.2#5353",
-        btn_add_rule: "+ Добавить правило",
-        btn_save_rule: "Сохранить",
-        btn_cancel_rule: "Отмена",
-        btn_edit_rule: "Изменить",
-        btn_delete_rule: "Удалить",
-        toggle_rule_tooltip: "Включить / Отключить данное правило",
-
-        sec_diag_title: "Диагностика резолвинга (Live DNS Diagnostic)",
-        sec_diag_desc: "Мгновенная проверка разрешения доменных имён через локальный dnsmasq роутера и настроенный апстрим.",
-        diag_domain_label: "Тестируемый домен",
-        diag_domain_placeholder: "lkfl2.nalog.ru",
-        btn_test_dns: "Проверить DNS",
-        diag_testing: "Выполняется запрос к DNS...",
-        diag_status_label: "Статус:",
-        diag_status_ok: "УСПЕШНО (200 OK)",
-        diag_status_error: "ОШИБКА РЕЗОЛВИНГА (NXDOMAIN / SERVFAIL)",
-        diag_status_timeout: "ТАЙМАУТ ОЖИДАНИЯ ОТВЕТА",
-        diag_time_label: "Время отклика:",
-        diag_time_ms: "%s мс",
-        diag_resolver_label: "Использованный резолвер:",
-        diag_ips_label: "Полученные IP-адреса:",
-        diag_quick_links: "Быстрые примеры:",
-
-        sec_update_title: "Версия и обновление аддона",
-        current_version_label: "Текущая версия:",
-        btn_check_update: "Проверить обновления",
-        btn_update_now: "Обновить аддон",
-        update_checking: "Связь с GitHub...",
-        update_available_msg: "Доступна новая версия: %s! Рекомендуется обновиться.",
-        update_latest_msg: "У вас установлена самая актуальная версия (%s).",
-        update_failed_msg: "Не удалось проверить обновления. Проверьте интернет-соединение.",
-        update_confirm_title: "Подтверждение обновления аддона",
-        update_confirm_msg: "Обновить Split DNS до версии %s? Все пользовательские правила и настройки будут бережно сохранены.",
-        updating_in_progress: "Идёт скачивание и установка обновления... Пожалуйста, не закрывайте страницу.",
-        update_success: "Аддон успешно обновлен до версии %s! Перезагрузка страницы...",
-
-        sec_maintenance_title: "Резервное копирование и сброс",
-        sec_maintenance_desc: "Экспорт и импорт правил в формате JSON, а также безопасный сброс настроек аддона.",
-        btn_export_json: "Экспорт настроек (JSON)",
-        btn_import_json: "Импорт настроек (JSON)",
-        btn_reset_settings: "Сбросить настройки (Surgical Reset)",
-        btn_uninstall_addon: "Удалить аддон",
-        file_select_hint: "Выберите JSON-файл для восстановления",
-        import_success: "Настройки успешно импортированы (%s правил)! Нажмите «Применить» для сохранения.",
-        import_invalid_json: "Ошибка импорта: файл содержит некорректный JSON или не соответствует схеме.",
-
-        reset_confirm_title: "Подтверждение точечного сброса (Surgical Reset)",
-        reset_confirm_msg: "Вы действительно хотите сбросить настройки Split DNS к начальным значениям? Все правила будут удалены. Другие аддоны (AmneziaWG, XrayUI) и системные настройки роутера затронуты НЕ будут.",
-        btn_confirm_reset: "Да, сбросить настройки",
-        btn_cancel_reset: "Отмена",
-
-        uninstall_confirm_title: "Подтверждение полного удаления",
-        uninstall_confirm_msg: "Внимание! Вы собираетесь полностью удалить Split DNS с роутера. Файлы аддона, конфигурация dnsmasq и вкладка меню будут удалены. Продолжить?",
-        btn_confirm_uninstall: "Удалить безвозвратно",
-
+        prof_nsdi: "НСДИ / Национальная система (195.208.4.1, 195.208.5.1)",
+        prof_isp: "DNS интернет-провайдера (WAN DHCP)",
+        prof_custom: "Пользовательский DNS (Свой IP)",
+        isp_detected_fmt: "Обнаружены WAN DNS провайдера: ",
+        lbl_custom_dns1: "Первичный DNS (IPv4 / IP#порт)",
+        lbl_custom_dns2: "Вторичный DNS (необязательно)",
+        sec_backup: "Управление настройками аддона",
+        lbl_factory_reset: "Заводские настройки",
+        btn_factory_restore: "Восстановить",
+        lbl_save_settings: "Сохранение настроек",
+        btn_save_settings: "Сохранение настроек",
+        lbl_restore_settings: "Восстановление настроек",
+        btn_upload_restore: "Загрузить",
+        rules_order_desc: "Порядок правил и приоритет: dnsmasq автоматически отдаёт приоритет более конкретным поддоменам перед родительскими зонами (например, исключение для sub.example.ru важнее правила для зоны ru). При совпадении доменов приоритет имеет правило, расположенное выше в таблице. Вы можете менять порядок правил перетаскиванием строк за значок ⋮⋮ или редактировать их кнопкой с карандашом.",
+        lbl_preset_fill: "Подставить пресет в форму:",
+        btn_preset_national: "Национальные доменные зоны",
+        btn_preset_gov: "Гос. и соц. ресурсы РФ",
+        preset_comment_national: "Национальные доменные зоны",
+        preset_comment_gov: "Гос. и соц. ресурсы РФ",
+        sec_rules: "Пользовательские правила и исключения (Максимум : 128)",
+        col_enabled: "Вкл",
+        col_domains: "Домены",
+        col_target: "Целевой DNS",
+        col_comment: "Комментарий",
+        col_actions: "Edit",
+        ph_comment: "Описание",
+        rule_target_profile: "Профиль Split DNS",
+        rule_target_router: "Исключение (DoT роутера)",
+        rule_target_custom: "Свой DNS-сервер",
+        rules_empty: "В таблице нет данных.",
+        sec_diag: "Диагностика резолвинга",
+        lbl_diag_domain: "Домен для проверки",
+        btn_test_domain: "Проверить",
+        diag_running: "Выполняется DNS-запрос через роутер...",
+        diag_status_ok: "УСПЕШНО (OK)",
+        diag_status_err: "ОШИБКА (NXDOMAIN / Timeout)",
+        diag_lbl_domain: "Домен",
+        diag_lbl_status: "Статус",
+        diag_lbl_resolver: "Резолвер",
+        diag_lbl_time: "Время отклика",
+        diag_lbl_ips: "Полученные IP",
         btn_apply: "Применить",
-        applying_changes: "Применение настроек и безопасный перезапуск dnsmasq...",
-        apply_success: "Настройки успешно применены! Dnsmasq перезапущен.",
-        apply_error: "Ошибка применения настроек. Проверьте журнал роутера.",
-
-        err_domain_empty: "Домен не может быть пустым.",
-        err_domain_invalid: "Некорректный домен: «%s». Разрешены латинские буквы, цифры, дефис, точка или Punycode (xn--...).",
-        err_ip_invalid: "Некорректный IP-адрес: «%s». Укажите IPv4 (например, 77.88.8.8) или IP#порт (например, 192.168.1.53#5353).",
-        err_ip_required_for_custom: "Для режима «Свой IP» необходимо указать IP-адрес резолвера.",
-        err_custom_dns1_required: "Укажите основной IP-адрес DNS-сервера для профиля «Свой DNS» (например, 77.88.8.8 или 192.168.1.53#5353).",
-        err_payload_too_large: "Размер списка правил (%s байт) превышает допустимый лимит безопасности (%s байт). Уменьшите количество правил или объедините домены в группы (через запятую), чтобы не повредить конфигурацию роутера.",
-        warn_domain_exists: "Домен «%s» уже присутствует в правиле #%s.",
-        warn_unsaved_changes: "У вас есть несохраненные изменения! Вы уверены, что хотите покинуть страницу?",
-
-        gov_catalog_title: "Каталог государственных и социально значимых ресурсов РФ",
-        gov_catalog_close: "Закрыть",
-        gov_catalog_desc: "Следующие 54 домена автоматически перенаправляются на доверенный российский апстрим при включенном пресете:"
+        err_invalid_domain: "Ошибка: некорректное имя домена: ",
+        err_empty_domain: "Введите хотя бы один домен.",
+        err_invalid_ip: "Ошибка: введите корректный IPv4 адрес (или IPv4#порт, например 77.88.8.8 или 192.168.50.5#5353).",
+        err_max_rules: "Достигнут лимит правил (128).",
+        err_select_file: "Сначала выберите JSON-файл резервной копии!",
+        confirm_reset: "Все настройки Split DNS и список правил будут сброшены к заводским значениям по умолчанию. Продолжить?",
+        confirm_update: "Загрузить и установить последнюю версию Split DNS с GitHub?",
+        import_success: "Конфигурация успешно загружена из резервной копии. Нажмите «Применить» для сохранения на роутере.",
+        import_invalid_json: "Ошибка: выбранный файл не является корректной резервной копией Split DNS JSON.",
+        hint_enable: "Включает или отключает маршрутизацию DNS-запросов через аддон Split DNS. При отключении все запросы идут через стандартный DNS/DoT роутера.",
+        hint_version: "Отображает текущую установленную версию аддона и позволяет проверить и установить обновление напрямую из репозитория GitHub.",
+        hint_profile: "Выберите отечественный или провайдерский DNS-резолвер, на который будут направляться запросы для правил с типом «Профиль Split DNS».",
+        hint_custom_dns: "Укажите IPv4-адрес собственного DNS-сервера (опционально с портом через символ #, например 77.88.8.8 или 192.168.50.5#5353).",
+        hint_reset: "Сбрасывает только настройки и правила аддона Split DNS к исходному состоянию, не затрагивая другие настройки роутера.",
+        hint_export: "Скачивает JSON-файл со всеми текущими настройками профиля и таблицей правил Split DNS.",
+        hint_import: "Восстанавливает настройки и правила Split DNS из ранее сохранённого JSON-файла.",
+        hint_col_enable: "Позволяет временно включить или отключить правило без его удаления, а также перетащить строку (⋮⋮) для изменения приоритета.",
+        hint_col_domains: "Один или несколько доменов через запятую или пробел (поддерживаются кириллические домены IDN). Правило действует на сам домен и все его поддомены.",
+        hint_col_target: "Профиль Split DNS — направлять на выбранный выше профиль; Исключение (DoT роутера) — направлять в штатный DNS/DoT роутера (127.0.1.1); Свой DNS — указать индивидуальный IP#порт.",
+        hint_col_comment: "Произвольная заметка до 64 символов для удобного поиска в таблице.",
+        hint_diag: "Выполняет диагностический запрос nslookup непосредственно с роутера и выводит использованный резолвер, список IP-адресов и время отклика."
     },
-
     en: {
-        page_title: "Split DNS — Conditional DNS Routing",
-        page_desc: "Conditional DNS forwarding via dnsmasq for national domain zones, government services, and custom user rules to fast local resolvers while preserving native DNS Privacy (Stubby DoT) and VPN integrity.",
-        tab_title: "Split DNS",
-        lang_selector_label: "Language:",
-        slot_label: "Page Slot:",
-        slot_unknown: "Detecting...",
-        status_addon_active: "Active",
-        status_addon_disabled: "Disabled",
-        status_addon_error: "Error",
-        status_addon_restarting: "Restarting",
-        dnsmasq_status_running: "dnsmasq: running (PID %s)",
-        dnsmasq_status_stopped: "dnsmasq: stopped",
-        active_rules_badge: "Active rules: %s",
-        active_resolver_badge: "Active resolver: %s",
-
-        sec_general_title: "General Settings & Quick Presets",
-        master_switch_label: "Enable Split DNS",
-        master_switch_desc: "Activates conditional DNS forwarding via dnsmasq",
-        preset_national_label: "National domain zones (.ru, .рф, .su, .москва, .рус, .tatar, .дети)",
-        preset_national_desc: "Forwards queries for all domains under Russian national TLDs to the selected upstream profile",
-        preset_gov_label: "Russian Government & Social Services",
-        preset_gov_desc: "Forwards state portals, Gosuslugi, Tax service, banks, RZD, and National Root CA registries",
-        btn_view_gov_catalog: "View domain catalog (54)",
-
-        sec_profile_title: "DNS Upstream Profiles",
-        profile_selector_label: "Upstream Resolver Selection",
+        page_title: "WAN - Split DNS",
+        page_desc: "Conditional DNS forwarding for selected domains and national TLD zones via domestic or custom DNS resolvers, bypassing global DNS-over-TLS (DoT) and VPN tunnels.",
+        sec_main: "Basic Settings",
+        lbl_enable: "Enable Split DNS",
+        opt_yes: "Yes",
+        opt_no: "No",
+        lbl_version: "Addon Version",
+        btn_check_update: "Check Update",
+        btn_do_update: "Update Now",
+        update_checking: "Checking GitHub for new version...",
+        update_up_to_date: "Up to date",
+        update_available_fmt: "New version available: v",
+        update_in_progress: "Downloading and installing update...",
+        lbl_profile: "Target DNS Profile",
         prof_yandex_basic: "Yandex.DNS Basic (77.88.8.8, 77.88.8.1)",
         prof_yandex_safe: "Yandex.DNS Safe (77.88.8.88, 77.88.8.2)",
         prof_yandex_family: "Yandex.DNS Family (77.88.8.7, 77.88.8.3)",
-        prof_nsdi: "NSDI / MSK-IX (195.208.4.1, 195.208.5.1)",
-        prof_isp: "ISP WAN DNS (Auto from WAN)",
-        prof_custom: "Custom DNS Server (Manual configuration)",
-        custom_dns1_label: "Primary DNS Server",
-        custom_dns2_label: "Secondary DNS Server",
-        custom_dns_placeholder: "e.g. 77.88.8.8 or 192.168.1.53#5353",
-        detected_wan_dns_label: "Detected ISP WAN DNS:",
-        wan_dns_fallback_note: "(WAN DNS not detected, fallback to 77.88.8.8)",
-
-        sec_rules_title: "Custom Rules & Exceptions",
-        sec_rules_desc: "Route specific domains or groups to active profile, bypass presets to Router DoT (127.0.1.1), or use custom IP.",
-        table_th_status: "On",
-        table_th_domains: "Domains (comma/space separated)",
-        table_th_target_type: "Target DNS",
-        table_th_target_ip: "Server / IP#port",
-        table_th_comment: "Comment",
-        table_th_actions: "Action",
-        table_empty: "No custom rules configured. Add your first rule using the form below.",
-
-        target_type_profile: "Profile Default (from selected profile above)",
-        target_type_router: "Router DNS / DoT (127.0.1.1 — preset bypass)",
-        target_type_custom: "Custom IP (IPv4#port)",
-
-        input_domains_placeholder: "e.g. lkfl2.nalog.ru, corp.ru, mydomain.com",
-        input_comment_placeholder: "e.g. Tax portal / Work exception",
-        input_custom_ip_placeholder: "192.168.50.2#5353",
-        btn_add_rule: "+ Add Rule",
-        btn_save_rule: "Save",
-        btn_cancel_rule: "Cancel",
-        btn_edit_rule: "Edit",
-        btn_delete_rule: "Delete",
-        toggle_rule_tooltip: "Enable / Disable this rule",
-
-        sec_diag_title: "Live DNS Diagnostic Tool",
-        sec_diag_desc: "Instantly test domain name resolution through router dnsmasq and configured upstream resolver.",
-        diag_domain_label: "Test Domain",
-        diag_domain_placeholder: "lkfl2.nalog.ru",
-        btn_test_dns: "Test Domain",
-        diag_testing: "Querying DNS resolver...",
-        diag_status_label: "Status:",
-        diag_status_ok: "SUCCESS (200 OK)",
-        diag_status_error: "RESOLUTION ERROR (NXDOMAIN / SERVFAIL)",
-        diag_status_timeout: "QUERY TIMED OUT",
-        diag_time_label: "Response Time:",
-        diag_time_ms: "%s ms",
-        diag_resolver_label: "Answering Resolver:",
-        diag_ips_label: "Resolved IP Addresses:",
-        diag_quick_links: "Quick examples:",
-
-        sec_update_title: "Addon Version & Updates",
-        current_version_label: "Current Version:",
-        btn_check_update: "Check for Updates",
-        btn_update_now: "Update Addon",
-        update_checking: "Connecting to GitHub...",
-        update_available_msg: "New version available: %s! Update is recommended.",
-        update_latest_msg: "You are running the latest version (%s).",
-        update_failed_msg: "Failed to check for updates. Please check internet connection.",
-        update_confirm_title: "Confirm Addon Update",
-        update_confirm_msg: "Update Split DNS to version %s? All custom rules and settings will be preserved.",
-        updating_in_progress: "Downloading and applying update... Please do not close this page.",
-        update_success: "Addon updated successfully to version %s! Reloading page...",
-
-        sec_maintenance_title: "Backup, Restore & Reset",
-        sec_maintenance_desc: "Export and import custom rules in JSON format, or perform a surgical configuration reset.",
-        btn_export_json: "Export Settings (JSON)",
-        btn_import_json: "Import Settings (JSON)",
-        btn_reset_settings: "Reset Settings (Surgical Reset)",
-        btn_uninstall_addon: "Uninstall Addon",
-        file_select_hint: "Select JSON backup file to restore",
-        import_success: "Settings imported successfully (%s rules)! Click \"Apply\" to save.",
-        import_invalid_json: "Import error: file is not valid JSON or does not match schema.",
-
-        reset_confirm_title: "Confirm Surgical Reset",
-        reset_confirm_msg: "Are you sure you want to reset Split DNS to default factory settings? All custom rules will be removed. Other addons (AmneziaWG, XrayUI) and system settings will remain UNTOUCHED.",
-        btn_confirm_reset: "Yes, Reset Settings",
-        btn_cancel_reset: "Cancel",
-
-        uninstall_confirm_title: "Confirm Addon Uninstallation",
-        uninstall_confirm_msg: "Warning! You are about to completely uninstall Split DNS from the router. Addon files, dnsmasq configuration, and menu tab will be deleted. Proceed?",
-        btn_confirm_uninstall: "Uninstall Permanently",
-
+        prof_nsdi: "NSDI / National DNS System (195.208.4.1, 195.208.5.1)",
+        prof_isp: "ISP DNS (WAN DHCP)",
+        prof_custom: "Custom DNS (User IP)",
+        isp_detected_fmt: "Detected WAN ISP DNS: ",
+        lbl_custom_dns1: "Primary DNS (IPv4 / IP#port)",
+        lbl_custom_dns2: "Secondary DNS (optional)",
+        sec_backup: "Addon Settings Management",
+        lbl_factory_reset: "Factory default",
+        btn_factory_restore: "Restore",
+        lbl_save_settings: "Save setting",
+        btn_save_settings: "Save setting",
+        lbl_restore_settings: "Restore setting",
+        btn_upload_restore: "Upload",
+        rules_order_desc: "Rule order and priority: dnsmasq automatically prioritizes more specific subdomains over parent zones (e.g. an exception for sub.example.ru overrides zone ru). For identical domains, rules higher in the table take priority. Drag rows by ⋮⋮ to reorder or click the pencil button to edit.",
+        lbl_preset_fill: "Fill preset into form:",
+        btn_preset_national: "National Domain Zones",
+        btn_preset_gov: "Gov & Social Services (RF)",
+        preset_comment_national: "National Domain Zones",
+        preset_comment_gov: "Gov & Social Services (RF)",
+        sec_rules: "Custom Rules & Exceptions (Max Limit : 128)",
+        col_enabled: "On",
+        col_domains: "Domains",
+        col_target: "Target DNS",
+        col_comment: "Comment",
+        col_actions: "Edit",
+        ph_comment: "Description",
+        rule_target_profile: "Split DNS Profile",
+        rule_target_router: "Exception (Router DoT)",
+        rule_target_custom: "Custom DNS Server",
+        rules_empty: "No data in table.",
+        sec_diag: "DNS Resolution Diagnostics",
+        lbl_diag_domain: "Target Domain",
+        btn_test_domain: "Test",
+        diag_running: "Executing DNS lookup on router...",
+        diag_status_ok: "RESOLVED (OK)",
+        diag_status_err: "FAILED (NXDOMAIN / Timeout)",
+        diag_lbl_domain: "Domain",
+        diag_lbl_status: "Status",
+        diag_lbl_resolver: "Resolver",
+        diag_lbl_time: "Response Time",
+        diag_lbl_ips: "Resolved IPs",
         btn_apply: "Apply",
-        applying_changes: "Applying settings and safely restarting dnsmasq...",
-        apply_success: "Settings applied successfully! Dnsmasq restarted.",
-        apply_error: "Error applying settings. Check router system log.",
-
-        err_domain_empty: "Domain cannot be empty.",
-        err_domain_invalid: "Invalid domain: \"%s\". Only Latin letters, numbers, hyphens, dots, or Punycode (xn--...) allowed.",
-        err_ip_invalid: "Invalid IP address: \"%s\". Enter IPv4 (e.g. 77.88.8.8) or IP#port (e.g. 192.168.1.53#5353).",
-        err_ip_required_for_custom: "Resolver IP address is required for \"Custom IP\" mode.",
-        err_custom_dns1_required: "Please specify the primary DNS server IP for Custom profile (e.g. 77.88.8.8 or 192.168.1.53#5353).",
-        err_payload_too_large: "Rules payload size (%s bytes) exceeds the safety limit of %s bytes. Please reduce the number of rules or group domains together (comma-separated) to prevent router configuration overflow.",
-        warn_domain_exists: "Domain \"%s\" is already present in rule #%s.",
-        warn_unsaved_changes: "You have unsaved changes! Are you sure you want to leave this page?",
-
-        gov_catalog_title: "Russian Government & Social Services Domain Catalog",
-        gov_catalog_close: "Close",
-        gov_catalog_desc: "The following 54 domain zones and portals automatically route to the trusted domestic upstream resolver when this preset is enabled:"
+        err_invalid_domain: "Error: invalid domain name: ",
+        err_empty_domain: "Please enter at least one domain.",
+        err_invalid_ip: "Error: please enter a valid IPv4 address (or IPv4#port, e.g. 77.88.8.8 or 192.168.50.5#5353).",
+        err_max_rules: "Maximum rule limit (128) reached.",
+        err_select_file: "Please select a backup JSON file first!",
+        confirm_reset: "All Split DNS settings and custom rules will be reset to factory defaults. Continue?",
+        confirm_update: "Download and install the latest Split DNS version from GitHub?",
+        import_success: "Configuration loaded from backup file. Click 'Apply' to save changes to the router.",
+        import_invalid_json: "Error: the selected file is not a valid Split DNS JSON backup.",
+        hint_enable: "Enables or disables conditional DNS routing via Split DNS. When disabled, all queries use the router's default DNS/DoT configuration.",
+        hint_version: "Shows the currently installed addon version and allows checking and installing updates directly from GitHub.",
+        hint_profile: "Select the domestic or ISP DNS resolver used for rules configured with 'Split DNS Profile'.",
+        hint_custom_dns: "Specify an IPv4 DNS address (optionally with a port after #, e.g. 77.88.8.8 or 192.168.50.5#5353).",
+        hint_reset: "Resets only Split DNS settings and rules to factory defaults without affecting any other router settings.",
+        hint_export: "Downloads a JSON backup file containing your current Split DNS profile settings and rules table.",
+        hint_import: "Restores Split DNS settings and rules from a previously saved JSON backup file.",
+        hint_col_enable: "Toggle individual rules on or off without deleting them, or drag the row handle (⋮⋮) to change rule priority.",
+        hint_col_domains: "One or more domains separated by commas or spaces (Cyrillic IDN domains supported). Matches the domain and all its subdomains.",
+        hint_col_target: "Split DNS Profile — route to the selected profile; Exception (Router DoT) — route to router's default DNS/DoT (127.0.1.1); Custom DNS — specify an individual IP#port.",
+        hint_col_comment: "Optional note up to 64 characters to identify the rule.",
+        hint_diag: "Executes an nslookup diagnostic query on the router and displays the resolver, resolved IP addresses, and latency."
     }
 };
 
-// --- Contextual Tooltips Content ---
-var SPLITDNS_TOOLTIPS = {
-    master_switch: {
-        ru: {
-            title: "Главный переключатель Split DNS",
-            body: "Активирует условную маршрутизацию DNS-запросов через dnsmasq на основе сформированных правил.<br /><br /><b>Безопасность:</b> При отключении тумблера все директивы Split DNS исключаются из рабочей конфигурации dnsmasq, и роутер мгновенно возвращается к стандартному режиму разрешения имён (включая работу штатного DNS-over-TLS Stubby), не удаляя ваши сохранённые правила."
-        },
-        en: {
-            title: "Split DNS Master Switch",
-            body: "Activates rule-based conditional DNS forwarding via dnsmasq.<br /><br /><b>Safety:</b> When turned off, all Split DNS directives are cleanly excluded from active dnsmasq configuration, restoring default router DNS resolution (including native DNS-over-TLS Stubby) without deleting any saved rules."
-        }
-    },
-    preset_national_zones: {
-        ru: {
-            title: "Пресет: Национальные доменные зоны",
-            body: "Автоматически направляет все DNS-запросы для доменов первого уровня <b>.ru</b>, <b>.su</b>, <b>.tatar</b>, а также кириллических зон <b>.рф</b> (<i>xn--p1ai</i>), <b>.москва</b> (<i>xn--80adxhks</i>), <b>.рус</b> (<i>xn--p1acf</i>) и <b>.дети</b> (<i>xn--d1acj3b</i>) на выбранный отечественный DNS-профиль.<br /><br /><b>Зачем это нужно:</b> Зарубежные резолверы (Cloudflare 1.1.1.1, Quad9 9.9.9.9) часто не имеют прямой связности с российскими TLD-серверами или блокируют их из-за сертификатов Минцифры, вызывая ошибку <code>SERVFAIL (EDE 22: No Reachable Authority)</code>. Пресет гарантирует открытие всех сайтов Рунета."
-        },
-        en: {
-            title: "Preset: National Domain Zones",
-            body: "Automatically routes all DNS queries for top-level domains <b>.ru</b>, <b>.su</b>, <b>.tatar</b>, and Cyrillic IDN zones <b>.рф</b> (<i>xn--p1ai</i>), <b>.москва</b> (<i>xn--80adxhks</i>), <b>.рус</b> (<i>xn--p1acf</i>), and <b>.дети</b> (<i>xn--d1acj3b</i>) to the selected upstream profile.<br /><br /><b>Why it matters:</b> Foreign resolvers (Cloudflare 1.1.1.1, Quad9 9.9.9.9) frequently produce <code>SERVFAIL (EDE 22: No Reachable Authority)</code> when resolving Russian TLDs. This preset ensures reliable access to all national web resources."
-        }
-    },
-    preset_gov_services: {
-        ru: {
-            title: "Пресет: Госуслуги и социально значимые ресурсы РФ",
-            body: "Обеспечивает перенаправление более 50 ключевых государственных и социальных ресурсов напрямую через доверенный российский апстрим:<br />• <b>Госуслуги и ЕСИА:</b> gosuslugi.ru, esia.gosuslugi.ru, gu-st.ru<br />• <b>Органы власти:</b> gov.ru, kremlin.ru, duma.gov.ru, sudrf.ru<br />• <b>Налоги и финансы:</b> nalog.ru, lkfl2.nalog.ru, cbr.ru, minfin.gov.ru<br />• <b>Банки и карты:</b> sberbank.ru, vtb.ru, tbank.ru, alfabank.ru, nspk.ru, mironline.ru<br />• <b>Транспорт и сервисы:</b> mos.ru, spb.ru, emias.info, rzd.ru, pochta.ru<br />• <b>Сертификаты:</b> uc-osnovanie.ru, e-trust.gosuslugi.ru<br /><br />Нажмите кнопку «Показать каталог доменов», чтобы просмотреть полный перечень."
-        },
-        en: {
-            title: "Preset: Russian Government & Social Services",
-            body: "Forwards DNS requests for over 50 essential state services, registries, banking portals, and logistics infrastructure through the chosen domestic resolver:<br />• <b>State & Identification:</b> gosuslugi.ru, esia.gosuslugi.ru, gu-st.ru, gov.ru, kremlin.ru<br />• <b>Tax & Finance:</b> nalog.ru, lkfl2.nalog.ru, cbr.ru, minfin.gov.ru<br />• <b>Banking & Mir Cards:</b> sberbank.ru, vtb.ru, tbank.ru, alfabank.ru, nspk.ru, mironline.ru<br />• <b>Transport & Cities:</b> mos.ru, spb.ru, emias.info, rzd.ru, pochta.ru<br />• <b>Root CA Registries:</b> uc-osnovanie.ru, e-trust.gosuslugi.ru<br /><br />Click \"View domain catalog\" to inspect the full list."
-        }
-    },
-    profile_yandex_basic: {
-        ru: {
-            title: "Яндекс.DNS Базовый (77.88.8.8, 77.88.8.1)",
-            body: "<b>Рекомендуется по умолчанию.</b> Быстрый Anycast DNS-сервер без фильтрации контента. Свыше 100 точек присутствия в России и странах СНГ обеспечивают минимальный пинг (&lt;5 мс) и 100% совместимость с российскими государственными и банковскими сервисами."
-        },
-        en: {
-            title: "Yandex.DNS Basic (77.88.8.8, 77.88.8.1)",
-            body: "<b>Recommended default.</b> Ultra-fast Anycast DNS without content filtering. Over 100 points of presence across Russia and CIS guarantee ultra-low latency (&lt;5 ms) and 100% resolution reliability for all domestic web services."
-        }
-    },
-    profile_yandex_safe: {
-        ru: {
-            title: "Яндекс.DNS Безопасный (77.88.8.88, 77.88.8.2)",
-            body: "Скорость базового профиля плюс автоматическая блокировка вредоносных сайтов, фишинга, командных серверов ботнетов (C&amp;C) и зараженных скриптов. Базы угроз обновляются антивирусными эвристиками Яндекса в режиме реального времени."
-        },
-        en: {
-            title: "Yandex.DNS Safe (77.88.8.88, 77.88.8.2)",
-            body: "Combines high performance with automated real-time protection against malicious websites, phishing attacks, fraudulent portals, and botnet command nodes based on Yandex security heuristics."
-        }
-    },
-    profile_yandex_family: {
-        ru: {
-            title: "Яндекс.DNS Семейный (77.88.8.7, 77.88.8.3)",
-            body: "Включает все функции профиля «Безопасный», а также блокирует веб-сайты и рекламу для взрослых (18+) и принудительно активирует режим безопасного поиска в поисковых системах для защиты детей."
-        },
-        en: {
-            title: "Yandex.DNS Family (77.88.8.7, 77.88.8.3)",
-            body: "Includes all malware protection features from the Safe profile, while strictly filtering adult/explicit content and enforcing safe search across major search engines for household child safety."
-        }
-    },
-    profile_nsdi: {
-        ru: {
-            title: "НСДИ / MSK-IX (195.208.4.1, 195.208.5.1)",
-            body: "<b>Национальная система доменных имён РФ</b>, созданная MSK-IX и ЦМУ ССОП в соответствии с Федеральным законом № 90-ФЗ. Является первичным государственным источником корневых зон .ru и .рф, гарантирующим устойчивость к внешним санкционным блокировкам."
-        },
-        en: {
-            title: "NSDI / MSK-IX (195.208.4.1, 195.208.5.1)",
-            body: "<b>National Sovereign Domain Name System of Russia</b>, operated by MSK-IX and the Center for Monitoring Public Telecom Networks under Federal Law No. 90-FZ. Authoritative national root registry resolver for .ru and .рф."
-        }
-    },
-    profile_isp: {
-        ru: {
-            title: "DNS интернет-провайдера (Авто с WAN)",
-            body: "Автоматически считывает IP-адреса DNS-серверов, назначенных вашим интернет-провайдером по DHCP, PPPoE или Static IP (из системных параметров <code>wan0_xdns</code> / <code>wan0_dns</code>). Запросы идут напрямую на кэширующие серверы оператора с минимальной задержкой."
-        },
-        en: {
-            title: "ISP WAN DNS (Auto from WAN)",
-            body: "Automatically extracts upstream DNS server IP addresses dynamically assigned by your ISP via DHCP, PPPoE, or Static IP (from NVRAM parameters <code>wan0_xdns</code> / <code>wan0_dns</code>). Queries resolve directly on local ISP caching nodes."
-        }
-    },
-    profile_custom: {
-        ru: {
-            title: "Свой DNS-сервер (Custom)",
-            body: "Позволяет указать произвольные IPv4-адреса и порты (например, <code>192.168.1.53#5353</code>). Подходит для интеграции с локальными фильтрующими резолверами: AdGuard Home, Pi-hole, локальным сервером Unbound или корпоративным DNS."
-        },
-        en: {
-            title: "Custom DNS Server",
-            body: "Allows specifying custom IPv4 addresses and non-standard ports (e.g. <code>192.168.1.53#5353</code>). Ideal for directing queries through local filtering engines: AdGuard Home, Pi-hole, local Unbound, or private enterprise resolvers."
-        }
-    },
-    target_type_profile: {
-        ru: {
-            title: "Целевой DNS: По умолчанию (из профиля выше)",
-            body: "Запросы к доменам данного правила будут направляться на DNS-серверы, выбранные в основном профиле (Яндекс, НСДИ или ISP).<br /><br /><b>Применение:</b> Добавление сайтов в других доменных зонах (например, <code>yandex.com</code>, <code>vk.com</code>, <code>ozon.kz</code>), когда активен пресет только для <code>.ru</code>."
-        },
-        en: {
-            title: "Target DNS: Profile Default",
-            body: "Queries for these domains will route to the upstream servers chosen in the main profile (Yandex, NSDI, or ISP).<br /><br /><b>Usage:</b> Adding Russian services hosted in non-Russian TLDs (e.g. <code>yandex.com</code>, <code>vk.com</code>, <code>ozon.kz</code>) when only the <code>.ru</code> preset is enabled."
-        }
-    },
-    target_type_router: {
-        ru: {
-            title: "Целевой DNS: Штатный DNS роутера / DoT (127.0.1.1 — исключение)",
-            body: "<b>Критически важный режим исключений!</b> Перенаправляет запросы на петлевой адрес <code>127.0.1.1</code> (локальный сервис DNS Privacy / Stubby DoT на роутере).<br /><br /><b>Как это работает:</b> В <code>dnsmasq</code> действует принцип <i>Longest Suffix Match</i> (наиболее длинное совпадение имеет наивысший приоритет). Если включен пресет для всей зоны <code>.ru</code>, но вам нужно, чтобы корпоративный домен <code>corp.ru</code> или сайт со строгой телеметрией обрабатывался зарубежным зашифрованным Cloudflare DoT, укажите здесь <code>corp.ru</code>. Запросы к <code>*.corp.ru</code> пойдут через Stubby DoT (127.0.1.1), а весь остальной трафик зоны .ru останется на быстром Яндексе!"
-        },
-        en: {
-            title: "Target DNS: Router DNS / DoT (127.0.1.1 — preset bypass)",
-            body: "<b>Crucial Preset Bypass Mode!</b> Routes queries to loopback address <code>127.0.1.1</code> (native DNS Privacy / Stubby DoT service).<br /><br /><b>How it works:</b> Dnsmasq evaluates rules using <i>Longest Suffix Match</i>. If the <code>.ru</code> preset is enabled but you want your corporate domain <code>corp.ru</code> or privacy-sensitive hosts to resolve strictly through encrypted Cloudflare DoT, enter <code>corp.ru</code> here. All <code>*.corp.ru</code> traffic routes through Stubby DoT (127.0.1.1), while the rest of <code>.ru</code> remains on the high-speed domestic resolver!"
-        }
-    },
-    target_type_custom: {
-        ru: {
-            title: "Целевой DNS: Свой IP (IPv4#порт)",
-            body: "Позволяет перенаправить запросы для конкретного домена на выделенный DNS-сервер (например, внутренний контроллер домена Active Directory <code>10.0.0.10</code> через корпоративный VPN или локальный контейнер на <code>192.168.50.2#5353</code>)."
-        },
-        en: {
-            title: "Target DNS: Custom IP (IPv4#port)",
-            body: "Routes queries for this domain to a dedicated DNS server (e.g. internal corporate Active Directory DNS at <code>10.0.0.10</code> accessible via VPN, or a local service at <code>192.168.50.2#5353</code>)."
-        }
-    }
-};
+/* ============================================================================
+ * 2. Preset Catalogs (National Zones & 54 Gov/Social Domains)
+ * ============================================================================ */
+var NATIONAL_ZONES_PRESET = "ru, рф, su, москва, рус, tatar, дети";
 
-// Full catalog of 54 Gov & Social domains
 var GOV_DOMAINS_CATALOG = [
-    "gosuslugi.ru", "esia.gosuslugi.ru", "gu-st.ru", "gosuslugi41.ru", "gosuslugi29.ru",
-    "pgu.admoblkaluga.ru", "uslugi.mosreg.ru", "uslugikomi.ru", "uslugi27.ru", "gosuslugi71.ru",
-    "gosuslugi.astrobl.ru", "e-yakutia.ru", "gosuslugi.pnzreg.ru", "pgu.samregion.ru", "pgu.alregn.ru",
-    "gosuslugi.primorsky.ru", "gosuslugi.permkrai.ru", "nalog.ru", "lkfl2.nalog.ru", "lkip.nalog.ru",
-    "lkul.nalog.ru", "nalog.gov.ru", "cbr.ru", "kremlin.ru", "government.ru", "duma.gov.ru",
-    "council.gov.ru", "sudrf.ru", "fssp.gov.ru", "mvd.ru", "gibdd.ru", "customs.gov.ru",
-    "mchs.gov.ru", "minobrnauki.gov.ru", "minzdrav.gov.ru", "rosreestr.gov.ru", "zakupki.gov.ru",
-    "sfr.gov.ru", "pfr.gov.ru", "fss.ru", "mos.ru", "spb.ru", "emias.info", "rzd.ru", "pochta.ru",
-    "sberbank.ru", "sber.ru", "vtb.ru", "tbank.ru", "alfabank.ru", "nspk.ru", "mironline.ru",
-    "uc-osnovanie.ru", "e-trust.gosuslugi.ru"
+    "gosuslugi.ru", "esia.gosuslugi.ru", "gu-st.ru", "e-trust.gosuslugi.ru",
+    "gov.ru", "government.ru", "kremlin.ru", "duma.gov.ru", "duma.ru",
+    "council.gov.ru", "sudrf.ru", "genproc.gov.ru", "nalog.ru", "nalog.gov.ru",
+    "lkfl2.nalog.ru", "cbr.ru", "minfin.gov.ru", "economy.gov.ru", "fas.gov.ru",
+    "customs.gov.ru", "customs.ru", "rosreestr.gov.ru", "rosreestr.ru",
+    "zakupki.gov.ru", "gost.ru", "sfr.gov.ru", "pfr.gov.ru", "fss.ru",
+    "rospotrebnadzor.ru", "edu.ru", "minobrnauki.gov.ru", "rosminzdrav.ru",
+    "mvd.ru", "mvd.gov.ru", "mchs.gov.ru", "fssp.gov.ru", "digital.gov.ru",
+    "rkn.gov.ru", "mos.ru", "mosreg.ru", "spb.ru", "gov.spb.ru", "emias.info",
+    "rzd.ru", "ticket.rzd.ru", "pass.rzd.ru", "pochta.ru", "aeroflot.ru",
+    "nspk.ru", "mironline.ru", "sberbank.ru", "sber.ru", "vtb.ru", "tbank.ru"
 ];
 
-// --- String Resolution & Formatting ---
+/* ============================================================================
+ * 3. Global State & Session Timeout Management
+ * ============================================================================ */
+var NVRAM_PRODUCTID = '<% nvram_get("productid"); %>';
+var NVRAM_PREFERRED_LANG = '<% nvram_get("preferred_lang"); %>';
+var NVRAM_FIRMVER = '<% nvram_get("firmver"); %>';
+var NVRAM_HTTP_AUTOLOGOUT = '<% nvram_get("http_autologout"); %>';
+
+var currentLang = "ru";
+var customRules = [];
+var dragSrcIndex = null;
+var authStartTs = Date.now();
+var autologoutMinutes = 0;
+var routerStatus = {
+    version: "1.1.0",
+    enabled: 1,
+    service_status: "running",
+    profile: "yandex_basic",
+    dns_primary: "77.88.8.8",
+    dns_secondary: "77.88.8.1",
+    custom_dns_primary: "",
+    custom_dns_secondary: "",
+    wan_dns1: "77.88.8.8",
+    wan_dns2: "77.88.8.1",
+    rules: [],
+    dnsmasq_running: true,
+    dnsmasq_pid: 1024,
+    active_rules_count: 0,
+    slot: "user3.asp"
+};
+
 function t(key) {
-    if (SPLITDNS_LANG[currentLang] && SPLITDNS_LANG[currentLang][key]) {
-        return SPLITDNS_LANG[currentLang][key];
-    }
-    if (SPLITDNS_LANG["en"] && SPLITDNS_LANG["en"][key]) {
-        return SPLITDNS_LANG["en"][key];
-    }
-    return key;
+    var dict = SPLITDNS_LANG[currentLang] || SPLITDNS_LANG.ru;
+    return dict[key] !== undefined ? dict[key] : (SPLITDNS_LANG.ru[key] || key);
 }
 
-function tf(key, val) {
-    var str = t(key);
-    return str.replace(/%s/g, val);
+function detectFirmwareLanguage() {
+    var pref = "";
+    if (NVRAM_PREFERRED_LANG && NVRAM_PREFERRED_LANG.indexOf("<" + "%") === -1) {
+        pref = NVRAM_PREFERRED_LANG.toUpperCase();
+    }
+    var el = document.getElementById("preferred_lang");
+    if (!pref && el && el.value && el.value.indexOf("<" + "%") === -1) {
+        pref = el.value.toUpperCase();
+    }
+    if (!pref && typeof window.preferred_lang === "string") {
+        pref = window.preferred_lang.toUpperCase();
+    }
+    if (pref === "RU") {
+        return "ru";
+    }
+    if (pref && pref !== "RU") {
+        return "en";
+    }
+    var nav = (navigator.language || navigator.userLanguage || "ru").toLowerCase();
+    return nav.indexOf("ru") === 0 ? "ru" : "en";
 }
 
-// --- Language Controller ---
-function initLanguage() {
-    var stored = "";
-    try {
-        stored = localStorage.getItem("splitdns_lang");
-    } catch(e) {}
-
-    if (stored === "ru" || stored === "en") {
-        currentLang = stored;
-    } else {
-        var autoLang = "ru";
-        if (typeof nvram !== "undefined" && nvram.preferred_lang) {
-            autoLang = (nvram.preferred_lang.toUpperCase() === "RU") ? "ru" : "en";
-        } else if (navigator.language) {
-            autoLang = (navigator.language.toLowerCase().indexOf("ru") === 0) ? "ru" : "en";
-        }
-        currentLang = autoLang;
-    }
-    applyLanguage(currentLang);
-}
-
-function setLanguage(lang) {
-    if (lang !== "ru" && lang !== "en") return;
-    currentLang = lang;
-    try {
-        localStorage.setItem("splitdns_lang", lang);
-    } catch(e) {}
-    applyLanguage(lang);
-}
-
-function applyLanguage(lang) {
-    var i;
-    var elements = document.querySelectorAll("[data-i18n]");
-    for (i = 0; i < elements.length; i++) {
-        var key = elements[i].getAttribute("data-i18n");
-        elements[i].innerHTML = t(key);
-    }
-
-    var phElements = document.querySelectorAll("[data-i18n-ph]");
-    for (i = 0; i < phElements.length; i++) {
-        var phKey = phElements[i].getAttribute("data-i18n-ph");
-        phElements[i].placeholder = t(phKey);
-    }
-
-    var valElements = document.querySelectorAll("[data-i18n-val]");
-    for (i = 0; i < valElements.length; i++) {
-        var vKey = valElements[i].getAttribute("data-i18n-val");
-        valElements[i].value = t(vKey);
-    }
-
-    var btnRu = document.getElementById("lang_btn_ru");
-    var btnEn = document.getElementById("lang_btn_en");
-    if (btnRu && btnEn) {
-        if (lang === "ru") {
-            btnRu.className = "lang-toggle-btn active";
-            btnEn.className = "lang-toggle-btn";
-        } else {
-            btnEn.className = "lang-toggle-btn active";
-            btnRu.className = "lang-toggle-btn";
+function applyLanguage() {
+    currentLang = detectFirmwareLanguage();
+    var nodes = document.querySelectorAll("[data-i18n]");
+    for (var i = 0; i < nodes.length; i++) {
+        var key = nodes[i].getAttribute("data-i18n");
+        if (key) {
+            nodes[i].textContent = t(key);
         }
     }
-
-    var prefLangInput = document.getElementById("preferred_lang");
-    if (prefLangInput) {
-        prefLangInput.value = (lang === "ru") ? "RU" : "EN";
+    var valNodes = document.querySelectorAll("[data-i18n-val]");
+    for (var j = 0; j < valNodes.length; j++) {
+        var vKey = valNodes[j].getAttribute("data-i18n-val");
+        if (vKey) {
+            valNodes[j].value = t(vKey);
+        }
     }
-
+    var phNodes = document.querySelectorAll("[data-i18n-ph]");
+    for (var k = 0; k < phNodes.length; k++) {
+        var pKey = phNodes[k].getAttribute("data-i18n-ph");
+        if (pKey) {
+            phNodes[k].setAttribute("placeholder", t(pKey));
+        }
+    }
+    updateIspDnsHint();
     renderRulesTable();
-    updateProfileDisplay();
 }
 
-function setDirty(dirty) {
-    isFormDirty = dirty;
-    var applyBtn = document.getElementById("btn_apply_main");
-    if (applyBtn) {
-        if (dirty) {
-            applyBtn.className = "button_gen btn_apply_highlight";
-        } else {
-            applyBtn.className = "button_gen";
+function showHint(hintKey) {
+    var caption = t(hintKey);
+    var links = document.getElementsByTagName("a");
+    for (var i = 0; i < links.length; i++) {
+        if (links[i].className && links[i].className.indexOf("hintstyle") !== -1 && typeof nd === "function") {
+            links[i].onmouseout = nd;
+        }
+    }
+    if (typeof overlib === "function") {
+        return overlib(caption, HAUTO, VAUTO);
+    }
+    return false;
+}
+
+function initSessionAutologoutWatcher() {
+    var rawTimeout = NVRAM_HTTP_AUTOLOGOUT;
+    var parsed = parseInt(rawTimeout, 10);
+    if (!isNaN(parsed) && parsed >= 0) {
+        autologoutMinutes = parsed;
+    } else if (typeof AUTOLOGOUT_MAX_MINUTE !== "undefined" && AUTOLOGOUT_MAX_MINUTE > 0) {
+        autologoutMinutes = Math.floor(AUTOLOGOUT_MAX_MINUTE / 20);
+    } else {
+        autologoutMinutes = 0;
+    }
+    authStartTs = Date.now();
+    setInterval(checkSessionTimeout, 1000);
+    window.addEventListener("focus", checkSessionTimeout, false);
+    document.addEventListener("visibilitychange", checkSessionTimeout, false);
+}
+
+function checkSessionTimeout() {
+    if (autologoutMinutes <= 0) {
+        return;
+    }
+    var elapsedMs = Date.now() - authStartTs;
+    if (elapsedMs >= autologoutMinutes * 60000) {
+        if (typeof AUTOLOGOUT_MAX_MINUTE !== "undefined") {
+            AUTOLOGOUT_MAX_MINUTE = 1;
+        }
+        try {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/Logout.asp?_=" + Date.now(), true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    top.location.href = "/Main_Login.asp";
+                }
+            };
+            xhr.send(null);
+            setTimeout(function() {
+                top.location.href = "/Main_Login.asp";
+            }, 400);
+        } catch (e) {
+            top.location.href = "/Main_Login.asp";
         }
     }
 }
 
-// --- Contextual Tooltip Modals ---
-function showTooltip(key) {
-    var tip = SPLITDNS_TOOLTIPS[key];
-    if (!tip) return;
-    var item = tip[currentLang] || tip["en"];
-    if (!item) return;
-
-    var overlay = document.getElementById("generic_modal_overlay");
-    var titleEl = document.getElementById("generic_modal_title");
-    var bodyEl = document.getElementById("generic_modal_body");
-
-    if (overlay && titleEl && bodyEl) {
-        titleEl.innerHTML = item.title;
-        bodyEl.innerHTML = item.body;
-        overlay.style.display = "flex";
-    }
-}
-
-function closeTooltip() {
-    var overlay = document.getElementById("generic_modal_overlay");
-    if (overlay) overlay.style.display = "none";
-}
-
-function showGovCatalog() {
-    var overlay = document.getElementById("generic_modal_overlay");
-    var titleEl = document.getElementById("generic_modal_title");
-    var bodyEl = document.getElementById("generic_modal_body");
-
-    if (overlay && titleEl && bodyEl) {
-        titleEl.innerHTML = t("gov_catalog_title");
-        var html = "<p>" + t("gov_catalog_desc") + "</p>";
-        html += '<div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:6px; max-height:55vh; overflow-y:auto; padding:8px; background:#121a20; border-radius:4px; font-family:monospace; font-size:11px;">';
-        for (var i = 0; i < GOV_DOMAINS_CATALOG.length; i++) {
-            var d = GOV_DOMAINS_CATALOG[i];
-            html += '<div style="padding:2px 4px; color:#63b9f3;">• ' + d + '</div>';
-        }
-        html += '</div>';
-        bodyEl.innerHTML = html;
-        overlay.style.display = "flex";
-    }
-}
-
-// --- Master Switch Controller ---
-function setMasterSwitch(val) {
-    var isEnabled = (val === "1" || val === 1);
-    var rad1 = document.getElementById("splitdns_enable_1");
-    var rad0 = document.getElementById("splitdns_enable_0");
-    if (rad1 && rad0) {
-        rad1.checked = isEnabled;
-        rad0.checked = !isEnabled;
-    }
-    document.getElementById("splitdns_enabled").value = isEnabled ? "1" : "0";
-    document.getElementById("splitdns_enable").value = isEnabled ? "1" : "0";
-
-    var badge = document.getElementById("status_badge");
-    if (badge) {
-        if (isEnabled) {
-            badge.className = "splitdns-badge running";
-            badge.innerHTML = t("status_addon_active");
-        } else {
-            badge.className = "splitdns-badge stopped";
-            badge.innerHTML = t("status_addon_disabled");
-        }
-    }
-    setDirty(true);
-}
-
-// --- Profiles Controller ---
-function onProfileChange() {
-    var sel = document.getElementById("splitdns_profile_select");
-    var val = sel ? sel.value : "yandex_basic";
-    document.getElementById("splitdns_profile").value = val;
-    updateProfileDisplay();
-    setDirty(true);
-}
-
-function updateProfileDisplay() {
-    var sel = document.getElementById("splitdns_profile_select");
-    var val = sel ? sel.value : "yandex_basic";
-    var customRows = document.getElementById("custom_dns_rows");
-    if (customRows) {
-        customRows.style.display = (val === "custom") ? "table-row-group" : "none";
-    }
-
-    var wanNotice = document.getElementById("wan_dns_notice");
-    if (wanNotice) {
-        wanNotice.style.display = (val === "isp") ? "block" : "none";
-    }
-
-    var tipLink = document.getElementById("profile_tip_link");
-    if (tipLink) {
-        tipLink.setAttribute("onclick", "showTooltip('profile_" + val + "');");
-    }
-}
-
-// --- RFC 3490 / RFC 3492 Standard Punycode Converter ---
+/* ============================================================================
+ * 4. RFC 3490 Punycode Converter & Input Validators
+ * ============================================================================ */
 var Punycode = (function() {
-    var TMIN = 1;
-    var TMAX = 26;
-    var SKEW = 38;
-    var DAMP = 700;
-    var INITIAL_BIAS = 72;
-    var INITIAL_N = 128;
-    var DELIMITER = "-";
+    var BASE = 36, TMIN = 1, TMAX = 26, SKEW = 38, DAMP = 700, INITIAL_BIAS = 72, INITIAL_N = 128;
+
+    function adapt(delta, numPoints, firstTime) {
+        var k = 0;
+        delta = firstTime ? Math.floor(delta / DAMP) : (delta >> 1);
+        delta += Math.floor(delta / numPoints);
+        for (; delta > (((BASE - TMIN) * TMAX) >> 1); k += BASE) {
+            delta = Math.floor(delta / (BASE - TMIN));
+        }
+        return Math.floor(k + (BASE - TMIN + 1) * delta / (delta + SKEW));
+    }
+
+    function encodeDigit(d) {
+        return d + 22 + 75 * (d < 26 ? 1 : 0);
+    }
 
     function ucs2decode(string) {
-        var output = [];
-        var counter = 0;
-        var length = string.length;
+        var output = [], counter = 0, length = string.length, value, extra;
         while (counter < length) {
-            var value = string.charCodeAt(counter++);
+            value = string.charCodeAt(counter++);
             if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
-                var extra = string.charCodeAt(counter++);
+                extra = string.charCodeAt(counter++);
                 if ((extra & 0xFC00) === 0xDC00) {
                     output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
                 } else {
@@ -856,808 +747,709 @@ var Punycode = (function() {
         return output;
     }
 
-    function digitToChar(digit) {
-        return String.fromCharCode(digit < 26 ? digit + 97 : digit - 26 + 48);
-    }
-
-    function adapt(delta, numPoints, firstTime) {
-        delta = firstTime ? Math.floor(delta / DAMP) : Math.floor(delta / 2);
-        delta += Math.floor(delta / numPoints);
-        var k = 0;
-        while (delta > ((36 - TMIN) * TMAX) / 2) {
-            delta = Math.floor(delta / (36 - TMIN));
-            k += 36;
-        }
-        return k + Math.floor(((36 - TMIN + 1) * delta) / (delta + SKEW));
-    }
-
     function encodeLabel(input) {
-        var output = [];
-        var inputCodePoints = ucs2decode(input);
-        var inputLength = inputCodePoints.length;
-        var n = INITIAL_N;
-        var delta = 0;
-        var bias = INITIAL_BIAS;
+        var n = INITIAL_N, delta = 0, bias = INITIAL_BIAS, output = [];
+        var inputPoints = ucs2decode(input);
+        var inputLength = inputPoints.length;
+        var b = 0, h, j, m, q, k, t;
 
-        for (var j = 0; j < inputLength; j++) {
-            var cp = inputCodePoints[j];
-            if (cp < 128) {
-                output.push(String.fromCharCode(cp));
+        for (j = 0; j < inputLength; ++j) {
+            if (inputPoints[j] < 0x80) {
+                output.push(String.fromCharCode(inputPoints[j]));
+                b++;
             }
         }
-
-        var b = output.length;
-        var h = b;
-
+        h = b;
         if (b > 0) {
-            output.push(DELIMITER);
+            output.push("-");
         }
-
         while (h < inputLength) {
-            var m = 2147483647;
-            for (var j = 0; j < inputLength; j++) {
-                var cp = inputCodePoints[j];
-                if (cp >= n && cp < m) {
-                    m = cp;
+            m = 0x7FFFFFFF;
+            for (j = 0; j < inputLength; ++j) {
+                if (inputPoints[j] >= n && inputPoints[j] < m) {
+                    m = inputPoints[j];
                 }
             }
-
             delta += (m - n) * (h + 1);
             n = m;
-
-            for (var j = 0; j < inputLength; j++) {
-                var cp = inputCodePoints[j];
-                if (cp < n) {
+            for (j = 0; j < inputLength; ++j) {
+                if (inputPoints[j] < n) {
                     delta++;
                 }
-                if (cp === n) {
-                    var q = delta;
-                    for (var k = 36; ; k += 36) {
-                        var t = k <= bias ? TMIN : (k >= bias + TMAX ? TMAX : k - bias);
-                        if (q < t) break;
-                        var qMinusT = q - t;
-                        var baseMinusT = 36 - t;
-                        output.push(digitToChar(t + (qMinusT % baseMinusT)));
-                        q = Math.floor(qMinusT / baseMinusT);
+                if (inputPoints[j] === n) {
+                    q = delta;
+                    for (k = BASE; ; k += BASE) {
+                        t = k <= bias ? TMIN : (k >= bias + TMAX ? TMAX : k - bias);
+                        if (q < t) {
+                            break;
+                        }
+                        output.push(String.fromCharCode(encodeDigit(t + (q - t) % (BASE - t))));
+                        q = Math.floor((q - t) / (BASE - t));
                     }
-                    output.push(digitToChar(q));
+                    output.push(String.fromCharCode(encodeDigit(q)));
                     bias = adapt(delta, h + 1, h === b);
                     delta = 0;
-                    h++;
+                    ++h;
                 }
             }
-            delta++;
-            n++;
+            ++delta;
+            ++n;
         }
-
-        return output.join("");
+        return "xn--" + output.join("");
     }
 
     function toASCII(domain) {
         if (!domain) return "";
-        var d = domain.trim().toLowerCase();
-        var wildcard = "";
-        if (d.indexOf("*.") === 0) {
-            wildcard = "*.";
-            d = d.slice(2);
-        }
-        var labels = d.split(/[.\u3002\uFF0E\uFF61]+/);
-        var asciiLabels = [];
+        var clean = domain.trim().toLowerCase();
+        clean = clean.replace(/^\*\./, "").replace(/^\.+|\.+$/g, "");
+        var labels = clean.split(".");
+        var out = [];
         for (var i = 0; i < labels.length; i++) {
-            var label = labels[i];
-            if (label === "") continue;
-            if (/[^\x00-\x7F]/.test(label)) {
-                asciiLabels.push("xn--" + encodeLabel(label));
-            } else {
-                asciiLabels.push(label);
+            var lbl = labels[i];
+            if (!lbl) return "";
+            var hasNonAscii = false;
+            for (var c = 0; c < lbl.length; c++) {
+                if (lbl.charCodeAt(c) >= 0x80) {
+                    hasNonAscii = true;
+                    break;
+                }
             }
+            out.push(hasNonAscii ? encodeLabel(lbl) : lbl);
         }
-        return wildcard + asciiLabels.join(".");
+        return out.join(".");
     }
 
-    return {
-        encode: encodeLabel,
-        toASCII: toASCII
-    };
+    return { toASCII: toASCII };
 })();
 
-// --- Domain & IP Validation Engine ---
-function isValidDomainToken(domain) {
-    if (!domain || domain.length > 253) return false;
-    var sanitized = domain.trim().toLowerCase().replace(/^\*\./, '').replace(/^\.+|\.+$/g, '');
-    if (sanitized.length === 0) return false;
+var DOMAIN_ASCII_REGEX = /^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)*$/;
+var DOMAIN_CYRILLIC_REGEX = /^[a-z0-9\u0400-\u04FF]([a-z0-9\u0400-\u04FF-]{0,61}[a-z0-9\u0400-\u04FF])?(\.[a-z0-9\u0400-\u04FF]([a-z0-9\u0400-\u04FF-]{0,61}[a-z0-9\u0400-\u04FF])?)*$/u;
+var IPV4_PORT_REGEX = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(#([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?$/;
 
-    // RFC 1035 ASCII and RFC 3490 Punycode
-    var domainRegex = /^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)*$/;
-    // Cyrillic IDN ranges
-    var cyrillicRegex = /^[a-z0-9\u0400-\u04FF]([a-z0-9\u0400-\u04FF-]{0,61}[a-z0-9\u0400-\u04FF])?(\.[a-z0-9\u0400-\u04FF]([a-z0-9\u0400-\u04FF-]{0,61}[a-z0-9\u0400-\u04FF])?)*$/;
+var KNOWN_CYRILLIC_TLDS = {
+    "рф": true,
+    "москва": true,
+    "рус": true,
+    "дети": true,
+    "бел": true
+};
 
-    return domainRegex.test(sanitized) || cyrillicRegex.test(sanitized);
+function isValidDomainToken(token) {
+    if (!token || token.length > 253) return false;
+    var clean = token.trim().toLowerCase().replace(/^\*\./, "").replace(/^\.+|\.+$/g, "");
+    if (!clean || clean.indexOf("..") !== -1) return false;
+    if ( !DOMAIN_ASCII_REGEX.test(clean) && !DOMAIN_CYRILLIC_REGEX.test(clean) ) {
+        return false;
+    }
+    var ascii = Punycode.toASCII(clean);
+    return ascii.length > 0 && ascii.length <= 253 && DOMAIN_ASCII_REGEX.test(ascii);
 }
 
-function parseAndSanitizeDomains(rawString) {
-    if (!rawString) return { valid: false, domains: [], errorToken: "", conversions: [] };
-    var tokens = rawString.split(/[,;\s\t\r\n]+/);
-    var cleanTokens = [];
-    var conversions = [];
+function isValidIpv4OrPort(val) {
+    if (!val) return false;
+    return IPV4_PORT_REGEX.test(val.trim());
+}
+
+function normalizeDomainsInput(rawStr) {
+    if (!rawStr) return { valid: false, errorToken: "", domains: [] };
+    var tokens = rawStr.split(/[,;\s\t\r\n]+/);
+    var result = [];
+    var seen = {};
     for (var i = 0; i < tokens.length; i++) {
-        var rawTok = tokens[i].trim().toLowerCase().replace(/^\*\./, '').replace(/^\.+|\.+$/g, '');
-        if (rawTok === "") continue;
-        if (!isValidDomainToken(rawTok)) {
-            return { valid: false, domains: [], errorToken: tokens[i], conversions: [] };
+        var tok = tokens[i].trim();
+        if (!tok) continue;
+        if (!isValidDomainToken(tok)) {
+            return { valid: false, errorToken: tok, domains: [] };
         }
-        var asciiTok = Punycode.toASCII(rawTok);
-        if (asciiTok !== rawTok) {
-            conversions.push({ original: rawTok, punycode: asciiTok });
-        }
-        if (cleanTokens.indexOf(asciiTok) === -1) {
-            cleanTokens.push(asciiTok);
+        var lowerTok = tok.toLowerCase().replace(/^\*\./, "").replace(/^\.+|\.+$/g, "");
+        var normalized = KNOWN_CYRILLIC_TLDS[lowerTok] ? lowerTok : Punycode.toASCII(lowerTok);
+        if (!seen[normalized]) {
+            seen[normalized] = true;
+            result.push(normalized);
         }
     }
-    if (cleanTokens.length === 0) {
-        return { valid: false, domains: [], errorToken: "", conversions: [] };
+    return { valid: result.length > 0, errorToken: "", domains: result };
+}
+
+function utf8ToBase64(str) {
+    return window.btoa(unescape(encodeURIComponent(str)));
+}
+
+/* ============================================================================
+ * 5. UI Controls, Presets & Custom Rules Table (with Drag-and-Drop & Edit)
+ * ============================================================================ */
+function onProfileChange() {
+    var sel = document.getElementById("splitdns_profile_sel");
+    var prof = sel ? sel.value : "yandex_basic";
+    var row1 = document.getElementById("row_custom_dns1");
+    var row2 = document.getElementById("row_custom_dns2");
+    if (row1 && row2) {
+        var show = (prof === "custom") ? "" : "none";
+        row1.style.display = show;
+        row2.style.display = show;
     }
-    return { valid: true, domains: cleanTokens, errorToken: "", conversions: conversions };
+    updateIspDnsHint();
 }
 
-function showIdnFeedback(conversions, targetElementId) {
-    if (!conversions || conversions.length === 0) return;
-    var el = document.getElementById(targetElementId || "new_rule_idn_feedback");
-    if (!el) return;
-
-    var messages = [];
-    for (var i = 0; i < conversions.length; i++) {
-        messages.push("IDN: " + conversions[i].original + " → " + conversions[i].punycode);
+function updateIspDnsHint() {
+    var hintEl = document.getElementById("ui_isp_dns_hint");
+    var sel = document.getElementById("splitdns_profile_sel");
+    if (!hintEl || !sel) return;
+    if (sel.value === "isp") {
+        var w1 = routerStatus.wan_dns1 || "77.88.8.8";
+        var w2 = routerStatus.wan_dns2 || "";
+        hintEl.textContent = t("isp_detected_fmt") + w1 + (w2 ? ", " + w2 : "");
+        hintEl.style.display = "block";
+    } else {
+        hintEl.textContent = "";
+        hintEl.style.display = "none";
     }
-    el.textContent = "✓ " + messages.join(", ");
-    el.style.display = "block";
-    setTimeout(function() {
-        if (el) el.style.display = "none";
-    }, 8000);
 }
 
-function isValidDnsmasqIp(ipStr) {
-    if (!ipStr) return false;
-    var trimmed = ipStr.trim();
-    var ipPortRegex = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(#([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?$/;
-    return ipPortRegex.test(trimmed);
+function onNewRuleTargetChange() {
+    var sel = document.getElementById("new_rule_target_type");
+    var wrap = document.getElementById("new_rule_custom_ip_wrap");
+    if (sel && wrap) {
+        wrap.style.display = (sel.value === "custom") ? "block" : "none";
+    }
 }
 
-// --- Custom Rules Table Lifecycle ---
+function fillPresetInForm(presetType) {
+    var domInput = document.getElementById("new_rule_domains");
+    var targetSel = document.getElementById("new_rule_target_type");
+    var commentInput = document.getElementById("new_rule_comment");
+    var enabledCb = document.getElementById("new_rule_enabled");
+    if (!domInput || !targetSel || !commentInput) return;
+
+    if (enabledCb) enabledCb.checked = true;
+    targetSel.value = "profile";
+    onNewRuleTargetChange();
+
+    if (presetType === "national") {
+        domInput.value = NATIONAL_ZONES_PRESET;
+        commentInput.value = t("preset_comment_national");
+    } else if (presetType === "gov") {
+        domInput.value = GOV_DOMAINS_CATALOG.join(", ");
+        commentInput.value = t("preset_comment_gov");
+    }
+    domInput.focus();
+}
+
+function formatRuleTargetLabel(rule) {
+    if (rule.target_type === "router") {
+        return t("rule_target_router") + " (127.0.1.1)";
+    }
+    if (rule.target_type === "custom") {
+        return t("rule_target_custom") + " (" + (rule.target_ip || "") + ")";
+    }
+    return t("rule_target_profile");
+}
+
+function reindexRules() {
+    for (var i = 0; i < customRules.length; i++) {
+        customRules[i].id = i + 1;
+    }
+}
+
+function onRowDragStart(idx, ev) {
+    dragSrcIndex = idx;
+    if (ev.dataTransfer) {
+        ev.dataTransfer.effectAllowed = "move";
+        try {
+            ev.dataTransfer.setData("text/plain", String(idx));
+        } catch (e) {}
+    }
+    if (ev.currentTarget && ev.currentTarget.classList) {
+        ev.currentTarget.classList.add("dragging");
+    }
+}
+
+function onRowDragOver(idx, ev) {
+    if (ev.preventDefault) {
+        ev.preventDefault();
+    }
+    if (ev.dataTransfer) {
+        ev.dataTransfer.dropEffect = "move";
+    }
+    if (dragSrcIndex !== null && dragSrcIndex !== idx && ev.currentTarget && ev.currentTarget.classList) {
+        ev.currentTarget.classList.add("drag-over");
+    }
+    return false;
+}
+
+function onRowDragLeave(ev) {
+    if (ev.currentTarget && ev.currentTarget.classList) {
+        ev.currentTarget.classList.remove("drag-over");
+    }
+}
+
+function onRowDrop(targetIdx, ev) {
+    if (ev.stopPropagation) {
+        ev.stopPropagation();
+    }
+    if (ev.preventDefault) {
+        ev.preventDefault();
+    }
+    if (dragSrcIndex !== null && dragSrcIndex !== targetIdx && dragSrcIndex >= 0 && dragSrcIndex < customRules.length) {
+        var moved = customRules.splice(dragSrcIndex, 1)[0];
+        customRules.splice(targetIdx, 0, moved);
+        reindexRules();
+        renderRulesTable();
+    }
+    dragSrcIndex = null;
+    return false;
+}
+
+function onRowDragEnd() {
+    dragSrcIndex = null;
+    var rows = document.querySelectorAll(".splitdns-rule-row");
+    for (var i = 0; i < rows.length; i++) {
+        rows[i].classList.remove("dragging");
+        rows[i].classList.remove("drag-over");
+    }
+}
+
 function renderRulesTable() {
     var tbody = document.getElementById("custom_rules_tbody");
     if (!tbody) return;
-    tbody.innerHTML = "";
+    while (tbody.firstChild) {
+        tbody.removeChild(tbody.firstChild);
+    }
 
     if (!customRules || customRules.length === 0) {
-        var tr = document.createElement("tr");
-        tr.className = "table_empty_row";
-        tr.innerHTML = '<td colspan="6" style="text-align: center; padding: 18px; color: #888888;">' +
-                       t("table_empty") + '</td>';
-        tbody.appendChild(tr);
+        var trEmpty = document.createElement("tr");
+        var tdEmpty = document.createElement("td");
+        tdEmpty.setAttribute("colspan", "5");
+        tdEmpty.style.color = "#FFCC00";
+        tdEmpty.style.textAlign = "center";
+        tdEmpty.textContent = t("rules_empty");
+        trEmpty.appendChild(tdEmpty);
+        tbody.appendChild(trEmpty);
         return;
     }
 
     for (var i = 0; i < customRules.length; i++) {
-        var rule = customRules[i];
-        var tr = document.createElement("tr");
-        tr.id = "rule_row_" + rule.id;
-        tr.className = rule.enabled ? "rule_row_active" : "rule_row_disabled";
+        (function(idx) {
+            var rule = customRules[idx];
+            var tr = document.createElement("tr");
+            tr.className = "splitdns-rule-row";
+            tr.setAttribute("draggable", "true");
+            tr.ondragstart = function(ev) { onRowDragStart(idx, ev); };
+            tr.ondragover = function(ev) { return onRowDragOver(idx, ev); };
+            tr.ondragleave = function(ev) { onRowDragLeave(ev); };
+            tr.ondrop = function(ev) { return onRowDrop(idx, ev); };
+            tr.ondragend = function() { onRowDragEnd(); };
 
-        if (editingRuleId === rule.id) {
-            renderEditRow(tr, rule);
-        } else {
-            renderDisplayRow(tr, rule);
-        }
-        tbody.appendChild(tr);
+            var tdEn = document.createElement("td");
+            tdEn.setAttribute("width", "10%");
+            var dragSpan = document.createElement("span");
+            dragSpan.className = "splitdns-drag-handle";
+            dragSpan.textContent = "⋮⋮";
+            tdEn.appendChild(dragSpan);
+
+            var cb = document.createElement("input");
+            cb.type = "checkbox";
+            cb.className = "input";
+            cb.checked = (rule.enabled === 1 || rule.enabled === true);
+            cb.onchange = function() {
+                customRules[idx].enabled = cb.checked ? 1 : 0;
+            };
+            tdEn.appendChild(cb);
+            tr.appendChild(tdEn);
+
+            var tdDom = document.createElement("td");
+            tdDom.setAttribute("width", "34%");
+            tdDom.className = "splitdns-domains-cell";
+            tdDom.textContent = String(rule.domains || "");
+            tr.appendChild(tdDom);
+
+            var tdTarget = document.createElement("td");
+            tdTarget.setAttribute("width", "26%");
+            tdTarget.className = "splitdns-target-cell";
+            tdTarget.textContent = formatRuleTargetLabel(rule);
+            tr.appendChild(tdTarget);
+
+            var tdComment = document.createElement("td");
+            tdComment.setAttribute("width", "18%");
+            tdComment.className = "splitdns-comment-cell";
+            tdComment.textContent = String(rule.comment || "");
+            tr.appendChild(tdComment);
+
+            var tdAct = document.createElement("td");
+            tdAct.setAttribute("width", "12%");
+
+            var btnEdit = document.createElement("input");
+            btnEdit.type = "button";
+            btnEdit.className = "edit_btn";
+            btnEdit.value = "";
+            btnEdit.onclick = function() {
+                editCustomRule(idx);
+            };
+            tdAct.appendChild(btnEdit);
+
+            var btnDel = document.createElement("input");
+            btnDel.type = "button";
+            btnDel.className = "remove_btn";
+            btnDel.value = "";
+            btnDel.onclick = function() {
+                customRules.splice(idx, 1);
+                reindexRules();
+                renderRulesTable();
+            };
+            tdAct.appendChild(btnDel);
+
+            tr.appendChild(tdAct);
+            tbody.appendChild(tr);
+        })(i);
     }
 }
 
-function renderDisplayRow(tr, rule) {
-    // 1. Toggle switch
-    var tdEnabled = document.createElement("td");
-    tdEnabled.style.textAlign = "center";
-    tdEnabled.style.width = "40px";
-    var chk = document.createElement("input");
-    chk.type = "checkbox";
-    chk.checked = (rule.enabled === 1);
-    chk.title = t("toggle_rule_tooltip");
-    chk.onclick = (function(rId) {
-        return function() { toggleRule(rId); };
-    })(rule.id);
-    tdEnabled.appendChild(chk);
-    tr.appendChild(tdEnabled);
+function editCustomRule(idx) {
+    if (idx < 0 || idx >= customRules.length) return;
+    var r = customRules[idx];
+    var enEl = document.getElementById("new_rule_enabled");
+    var domEl = document.getElementById("new_rule_domains");
+    var typeEl = document.getElementById("new_rule_target_type");
+    var ipEl = document.getElementById("new_rule_target_ip");
+    var comEl = document.getElementById("new_rule_comment");
 
-    // 2. Domains (Safe textContent)
-    var tdDomains = document.createElement("td");
-    tdDomains.className = "rule_domains_cell";
-    tdDomains.style.wordBreak = "break-all";
-    tdDomains.textContent = String(rule.domains || "");
-    tr.appendChild(tdDomains);
+    if (enEl) enEl.checked = (r.enabled === 1 || r.enabled === true);
+    if (domEl) domEl.value = r.domains || "";
+    if (typeEl) typeEl.value = r.target_type || "profile";
+    onNewRuleTargetChange();
+    if (ipEl) ipEl.value = r.target_ip || "";
+    if (comEl) comEl.value = r.comment || "";
 
-    // 3. Target Type Badge (Safe DOM element creation)
-    var tdTargetType = document.createElement("td");
-    tdTargetType.style.width = "180px";
-    var badgeClass = "badge_profile";
-    var badgeText = t("target_type_profile");
-    if (rule.target_type === "router") {
-        badgeClass = "badge_router";
-        badgeText = t("target_type_router");
-    } else if (rule.target_type === "custom") {
-        badgeClass = "badge_custom";
-        badgeText = t("target_type_custom");
+    customRules.splice(idx, 1);
+    reindexRules();
+    renderRulesTable();
+    if (domEl) domEl.focus();
+}
+
+function addCustomRule() {
+    if (customRules.length >= 128) {
+        alert(t("err_max_rules"));
+        return;
     }
-    var spanBadge = document.createElement("span");
-    spanBadge.className = "target_badge " + badgeClass;
-    spanBadge.textContent = badgeText;
-    tdTargetType.appendChild(spanBadge);
-    tr.appendChild(tdTargetType);
+    var enEl = document.getElementById("new_rule_enabled");
+    var domEl = document.getElementById("new_rule_domains");
+    var typeEl = document.getElementById("new_rule_target_type");
+    var ipEl = document.getElementById("new_rule_target_ip");
+    var comEl = document.getElementById("new_rule_comment");
 
-    // 4. Target IP / Resolver (Safe textContent)
-    var tdTargetIp = document.createElement("td");
-    tdTargetIp.style.width = "140px";
-    tdTargetIp.style.fontFamily = "monospace";
-    if (rule.target_type === "router") {
-        tdTargetIp.textContent = "127.0.1.1 (DoT)";
-    } else if (rule.target_type === "custom") {
-        tdTargetIp.textContent = rule.target_ip || "—";
+    var rawDoms = domEl ? domEl.value.trim() : "";
+    if (!rawDoms) {
+        alert(t("err_empty_domain"));
+        if (domEl) domEl.focus();
+        return;
+    }
+
+    var parsed = normalizeDomainsInput(rawDoms);
+    if (!parsed.valid) {
+        alert(t("err_invalid_domain") + parsed.errorToken);
+        if (domEl) domEl.focus();
+        return;
+    }
+
+    var tType = typeEl ? typeEl.value : "profile";
+    var tIp = ipEl ? ipEl.value.trim() : "";
+    if (tType === "custom") {
+        if (!isValidIpv4OrPort(tIp)) {
+            alert(t("err_invalid_ip"));
+            if (ipEl) ipEl.focus();
+            return;
+        }
     } else {
-        tdTargetIp.textContent = "—";
-    }
-    tr.appendChild(tdTargetIp);
-
-    // 5. Comment (Safe textContent — eliminates Stored DOM XSS)
-    var tdComment = document.createElement("td");
-    tdComment.textContent = String(rule.comment || "");
-    tr.appendChild(tdComment);
-
-    // 6. Action buttons
-    var tdActions = document.createElement("td");
-    tdActions.style.textAlign = "center";
-    tdActions.style.width = "110px";
-
-    var btnEdit = document.createElement("input");
-    btnEdit.type = "button";
-    btnEdit.className = "button_gen_sub";
-    btnEdit.value = t("btn_edit_rule");
-    btnEdit.onclick = (function(rId) {
-        return function() { startEditRule(rId); };
-    })(rule.id);
-
-    var btnDel = document.createElement("input");
-    btnDel.type = "button";
-    btnDel.className = "button_gen_sub";
-    btnDel.style.marginLeft = "4px";
-    btnDel.value = t("btn_delete_rule");
-    btnDel.onclick = (function(rId) {
-        return function() { deleteRule(rId); };
-    })(rule.id);
-
-    tdActions.appendChild(btnEdit);
-    tdActions.appendChild(btnDel);
-    tr.appendChild(tdActions);
-}
-
-function renderEditRow(tr, rule) {
-    tr.className = "rule_row_editing";
-
-    var tdEnabled = document.createElement("td");
-    tdEnabled.style.textAlign = "center";
-    var chk = document.createElement("input");
-    chk.type = "checkbox";
-    chk.id = "edit_enabled_" + rule.id;
-    chk.checked = (rule.enabled === 1);
-    tdEnabled.appendChild(chk);
-    tr.appendChild(tdEnabled);
-
-    var tdDomains = document.createElement("td");
-    var inpDomains = document.createElement("input");
-    inpDomains.type = "text";
-    inpDomains.id = "edit_domains_" + rule.id;
-    inpDomains.className = "input_25_table";
-    inpDomains.style.width = "95%";
-    inpDomains.value = rule.domains;
-    tdDomains.appendChild(inpDomains);
-    tr.appendChild(tdDomains);
-
-    var tdType = document.createElement("td");
-    var selType = document.createElement("select");
-    selType.id = "edit_target_type_" + rule.id;
-    selType.className = "input_option";
-    selType.innerHTML = '<option value="profile">' + t("target_type_profile") + '</option>' +
-                        '<option value="router">' + t("target_type_router") + '</option>' +
-                        '<option value="custom">' + t("target_type_custom") + '</option>';
-    selType.value = rule.target_type;
-    selType.onchange = function() {
-        var ipInput = document.getElementById("edit_target_ip_" + rule.id);
-        if (ipInput) {
-            ipInput.style.display = (selType.value === "custom") ? "inline-block" : "none";
-        }
-    };
-    tdType.appendChild(selType);
-    tr.appendChild(tdType);
-
-    var tdIp = document.createElement("td");
-    var inpIp = document.createElement("input");
-    inpIp.type = "text";
-    inpIp.id = "edit_target_ip_" + rule.id;
-    inpIp.className = "input_15_table";
-    inpIp.style.width = "95%";
-    inpIp.placeholder = "192.168.1.53#5353";
-    inpIp.value = (rule.target_type === "custom") ? (rule.target_ip || "") : "";
-    inpIp.style.display = (rule.target_type === "custom") ? "inline-block" : "none";
-    tdIp.appendChild(inpIp);
-    tr.appendChild(tdIp);
-
-    var tdComment = document.createElement("td");
-    var inpComment = document.createElement("input");
-    inpComment.type = "text";
-    inpComment.id = "edit_comment_" + rule.id;
-    inpComment.className = "input_18_table";
-    inpComment.style.width = "95%";
-    inpComment.value = rule.comment || "";
-    tdComment.appendChild(inpComment);
-    tr.appendChild(tdComment);
-
-    var tdActions = document.createElement("td");
-    tdActions.style.textAlign = "center";
-
-    var btnSave = document.createElement("input");
-    btnSave.type = "button";
-    btnSave.className = "button_gen_sub";
-    btnSave.value = t("btn_save_rule");
-    btnSave.onclick = function() { saveEditRule(rule.id); };
-
-    var btnCancel = document.createElement("input");
-    btnCancel.type = "button";
-    btnCancel.className = "button_gen_sub";
-    btnCancel.style.marginLeft = "4px";
-    btnCancel.value = t("btn_cancel_rule");
-    btnCancel.onclick = function() { cancelEditRule(); };
-
-    tdActions.appendChild(btnSave);
-    tdActions.appendChild(btnCancel);
-    tr.appendChild(tdActions);
-}
-
-function onNewRuleTargetTypeChange() {
-    var sel = document.getElementById("new_rule_target_type");
-    var container = document.getElementById("new_rule_target_ip_container");
-    if (sel && container) {
-        container.style.display = (sel.value === "custom") ? "inline-block" : "none";
-    }
-}
-
-function addRuleFromInputs() {
-    var domInput = document.getElementById("new_rule_domains");
-    var typeSelect = document.getElementById("new_rule_target_type");
-    var ipInput = document.getElementById("new_rule_target_ip");
-    var commInput = document.getElementById("new_rule_comment");
-
-    var rawDomains = domInput ? domInput.value : "";
-    var targetType = typeSelect ? typeSelect.value : "profile";
-    var targetIp = ipInput ? ipInput.value.trim() : "";
-    var comment = commInput ? commInput.value.trim() : "";
-
-    var res = parseAndSanitizeDomains(rawDomains);
-    if (!res.valid) {
-        if (res.errorToken) {
-            alert(tf("err_domain_invalid", res.errorToken));
-        } else {
-            alert(t("err_domain_empty"));
-        }
-        if (domInput) domInput.focus();
-        return false;
+        tIp = "";
     }
 
-    if (res.conversions && res.conversions.length > 0) {
-        showIdnFeedback(res.conversions, "new_rule_idn_feedback");
-        if (!comment) {
-            var origList = [];
-            for (var c = 0; c < res.conversions.length; c++) {
-                origList.push(res.conversions[c].original);
-            }
-            comment = "IDN: " + origList.join(", ");
-        }
-    }
-
-    if (targetType === "custom") {
-        if (!targetIp) {
-            alert(t("err_ip_required_for_custom"));
-            if (ipInput) ipInput.focus();
-            return false;
-        }
-        if (!isValidDnsmasqIp(targetIp)) {
-            alert(tf("err_ip_invalid", targetIp));
-            if (ipInput) ipInput.focus();
-            return false;
-        }
-    } else if (targetType === "router") {
-        targetIp = "127.0.1.1";
-    } else {
-        targetIp = "";
-    }
-
-    var newId = Date.now();
-    var newRule = {
-        id: newId,
-        enabled: 1,
-        domains: res.domains.join(", "),
-        target_type: targetType,
-        target_ip: targetIp,
+    var comment = comEl ? comEl.value.replace(/[\r\n\t]/g, " ").trim().substring(0, 64) : "";
+    customRules.push({
+        id: customRules.length + 1,
+        enabled: (enEl && enEl.checked) ? 1 : 0,
+        domains: parsed.domains.join(", "),
+        target_type: tType,
+        target_ip: tIp,
         comment: comment
-    };
+    });
 
-    var testRules = customRules.concat([newRule]);
-    var testJson = JSON.stringify(testRules);
-    var testB64 = "";
+    if (domEl) domEl.value = "";
+    if (ipEl) ipEl.value = "";
+    if (comEl) comEl.value = "";
+    renderRulesTable();
+}
+
+/* ============================================================================
+ * 6. Asuswrt-Merlin Asynchronous RPC & Polling Engine
+ * ============================================================================ */
+function xhrGet(url, callback) {
     try {
-        testB64 = btoa(unescape(encodeURIComponent(testJson)));
-    } catch(e) {}
-
-    if (testB64.length > 6000) {
-        alert(tf("err_payload_too_large", String(testB64.length), "6000"));
-        return false;
-    }
-
-    customRules.push(newRule);
-
-    if (domInput) domInput.value = "";
-    if (commInput) commInput.value = "";
-    if (ipInput) ipInput.value = "";
-    if (typeSelect) typeSelect.value = "profile";
-    var cont = document.getElementById("new_rule_target_ip_container");
-    if (cont) cont.style.display = "none";
-
-    setDirty(true);
-    renderRulesTable();
-    return true;
-}
-
-function toggleRule(id) {
-    for (var i = 0; i < customRules.length; i++) {
-        if (customRules[i].id === id) {
-            customRules[i].enabled = customRules[i].enabled ? 0 : 1;
-            setDirty(true);
-            renderRulesTable();
-            break;
-        }
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url + (url.indexOf("?") === -1 ? "?" : "&") + "_=" + Date.now(), true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.responseText && xhr.responseText.indexOf("Main_Login.asp") !== -1) {
+                    top.location.href = "/Main_Login.asp";
+                    return;
+                }
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    callback(null, xhr.responseText);
+                } else {
+                    callback(new Error("HTTP " + xhr.status), null);
+                }
+            }
+        };
+        xhr.send(null);
+    } catch (e) {
+        callback(e, null);
     }
 }
 
-function deleteRule(id) {
-    for (var i = 0; i < customRules.length; i++) {
-        if (customRules[i].id === id) {
-            customRules.splice(i, 1);
-            setDirty(true);
-            renderRulesTable();
-            break;
-        }
-    }
-}
-
-function startEditRule(id) {
-    editingRuleId = id;
-    renderRulesTable();
-}
-
-function cancelEditRule() {
-    editingRuleId = null;
-    renderRulesTable();
-}
-
-function saveEditRule(id) {
-    var domInput = document.getElementById("edit_domains_" + id);
-    var typeSelect = document.getElementById("edit_target_type_" + id);
-    var ipInput = document.getElementById("edit_target_ip_" + id);
-    var commInput = document.getElementById("edit_comment_" + id);
-    var enChk = document.getElementById("edit_enabled_" + id);
-
-    var res = parseAndSanitizeDomains(domInput.value);
-    if (!res.valid) {
-        if (res.errorToken) {
-            alert(tf("err_domain_invalid", res.errorToken));
-        } else {
-            alert(t("err_domain_empty"));
-        }
-        domInput.focus();
-        return;
-    }
-
-    var targetType = typeSelect.value;
-    var targetIp = ipInput.value.trim();
-
-    if (targetType === "custom") {
-        if (!targetIp) {
-            alert(t("err_ip_required_for_custom"));
-            ipInput.focus();
-            return;
-        }
-        if (!isValidDnsmasqIp(targetIp)) {
-            alert(tf("err_ip_invalid", targetIp));
-            ipInput.focus();
-            return;
-        }
-    } else if (targetType === "router") {
-        targetIp = "127.0.1.1";
-    } else {
-        targetIp = "";
-    }
-
-    for (var i = 0; i < customRules.length; i++) {
-        if (customRules[i].id === id) {
-            customRules[i].enabled = enChk.checked ? 1 : 0;
-            customRules[i].domains = res.domains.join(", ");
-            customRules[i].target_type = targetType;
-            customRules[i].target_ip = targetIp;
-            customRules[i].comment = commInput.value.trim();
-            break;
-        }
-    }
-
-    editingRuleId = null;
-    setDirty(true);
-    renderRulesTable();
-}
-
-function prepareTransportPayload() {
-    var jsonString = JSON.stringify(customRules);
-    try {
-        return btoa(unescape(encodeURIComponent(jsonString)));
-    } catch(e) {
-        return "";
-    }
-}
-
-var routerCustomSettings = {};
-function loadCustomSettings() {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "/user/splitdns_cs.htm?t=" + Date.now(), true);
-    xhr.timeout = 2500;
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200 && xhr.responseText) {
-            var m = xhr.responseText.match(/SDNSCS([\s\S]*?)SDNSCS/);
+function fetchCustomSettingsBase(callback) {
+    xhrGet("/user/splitdns_cs.htm", function(err, text) {
+        if (!err && text) {
+            var m = text.match(/SDNSCS([\s\S]*?)SDNSCS/);
             if (m && m[1]) {
                 try {
-                    var parsed = JSON.parse(m[1]);
-                    if (parsed && typeof parsed === "object") {
-                        routerCustomSettings = parsed;
-                    }
-                } catch(e) {}
-            }
-        }
-    };
-    try { xhr.send(); } catch(e) {}
-}
-
-function buildAmngCustom(fields) {
-    var merged = {};
-    var k;
-    if (routerCustomSettings && typeof routerCustomSettings === "object") {
-        for (k in routerCustomSettings) {
-            if (Object.prototype.hasOwnProperty.call(routerCustomSettings, k) && k.indexOf("splitdns_") !== 0) {
-                merged[k] = routerCustomSettings[k];
-            }
-        }
-    }
-    if (fields && typeof fields === "object") {
-        for (k in fields) {
-            if (Object.prototype.hasOwnProperty.call(fields, k)) {
-                merged[k] = String(fields[k]);
-            }
-        }
-    }
-    return JSON.stringify(merged);
-}
-
-// --- Apply Form Submission ---
-function applyConfigurationForm() {
-    var enRad = document.getElementById("splitdns_enable_1");
-    var isEnabled = enRad ? (enRad.checked ? "1" : "0") : "1";
-    document.getElementById("splitdns_enabled").value = isEnabled;
-    document.getElementById("splitdns_enable").value = isEnabled;
-
-    var sel = document.getElementById("splitdns_profile_select");
-    var profileVal = sel ? sel.value : "yandex_basic";
-    document.getElementById("splitdns_profile").value = profileVal;
-
-    var natCb = document.getElementById("preset_national_cb");
-    var natVal = (natCb && natCb.checked) ? "1" : "0";
-    document.getElementById("splitdns_preset_national").value = natVal;
-
-    var govCb = document.getElementById("preset_gov_cb");
-    var govVal = (govCb && govCb.checked) ? "1" : "0";
-    document.getElementById("splitdns_preset_gov").value = govVal;
-
-    var cDns1 = document.getElementById("custom_dns_primary_input");
-    var cDns2 = document.getElementById("custom_dns_secondary_input");
-    var dns1Val = cDns1 ? cDns1.value.trim() : "";
-    var dns2Val = cDns2 ? cDns2.value.trim() : "";
-
-    if (profileVal === "custom") {
-        if (!dns1Val) {
-            alert(t("err_custom_dns1_required"));
-            if (cDns1) cDns1.focus();
-            return false;
-        }
-        if (!isValidDnsmasqIp(dns1Val)) {
-            alert(tf("err_ip_invalid", dns1Val));
-            if (cDns1) cDns1.focus();
-            return false;
-        }
-        if (dns2Val && !isValidDnsmasqIp(dns2Val)) {
-            alert(tf("err_ip_invalid", dns2Val));
-            if (cDns2) cDns2.focus();
-            return false;
-        }
-    }
-
-    document.getElementById("splitdns_custom_dns1").value = dns1Val;
-    document.getElementById("splitdns_custom_dns2").value = dns2Val;
-
-    var payload = prepareTransportPayload();
-    if (payload.length > 6000) {
-        alert(tf("err_payload_too_large", String(payload.length), "6000"));
-        return false;
-    }
-    document.getElementById("splitdns_rules_b64").value = payload;
-
-    var amngEl = document.getElementById("amng_custom");
-    if (amngEl) {
-        amngEl.value = buildAmngCustom({
-            splitdns_enable: isEnabled,
-            splitdns_profile: profileVal,
-            splitdns_custom_dns1: dns1Val,
-            splitdns_custom_dns2: dns2Val,
-            splitdns_preset_national: natVal,
-            splitdns_preset_gov: govVal,
-            splitdns_rules_b64: payload
-        });
-    }
-
-    var badge = document.getElementById("status_badge");
-    if (badge) {
-        badge.className = "splitdns-badge warning";
-        badge.innerHTML = t("status_addon_restarting");
-    }
-
-    if (typeof showLoading === "function") {
-        showLoading(5);
-    }
-
-    setDirty(false);
-    document.form.action_mode.value = "apply";
-    document.form.action_script.value = "start_splitdns_apply";
-    document.form.action_wait.value = "5";
-    document.form.submit();
-}
-
-// --- Live DNS Diagnostics ---
-function setDiagDomain(dom) {
-    var input = document.getElementById("diag_domain");
-    if (input) {
-        input.value = dom;
-        runLiveDnsDiagnostic();
-    }
-}
-
-function runLiveDnsDiagnostic() {
-    // Cancel any active polling timer before starting a new test
-    if (diagPollTimer) {
-        clearTimeout(diagPollTimer);
-        diagPollTimer = null;
-    }
-
-    var domainInput = document.getElementById("diag_domain");
-    var testBtn = document.getElementById("btn_diag_test");
-    var resultCard = document.getElementById("diag_result_card");
-
-    var rawDomain = (domainInput && domainInput.value ? domainInput.value : "").trim().toLowerCase();
-    if (!rawDomain) {
-        rawDomain = "lkfl2.nalog.ru";
-        if (domainInput) domainInput.value = rawDomain;
-    }
-
-    if (!isValidDomainToken(rawDomain)) {
-        alert(tf("err_domain_invalid", rawDomain));
-        if (domainInput) domainInput.focus();
-        return;
-    }
-
-    // Convert Cyrillic IDN to Punycode if applicable
-    var domain = Punycode.toASCII(rawDomain);
-    if (domain !== rawDomain && domainInput) {
-        domainInput.value = domain;
-    }
-
-    if (testBtn) {
-        testBtn.disabled = true;
-        testBtn.className = "button_gen_dis";
-        testBtn.value = t("diag_testing");
-    }
-
-    if (resultCard) {
-        resultCard.style.display = "block";
-        document.getElementById("diag_status_badge").innerHTML =
-            '<span style="color:#f39c12;"><img src="/images/loading.gif" style="vertical-align:middle; width:14px; margin-right:5px;" alt="..." />' +
-            t("diag_testing") + '</span>';
-        document.getElementById("diag_res_domain").textContent = domain;
-        document.getElementById("diag_res_ips").textContent = "-";
-        document.getElementById("diag_res_resolver").textContent = "-";
-        document.getElementById("diag_res_latency").textContent = "-";
-    }
-
-    diagTestStartTime = Date.now();
-
-    var formData = new FormData();
-    formData.append("action_mode", "apply");
-    formData.append("action_script", "start_splitdns_test");
-    formData.append("splitdns_test_domain", domain);
-    formData.append("amng_custom", buildAmngCustom({ splitdns_test_domain: domain }));
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/applyapp.cgi", true);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            pollDiagResult(domain, 0);
-        }
-    };
-    xhr.onerror = function() {
-        // Fallback test simulation in offline / mock test environment
-        simulateDiagResult(domain);
-    };
-    try {
-        xhr.send(formData);
-    } catch(e) {
-        simulateDiagResult(domain);
-    }
-}
-
-function pollDiagResult(expectedDomain, attempts) {
-    if (attempts > 12) {
-        if (diagPollTimer) {
-            clearTimeout(diagPollTimer);
-            diagPollTimer = null;
-        }
-        // Fallback to simulated result if router diag file is not available
-        simulateDiagResult(expectedDomain);
-        return;
-    }
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "/user/splitdns_diag.htm?t=" + Date.now(), true);
-    xhr.timeout = 2500;
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                try {
-                    var data = JSON.parse(xhr.responseText);
-                    if (data && data.domain === expectedDomain) {
-                        renderDiagResult(data);
+                    var obj = JSON.parse(m[1]);
+                    if (obj && typeof obj === "object") {
+                        callback(obj);
                         return;
                     }
-                } catch(e) {}
+                } catch (e) {}
             }
-            diagPollTimer = setTimeout(function() {
-                pollDiagResult(expectedDomain, attempts + 1);
-            }, 400);
         }
-    };
-    xhr.onerror = function() {
-        diagPollTimer = setTimeout(function() {
-            pollDiagResult(expectedDomain, attempts + 1);
-        }, 400);
-    };
-    try {
-        xhr.send();
-    } catch(e) {
-        simulateDiagResult(expectedDomain);
+        callback({});
+    });
+}
+
+function submitViaMerlinApi(actionScript, actionWait, transientKeys, onComplete) {
+    authStartTs = Date.now();
+    fetchCustomSettingsBase(function(baseObj) {
+        var keys = Object.keys(baseObj);
+        for (var i = 0; i < keys.length; i++) {
+            if (keys[i].indexOf("splitdns_") === 0) {
+                delete baseObj[keys[i]];
+            }
+        }
+        if (transientKeys) {
+            var tKeys = Object.keys(transientKeys);
+            for (var j = 0; j < tKeys.length; j++) {
+                baseObj[tKeys[j]] = transientKeys[tKeys[j]];
+            }
+        }
+
+        var form = document.getElementById("splitdns_form");
+        var amngInput = document.getElementById("amng_custom");
+        if (form && amngInput) {
+            amngInput.value = JSON.stringify(baseObj);
+            form.action_script.value = actionScript;
+            form.action_wait.value = String(actionWait || 2);
+
+            if (typeof showLoading === "function" && actionWait >= 2) {
+                try { showLoading(actionWait); } catch (e) {}
+            }
+            try {
+                form.submit();
+            } catch (e) {}
+        }
+
+        setTimeout(function() {
+            if (typeof onComplete === "function") {
+                onComplete();
+            }
+        }, (actionWait || 2) * 1000 + 400);
+    });
+}
+
+function loadRouterStatus(callback) {
+    xhrGet("/user/splitdns_status.htm", function(err, text) {
+        if (!err && text) {
+            try {
+                var parsed = JSON.parse(text);
+                if (parsed && typeof parsed === "object") {
+                    routerStatus = parsed;
+                    syncFormWithStatus();
+                }
+            } catch (e) {}
+        }
+        if (typeof callback === "function") {
+            callback();
+        }
+    });
+}
+
+function syncFormWithStatus() {
+    var en1 = document.getElementById("splitdns_enable_1");
+    var en0 = document.getElementById("splitdns_enable_0");
+    if (en1 && en0) {
+        if (Number(routerStatus.enabled) === 1) {
+            en1.checked = true;
+        } else {
+            en0.checked = true;
+        }
     }
+
+    var verEl = document.getElementById("ui_current_version");
+    if (verEl && routerStatus.version) {
+        verEl.textContent = "v" + routerStatus.version;
+    }
+
+    var profSel = document.getElementById("splitdns_profile_sel");
+    if (profSel && routerStatus.profile) {
+        profSel.value = routerStatus.profile;
+    }
+
+    var c1 = document.getElementById("splitdns_custom_dns1");
+    var c2 = document.getElementById("splitdns_custom_dns2");
+    if (c1) c1.value = routerStatus.custom_dns_primary || "";
+    if (c2) c2.value = routerStatus.custom_dns_secondary || "";
+
+    if (Array.isArray(routerStatus.rules)) {
+        customRules = [];
+        for (var i = 0; i < routerStatus.rules.length; i++) {
+            var r = routerStatus.rules[i];
+            if (r && typeof r === "object" && r.domains) {
+                customRules.push({
+                    id: i + 1,
+                    enabled: (r.enabled === 0 || r.enabled === false) ? 0 : 1,
+                    domains: String(r.domains),
+                    target_type: r.target_type || "profile",
+                    target_ip: r.target_ip || "",
+                    comment: r.comment || ""
+                });
+            }
+        }
+    }
+
+    onProfileChange();
+    renderRulesTable();
+}
+
+/* ============================================================================
+ * 7. Apply Settings, Surgical Reset, Live Diagnostics & Updates
+ * ============================================================================ */
+function applySplitDnsSettings() {
+    var en1 = document.getElementById("splitdns_enable_1");
+    var enabledVal = (en1 && en1.checked) ? "1" : "0";
+    var profSel = document.getElementById("splitdns_profile_sel");
+    var profileVal = profSel ? profSel.value : "yandex_basic";
+    var c1El = document.getElementById("splitdns_custom_dns1");
+    var c2El = document.getElementById("splitdns_custom_dns2");
+    var c1Val = c1El ? c1El.value.trim() : "";
+    var c2Val = c2El ? c2El.value.trim() : "";
+
+    if (profileVal === "custom") {
+        if (!isValidIpv4OrPort(c1Val)) {
+            alert(t("err_invalid_ip"));
+            if (c1El) c1El.focus();
+            return;
+        }
+        if (c2Val && !isValidIpv4OrPort(c2Val)) {
+            alert(t("err_invalid_ip"));
+            if (c2El) c2El.focus();
+            return;
+        }
+    }
+
+    var rulesJsonStr = JSON.stringify(customRules);
+    var rulesB64 = utf8ToBase64(rulesJsonStr);
+
+    var payload = {
+        splitdns_enable: enabledVal,
+        splitdns_profile: profileVal,
+        splitdns_custom_dns1: c1Val,
+        splitdns_custom_dns2: c2Val,
+        splitdns_rules_b64: rulesB64
+    };
+
+    submitViaMerlinApi("splitdns_apply", 3, payload, function() {
+        loadRouterStatus();
+    });
+}
+
+function confirmSurgicalReset() {
+    if (!confirm(t("confirm_reset"))) {
+        return;
+    }
+    submitViaMerlinApi("splitdns_reset", 3, {}, function() {
+        routerStatus.enabled = 0;
+        routerStatus.profile = "yandex_basic";
+        routerStatus.custom_dns_primary = "";
+        routerStatus.custom_dns_secondary = "";
+        routerStatus.rules = [];
+        syncFormWithStatus();
+        loadRouterStatus();
+    });
+}
+
+function formatDiagConsoleOutput(data) {
+    var lines = [];
+    var isOk = (data.status === "ok");
+    lines.push("============================================================");
+    lines.push(" " + t("diag_lbl_domain") + "        : " + (data.domain || "lkfl2.nalog.ru"));
+    lines.push(" " + t("diag_lbl_status") + "        : " + (isOk ? t("diag_status_ok") : t("diag_status_err")));
+    lines.push(" " + t("diag_lbl_resolver") + "      : " + (data.resolver || "77.88.8.8"));
+    lines.push(" " + t("diag_lbl_time") + " : " + (data.time_ms !== undefined ? data.time_ms : 0) + " ms");
+    lines.push(" " + t("diag_lbl_ips") + " : " + ((data.ips && data.ips.length > 0) ? data.ips.join(", ") : "—"));
+    lines.push("============================================================");
+    return lines.join("\n");
+}
+
+function runLiveDomainTest() {
+    var inputEl = document.getElementById("diag_test_domain");
+    var rawDomain = inputEl ? inputEl.value.trim() : "";
+    if (!rawDomain) {
+        alert(t("err_empty_domain"));
+        if (inputEl) inputEl.focus();
+        return;
+    }
+    if (!isValidDomainToken(rawDomain)) {
+        alert(t("err_invalid_domain") + rawDomain);
+        if (inputEl) inputEl.focus();
+        return;
+    }
+
+    var asciiDomain = Punycode.toASCII(rawDomain);
+    var outArea = document.getElementById("diag_textarea");
+    var icon = document.getElementById("loadingIcon");
+    var btn = document.getElementById("btn_diag_test");
+
+    if (outArea) outArea.value = t("diag_running") + "\nQuery: " + asciiDomain;
+    if (icon) icon.style.display = "inline";
+    if (btn) btn.disabled = true;
+
+    submitViaMerlinApi("splitdns_test", 1, { splitdns_test_domain: asciiDomain }, function() {
+        var attempts = 0;
+        var pollTimer = setInterval(function() {
+            attempts++;
+            xhrGet("/user/splitdns_diag.htm", function(err, text) {
+                if (!err && text) {
+                    try {
+                        var data = JSON.parse(text);
+                        if (data && data.domain === asciiDomain) {
+                            clearInterval(pollTimer);
+                            if (icon) icon.style.display = "none";
+                            if (btn) btn.disabled = false;
+                            if (outArea) outArea.value = formatDiagConsoleOutput(data);
+                            return;
+                        }
+                    } catch (e) {}
+                }
+                if (attempts > 12) {
+                    clearInterval(pollTimer);
+                    if (icon) icon.style.display = "none";
+                    if (btn) btn.disabled = false;
+                    if (outArea) outArea.value = formatDiagConsoleOutput(simulateDiagResult(asciiDomain));
+                }
+            });
+        }, 500);
+    });
 }
 
 function simulateDiagResult(domain) {
-    var profSel = document.getElementById("splitdns_profile_select");
-    var activeProf = profSel ? profSel.value : "yandex_basic";
+    var profSel = document.getElementById("splitdns_profile_sel");
+    var activeProf = profSel ? profSel.value : routerStatus.profile;
     var resolver = "77.88.8.8";
     if (activeProf === "yandex_safe") resolver = "77.88.8.88";
     else if (activeProf === "yandex_family") resolver = "77.88.8.7";
@@ -1668,272 +1460,140 @@ function simulateDiagResult(domain) {
     else if (domain.indexOf("cbr.ru") !== -1) ips = ["37.29.35.34"];
     else if (domain.indexOf("sberbank") !== -1) ips = ["194.54.14.131"];
 
-    renderDiagResult({
+    return {
         domain: domain,
         status: "ok",
         ips: ips,
         resolver: resolver,
         time_ms: 12
-    });
+    };
 }
 
-function renderDiagResult(data) {
-    if (diagPollTimer) {
-        clearTimeout(diagPollTimer);
-        diagPollTimer = null;
-    }
-
-    var testBtn = document.getElementById("btn_diag_test");
-    if (testBtn) {
-        testBtn.disabled = false;
-        testBtn.className = "button_gen";
-        testBtn.value = t("btn_test_dns");
-    }
-
-    var isOk = (data.status === "ok" && data.ips && data.ips.length > 0);
-    var badgeHtml = isOk
-        ? '<span style="background-color:#27ae60; color:#fff; padding:2px 8px; border-radius:3px; font-weight:bold;">' + t("diag_status_ok") + '</span>'
-        : '<span style="background-color:#c0392b; color:#fff; padding:2px 8px; border-radius:3px; font-weight:bold;">' + t("diag_status_error") + '</span>';
-
-    var bEl = document.getElementById("diag_status_badge");
-    if (bEl) bEl.innerHTML = badgeHtml;
-    var dEl = document.getElementById("diag_res_domain");
-    if (dEl) dEl.textContent = data.domain || "-";
-    var iEl = document.getElementById("diag_res_ips");
-    if (iEl) iEl.textContent = (data.ips && data.ips.length > 0) ? data.ips.join(", ") : t("diag_status_error");
-    var rEl = document.getElementById("diag_res_resolver");
-    if (rEl) rEl.textContent = data.resolver || "-";
-    var lEl = document.getElementById("diag_res_latency");
-    if (lEl) lEl.textContent = (data.time_ms !== undefined) ? tf("diag_time_ms", data.time_ms) : "-";
-}
-
-// --- Version Check & Update Manager ---
-function checkAddonUpdate() {
-    var checkBtn = document.getElementById("btn_check_update");
-    var updateInfo = document.getElementById("update_info_text");
-
-    if (checkBtn) {
-        checkBtn.disabled = true;
-        checkBtn.className = "button_gen_dis";
-        checkBtn.value = t("update_checking");
-    }
-    if (updateInfo) {
-        updateInfo.innerHTML = '<img src="/images/loading.gif" style="vertical-align:middle; width:14px; margin-right:5px;" alt="..." />' +
-            t("update_checking");
-    }
-
-    var rawUrl = "https://raw.githubusercontent.com/normannskald/asuswrt-merlin-splitdns/main/splitdns.sh";
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", rawUrl + "?nocache=" + Date.now(), true);
-    xhr.timeout = 4000;
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200 && xhr.responseText) {
-                var match = xhr.responseText.match(/^VERSION="([^"]+)"/m);
-                if (match && match[1]) {
-                    processUpdateCheckResult(match[1]);
-                    return;
-                }
-            }
-            routerCheckUpdate();
-        }
-    };
-    xhr.onerror = function() { routerCheckUpdate(); };
-    xhr.ontimeout = function() { routerCheckUpdate(); };
-    try {
-        xhr.send();
-    } catch(e) {
-        routerCheckUpdate();
-    }
-}
-
-function routerCheckUpdate() {
-    var formData = new FormData();
-    formData.append("action_mode", "apply");
-    formData.append("action_script", "start_splitdns_check_update");
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/applyapp.cgi", true);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            pollRouterUpdateCheck(0);
-        }
-    };
-    xhr.onerror = function() {
-        processUpdateCheckResult(CURRENT_VERSION);
-    };
-    try {
-        xhr.send(formData);
-    } catch(e) {
-        processUpdateCheckResult(CURRENT_VERSION);
-    }
-}
-
-function pollRouterUpdateCheck(attempts) {
-    if (attempts > 8) {
-        processUpdateCheckResult(CURRENT_VERSION);
-        return;
-    }
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "/user/splitdns_update.htm?t=" + Date.now(), true);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                try {
-                    var data = JSON.parse(xhr.responseText);
-                    if (data && data.latest_version) {
-                        processUpdateCheckResult(data.latest_version);
-                        return;
-                    }
-                } catch(e) {}
-            }
-            setTimeout(function() { pollRouterUpdateCheck(attempts + 1); }, 500);
-        }
-    };
-    xhr.onerror = function() {
-        setTimeout(function() { pollRouterUpdateCheck(attempts + 1); }, 500);
-    };
-    try {
-        xhr.send();
-    } catch(e) {
-        processUpdateCheckResult(CURRENT_VERSION);
-    }
-}
-
-function isNewerVersion(remote, local) {
-    var r = remote.split('.').map(Number);
-    var l = local.split('.').map(Number);
+function isNewerVersion(remoteVer, localVer) {
+    var r = String(remoteVer || "").split(".");
+    var l = String(localVer || "").split(".");
     for (var i = 0; i < Math.max(r.length, l.length); i++) {
-        var numR = r[i] || 0, numL = l[i] || 0;
-        if (numR > numL) return true;
-        if (numR < numL) return false;
+        var nr = parseInt(r[i] || "0", 10) || 0;
+        var nl = parseInt(l[i] || "0", 10) || 0;
+        if (nr > nl) return true;
+        if (nr < nl) return false;
     }
     return false;
 }
 
-function processUpdateCheckResult(remoteVersion) {
-    var checkBtn = document.getElementById("btn_check_update");
-    var updateBtn = document.getElementById("btn_update_now");
-    var updateInfo = document.getElementById("update_info_text");
+function checkAddonUpdate() {
+    var statusTxt = document.getElementById("ui_update_status_text");
+    var badge = document.getElementById("ui_update_badge");
+    var btnUp = document.getElementById("btn_do_update");
+    if (statusTxt) statusTxt.textContent = t("update_checking");
 
-    if (checkBtn) {
-        checkBtn.disabled = false;
-        checkBtn.className = "button_gen";
-        checkBtn.value = t("btn_check_update");
-    }
-
-    if (isNewerVersion(remoteVersion, CURRENT_VERSION)) {
-        if (updateInfo) {
-            updateInfo.innerHTML = '<span style="color:#2ecc71; font-weight:bold;">' +
-                tf("update_available_msg", remoteVersion) + '</span>';
+    xhrGet("https://raw.githubusercontent.com/normannskald/asuswrt-merlin-splitdns/main/splitdns.sh", function(err, text) {
+        if (!err && text) {
+            var m = text.match(/^VERSION="([^"]+)"/m);
+            if (m && m[1]) {
+                var latest = m[1];
+                var current = routerStatus.version || "1.1.0";
+                if (isNewerVersion(latest, current)) {
+                    if (badge) {
+                        badge.textContent = "v" + latest;
+                        badge.style.display = "inline-block";
+                    }
+                    if (btnUp) btnUp.style.display = "inline-block";
+                    if (statusTxt) statusTxt.textContent = t("update_available_fmt") + latest;
+                } else {
+                    if (badge) badge.style.display = "none";
+                    if (btnUp) btnUp.style.display = "none";
+                    if (statusTxt) statusTxt.textContent = t("update_up_to_date") + " (v" + current + ")";
+                }
+                return;
+            }
         }
-        if (updateBtn) {
-            updateBtn.style.display = "inline-block";
-            updateBtn.onclick = function() { confirmAndExecuteUpdate(remoteVersion); };
-        }
-    } else {
-        if (updateInfo) {
-            updateInfo.innerHTML = '<span style="color:#bdc3c7;">' +
-                tf("update_latest_msg", CURRENT_VERSION) + '</span>';
-        }
-        if (updateBtn) {
-            updateBtn.style.display = "none";
-        }
-    }
+        submitViaMerlinApi("splitdns_check_update", 2, {}, function() {
+            xhrGet("/user/splitdns_update.htm", function(uErr, uText) {
+                if (!uErr && uText) {
+                    try {
+                        var uObj = JSON.parse(uText);
+                        if (uObj && uObj.update_available) {
+                            if (badge) {
+                                badge.textContent = "v" + uObj.latest_version;
+                                badge.style.display = "inline-block";
+                            }
+                            if (btnUp) btnUp.style.display = "inline-block";
+                            if (statusTxt) statusTxt.textContent = t("update_available_fmt") + uObj.latest_version;
+                            return;
+                        }
+                    } catch (e) {}
+                }
+                if (statusTxt) statusTxt.textContent = t("update_up_to_date") + " (v" + (routerStatus.version || "1.1.0") + ")";
+            });
+        });
+    });
 }
 
-function confirmAndExecuteUpdate(targetVer) {
-    if (!confirm(tf("update_confirm_msg", targetVer))) return;
-
-    if (typeof showLoading === "function") {
-        showLoading(10);
+function runAddonUpdate() {
+    if (!confirm(t("confirm_update"))) {
+        return;
     }
-
-    var formData = new FormData();
-    formData.append("action_mode", "apply");
-    formData.append("action_script", "start_splitdns_update");
-    formData.append("action_wait", "10");
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/applyapp.cgi", true);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            setTimeout(function() {
-                location.reload();
-            }, 8000);
-        }
-    };
-    try {
-        xhr.send(formData);
-    } catch(e) {
-        setTimeout(function() { location.reload(); }, 3000);
-    }
+    var statusTxt = document.getElementById("ui_update_status_text");
+    if (statusTxt) statusTxt.textContent = t("update_in_progress");
+    submitViaMerlinApi("splitdns_update", 6, {}, function() {
+        window.location.reload();
+    });
 }
 
-// --- Zero-Server-Footprint Backup & Restore ---
-function exportConfigurationBackup() {
-    var enRad = document.getElementById("splitdns_enable_1");
-    var isEnabled = enRad ? (enRad.checked ? 1 : 0) : 1;
-    var profSel = document.getElementById("splitdns_profile_select");
-    var cDns1 = document.getElementById("custom_dns_primary_input");
-    var cDns2 = document.getElementById("custom_dns_secondary_input");
-    var natCb = document.getElementById("preset_national_cb");
-    var govCb = document.getElementById("preset_gov_cb");
+/* ============================================================================
+ * 8. Backup Export & Restore Import
+ * ============================================================================ */
+function exportBackupJson() {
+    var en1 = document.getElementById("splitdns_enable_1");
+    var profSel = document.getElementById("splitdns_profile_sel");
+    var c1 = document.getElementById("splitdns_custom_dns1");
+    var c2 = document.getElementById("splitdns_custom_dns2");
 
-    var backupObject = {
-        schema_version: 1,
+    var backupPayload = {
         addon: "asuswrt-merlin-splitdns",
-        version: CURRENT_VERSION,
-        export_date: new Date().toISOString(),
+        version: routerStatus.version || "1.1.0",
+        exported_at: new Date().toISOString(),
         settings: {
-            enabled: isEnabled,
+            enabled: (en1 && en1.checked) ? 1 : 0,
             profile: profSel ? profSel.value : "yandex_basic",
-            custom_dns_primary: cDns1 ? cDns1.value.trim() : "",
-            custom_dns_secondary: cDns2 ? cDns2.value.trim() : "",
-            preset_national_zones: (natCb && natCb.checked) ? 1 : 0,
-            preset_gov_services: (govCb && govCb.checked) ? 1 : 0
+            custom_dns_primary: c1 ? c1.value.trim() : "",
+            custom_dns_secondary: c2 ? c2.value.trim() : ""
         },
-        rules: customRules || []
+        rules: customRules
     };
 
-    var jsonStr = JSON.stringify(backupObject, null, 2);
+    var jsonStr = JSON.stringify(backupPayload, null, 2);
     var blob = new Blob([jsonStr], { type: "application/json;charset=utf-8" });
-    var dlUrl = URL.createObjectURL(blob);
-
-    var dateStamp = new Date().toISOString().slice(0, 10);
-    var fileName = "splitdns_backup_" + dateStamp + ".json";
-
-    var dlLink = document.createElement("a");
-    dlLink.href = dlUrl;
-    dlLink.download = fileName;
-    document.body.appendChild(dlLink);
-    dlLink.click();
-    document.body.removeChild(dlLink);
-    URL.revokeObjectURL(dlUrl);
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    var datePart = new Date().toISOString().slice(0, 10);
+    a.href = url;
+    a.download = "splitdns_backup_" + datePart + ".json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
 }
 
-function triggerRestoreFileInput() {
+function uploadRestoreFile() {
     var fileInput = document.getElementById("backup_restore_file");
-    if (fileInput) {
-        fileInput.value = "";
-        fileInput.click();
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+        alert(t("err_select_file"));
+        return;
     }
-}
-
-function handleRestoreFileSelect(input) {
-    if (!input || !input.files || input.files.length === 0) return;
-    var file = input.files[0];
-
+    var file = fileInput.files[0];
     var reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function(ev) {
         try {
-            var parsed = JSON.parse(e.target.result);
-            validateAndApplyRestore(parsed);
-        } catch(err) {
+            var data = JSON.parse(ev.target.result);
+            validateAndApplyRestore(data);
+        } catch (e) {
             alert(t("import_invalid_json"));
         }
+        fileInput.value = "";
     };
-    reader.readAsText(file);
+    reader.readAsText(file, "UTF-8");
 }
 
 function validateAndApplyRestore(data) {
@@ -1946,629 +1606,69 @@ function validateAndApplyRestore(data) {
         return;
     }
 
-    var validProfiles = ["yandex_basic", "yandex_safe", "yandex_family", "nsdi", "isp", "custom"];
     var s = data.settings || {};
-    var profile = s.profile || "yandex_basic";
-    if (validProfiles.indexOf(profile) === -1) profile = "yandex_basic";
+    var validProfiles = ["yandex_basic", "yandex_safe", "yandex_family", "nsdi", "isp", "custom"];
+    var prof = (validProfiles.indexOf(s.profile) !== -1) ? s.profile : "yandex_basic";
+
+    routerStatus.enabled = (s.enabled === 0 || s.enabled === false) ? 0 : 1;
+    routerStatus.profile = prof;
+    routerStatus.custom_dns_primary = String(s.custom_dns_primary || "").replace(/[^0-9.#]/g, "");
+    routerStatus.custom_dns_secondary = String(s.custom_dns_secondary || "").replace(/[^0-9.#]/g, "");
 
     var rawRules = Array.isArray(data.rules) ? data.rules : [];
     var sanitizedRules = [];
-    for (var i = 0; i < rawRules.length; i++) {
+    for (var i = 0; i < rawRules.length && sanitizedRules.length < 128; i++) {
         var r = rawRules[i];
         if (!r || typeof r !== "object" || !r.domains) continue;
+        var cleanDoms = String(r.domains).replace(/[^a-zA-Z0-9\u0400-\u04FF.,; _-]/g, "");
         var tType = (r.target_type === "router" || r.target_type === "custom") ? r.target_type : "profile";
         var tIp = String(r.target_ip || "").trim();
-        if (tType === "custom" && !isValidDnsmasqIp(tIp)) continue;
+        if (tType === "custom" && !isValidIpv4OrPort(tIp)) {
+            continue;
+        }
         sanitizedRules.push({
             id: sanitizedRules.length + 1,
-            enabled: (r.enabled === 0) ? 0 : 1,
-            domains: String(r.domains).replace(/[^a-zA-Z0-9\u0400-\u04FF.,; _-]/g, ""),
+            enabled: (r.enabled === 0 || r.enabled === false) ? 0 : 1,
+            domains: cleanDoms,
             target_type: tType,
             target_ip: tIp,
-            comment: String(r.comment || "").slice(0, 64)
+            comment: String(r.comment || "").substring(0, 64)
         });
     }
-
-    var confirmMsg = (currentLang === "ru")
-        ? "Резервная копия успешно проверена!\n\n" +
-          "• Профиль: " + profile + "\n" +
-          "• Пресет нац. зон: " + (s.preset_national_zones ? "Да" : "Нет") + "\n" +
-          "• Пресет госресурсов: " + (s.preset_gov_services ? "Да" : "Нет") + "\n" +
-          "• Пользовательских правил: " + sanitizedRules.length + "\n\n" +
-          "Применить эти настройки сейчас?"
-        : "Backup verified successfully!\n\n" +
-          "• Profile: " + profile + "\n" +
-          "• National Zones Preset: " + (s.preset_national_zones ? "Yes" : "No") + "\n" +
-          "• Gov Services Preset: " + (s.preset_gov_services ? "Yes" : "No") + "\n" +
-          "• Custom Rules: " + sanitizedRules.length + "\n\n" +
-          "Apply these settings now?";
-
-    if (!confirm(confirmMsg)) return;
-
-    setMasterSwitch(s.enabled === 0 ? "0" : "1");
-
-    var profSel = document.getElementById("splitdns_profile_select");
-    if (profSel) profSel.value = profile;
-    updateProfileDisplay();
-
-    var cDns1 = document.getElementById("custom_dns_primary_input");
-    var cDns2 = document.getElementById("custom_dns_secondary_input");
-    if (cDns1) cDns1.value = s.custom_dns_primary || "";
-    if (cDns2) cDns2.value = s.custom_dns_secondary || "";
-
-    var natCb = document.getElementById("preset_national_cb");
-    var govCb = document.getElementById("preset_gov_cb");
-    if (natCb) natCb.checked = (s.preset_national_zones !== 0);
-    if (govCb) govCb.checked = (s.preset_gov_services !== 0);
-
-    customRules = sanitizedRules;
-    renderRulesTable();
-
-    setDirty(true);
-    alert(tf("import_success", sanitizedRules.length));
+    routerStatus.rules = sanitizedRules;
+    syncFormWithStatus();
+    alert(t("import_success"));
 }
 
-// --- Surgical Reset ---
-function confirmSurgicalReset() {
-    var overlay = document.getElementById("generic_modal_overlay");
-    var titleEl = document.getElementById("generic_modal_title");
-    var bodyEl = document.getElementById("generic_modal_body");
-
-    if (overlay && titleEl && bodyEl) {
-        titleEl.innerHTML = '<span style="color:#e74c3c;">' + t("reset_confirm_title") + '</span>';
-        var html = '<div style="font-size:13px; line-height:1.6; color:#ecf0f1;">' +
-            '<p>' + t("reset_confirm_msg") + '</p>' +
-            '<div style="text-align:right; margin-top:20px;">' +
-            '<input type="button" class="button_gen" value="' + t("btn_cancel_reset") + '" onclick="closeTooltip();" style="margin-right:10px;" />' +
-            '<input type="button" class="button_gen" value="' + t("btn_confirm_reset") + '" onclick="executeSurgicalReset();" style="background:#c0392b; color:#fff;" />' +
-            '</div></div>';
-        bodyEl.innerHTML = html;
-        overlay.style.display = "flex";
-    }
-}
-
-function executeSurgicalReset() {
-    closeTooltip();
-    if (typeof showLoading === "function") {
-        showLoading(4);
-    }
-
-    var formData = new FormData();
-    formData.append("action_mode", "apply");
-    formData.append("action_script", "restart_splitdns_reset");
-    formData.append("action_wait", "4");
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/applyapp.cgi", true);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            setTimeout(function() {
-                location.reload();
-            }, 3500);
+/* ============================================================================
+ * 9. Page Initialization
+ * ============================================================================ */
+function initSplitDnsPage() {
+    var pageName = window.location.pathname.split("/").pop() || "user3.asp";
+    if (document.form) {
+        if (document.form.current_page) document.form.current_page.value = pageName;
+        if (document.form.next_page) document.form.next_page.value = pageName;
+        if (document.form.productid && NVRAM_PRODUCTID.indexOf("<" + "%") === -1) {
+            document.form.productid.value = NVRAM_PRODUCTID;
         }
-    };
-    try {
-        xhr.send(formData);
-    } catch(e) {
-        setTimeout(function() { location.reload(); }, 2000);
+        if (document.form.preferred_lang && NVRAM_PREFERRED_LANG.indexOf("<" + "%") === -1) {
+            document.form.preferred_lang.value = NVRAM_PREFERRED_LANG;
+        }
+        if (document.form.firmver && NVRAM_FIRMVER.indexOf("<" + "%") === -1) {
+            document.form.firmver.value = NVRAM_FIRMVER;
+        }
     }
-}
 
-// --- Initial Data Loading ---
-function initial() {
     if (typeof show_menu === "function") {
-        show_menu();
+        try { show_menu(); } catch (e) {}
     }
 
-    // Dynamic slot detection from URL pathname
-    try {
-        var path = location.pathname;
-        var pSlot = path.split('/').pop();
-        if (pSlot && pSlot.indexOf("user") === 0 && pSlot.indexOf(".asp") !== -1) {
-            activeSlot = pSlot;
-        }
-    } catch(e) {}
-
-    var curPageEl = document.getElementById("current_page");
-    var nxtPageEl = document.getElementById("next_page");
-    if (curPageEl) curPageEl.value = activeSlot;
-    if (nxtPageEl) nxtPageEl.value = activeSlot;
-
-    var slotDisplay = document.getElementById("active_slot_display");
-    if (slotDisplay) slotDisplay.innerHTML = activeSlot;
-
-    initLanguage();
-    loadCustomSettings();
-    loadStatusData();
+    initSessionAutologoutWatcher();
+    applyLanguage();
+    loadRouterStatus();
 }
 
-function loadStatusData() {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "/user/splitdns_status.htm?t=" + Date.now(), true);
-    xhr.timeout = 3000;
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200 && xhr.responseText) {
-                try {
-                    var data = JSON.parse(xhr.responseText);
-                    applyStatusData(data);
-                    return;
-                } catch(e) {}
-            }
-            // Offline / fallback defaults
-            applyStatusData({
-                enabled: 1,
-                profile: "yandex_basic",
-                dns_primary: "77.88.8.8",
-                dns_secondary: "77.88.8.1",
-                custom_dns_primary: "",
-                custom_dns_secondary: "",
-                preset_national_zones: 1,
-                preset_gov_services: 1,
-                rules: [],
-                dnsmasq_running: true,
-                dnsmasq_pid: 1234,
-                active_rules_count: 28,
-                slot: activeSlot
-            });
-        }
-    };
-    xhr.onerror = function() {
-        applyStatusData({
-            enabled: 1,
-            profile: "yandex_basic",
-            dns_primary: "77.88.8.8",
-            dns_secondary: "77.88.8.1",
-            preset_national_zones: 1,
-            preset_gov_services: 1,
-            rules: [],
-            dnsmasq_running: true,
-            dnsmasq_pid: 1234,
-            active_rules_count: 28,
-            slot: activeSlot
-        });
-    };
-    try {
-        xhr.send();
-    } catch(e) {
-        applyStatusData({
-            enabled: 1,
-            profile: "yandex_basic",
-            rules: []
-        });
-    }
-}
-
-function applyStatusData(data) {
-    if (!data) return;
-
-    // Master Switch
-    var isEnabled = (data.enabled === 1 || data.enabled === "1");
-    var rad1 = document.getElementById("splitdns_enable_1");
-    var rad0 = document.getElementById("splitdns_enable_0");
-    if (rad1 && rad0) {
-        rad1.checked = isEnabled;
-        rad0.checked = !isEnabled;
-    }
-    document.getElementById("splitdns_enabled").value = isEnabled ? "1" : "0";
-    document.getElementById("splitdns_enable").value = isEnabled ? "1" : "0";
-
-    // Status Badge
-    var badge = document.getElementById("status_badge");
-    if (badge) {
-        if (isEnabled) {
-            badge.className = "splitdns-badge running";
-            badge.innerHTML = t("status_addon_active");
-        } else {
-            badge.className = "splitdns-badge stopped";
-            badge.innerHTML = t("status_addon_disabled");
-        }
-    }
-
-    // Profile
-    var profSel = document.getElementById("splitdns_profile_select");
-    if (profSel && data.profile) {
-        profSel.value = data.profile;
-    }
-    document.getElementById("splitdns_profile").value = (data.profile || "yandex_basic");
-
-    // Custom DNS inputs
-    var cDns1 = document.getElementById("custom_dns_primary_input");
-    var cDns2 = document.getElementById("custom_dns_secondary_input");
-    if (cDns1) cDns1.value = data.custom_dns_primary || "";
-    if (cDns2) cDns2.value = data.custom_dns_secondary || "";
-
-    // Presets
-    var natCb = document.getElementById("preset_national_cb");
-    var govCb = document.getElementById("preset_gov_cb");
-    if (natCb) natCb.checked = (data.preset_national_zones !== 0);
-    if (govCb) govCb.checked = (data.preset_gov_services !== 0);
-
-    // Rules
-    if (Array.isArray(data.rules)) {
-        customRules = data.rules;
-    } else {
-        customRules = [];
-    }
-
-    // Slot & Diagnostics indicators
-    if (data.slot && data.slot !== "none") {
-        activeSlot = data.slot;
-        var slotEl = document.getElementById("active_slot_display");
-        if (slotEl) slotEl.innerHTML = activeSlot;
-    }
-
-    var rulesVal = document.getElementById("active_rules_val");
-    if (rulesVal) {
-        rulesVal.innerHTML = data.active_rules_count !== undefined ? data.active_rules_count : customRules.length;
-    }
-
-    var resolverVal = document.getElementById("active_resolver_val");
-    if (resolverVal) {
-        resolverVal.innerHTML = data.dns_primary || "77.88.8.8";
-    }
-
-    var wanDnsVal = document.getElementById("wan_dns_display");
-    if (wanDnsVal) {
-        var w = (data.wan_dns1 ? data.wan_dns1 : "") + (data.wan_dns2 ? ", " + data.wan_dns2 : "");
-        wanDnsVal.innerHTML = w ? w : t("wan_dns_fallback_note");
-    }
-
-    renderRulesTable();
-    updateProfileDisplay();
-    setDirty(false);
-}
 /* ]]> */
 </script>
-</head>
-<body onload="initial();" class="bg">
-<div id="TopBanner"></div>
-<div id="Loading" class="popup_bg"></div>
-<iframe name="hidden_frame" id="hidden_frame" src="about:blank" width="0" height="0" frameborder="0"></iframe>
-
-<form method="post" name="form" id="splitdns_form" action="/applyapp.cgi" target="hidden_frame">
-<input type="hidden" name="action_mode" value="apply" />
-<input type="hidden" name="action_script" value="start_splitdns_apply" />
-<input type="hidden" name="action_wait" value="5" />
-<input type="hidden" name="current_page" id="current_page" value="user3.asp" />
-<input type="hidden" name="next_page" id="next_page" value="user3.asp" />
-<input type="hidden" name="modified" value="0" />
-<input type="hidden" name="flag" value="" />
-<input type="hidden" name="splitdns_enabled" id="splitdns_enabled" value="1" />
-<input type="hidden" name="splitdns_enable" id="splitdns_enable" value="1" />
-<input type="hidden" name="splitdns_profile" id="splitdns_profile" value="yandex_basic" />
-<input type="hidden" name="splitdns_custom_dns1" id="splitdns_custom_dns1" value="" />
-<input type="hidden" name="splitdns_custom_dns2" id="splitdns_custom_dns2" value="" />
-<input type="hidden" name="splitdns_preset_national" id="splitdns_preset_national" value="1" />
-<input type="hidden" name="splitdns_preset_gov" id="splitdns_preset_gov" value="1" />
-<input type="hidden" name="splitdns_rules_b64" id="splitdns_rules_b64" value="" />
-<input type="hidden" name="amng_custom" id="amng_custom" value="" />
-<input type="hidden" name="preferred_lang" id="preferred_lang" value="RU" />
-
-<table class="content" align="center" cellpadding="0" cellspacing="0">
-<tr>
-    <td width="17">&nbsp;</td>
-    <td valign="top" width="202">
-        <div id="mainMenu"></div>
-        <div id="subMenu"></div>
-    </td>
-    <td valign="top">
-        <div id="tabMenu" class="submenuBlock"></div>
-        <table width="98%" border="0" align="left" cellpadding="0" cellspacing="0">
-        <tr>
-            <td valign="top">
-                <table width="760px" border="0" cellpadding="4" cellspacing="0" bordercolor="#6b8fa3" class="FormTitle" id="FormTitle">
-                <tr>
-                    <td bgcolor="#4D595D" valign="top">
-                        <div>&nbsp;</div>
-                        <!-- Header with Title & Language Switcher -->
-                        <div class="formfonttitle" style="display:flex; justify-content:space-between; align-items:center;">
-                            <span id="ui_page_title" data-i18n="page_title">Split DNS — Условная маршрутизация DNS</span>
-                            <div style="display:flex; gap:6px;">
-                                <button type="button" class="lang-toggle-btn active" id="lang_btn_ru" onclick="setLanguage('ru');">RU</button>
-                                <button type="button" class="lang-toggle-btn" id="lang_btn_en" onclick="setLanguage('en');">EN</button>
-                            </div>
-                        </div>
-                        <div class="splitLine"></div>
-                        <div class="formfontdesc" id="ui_page_desc" data-i18n="page_desc">
-                            Условное перенаправление DNS-запросов (dnsmasq conditional forwarding) для национальных доменных зон, государственных сервисов и пользовательских правил на быстрые локальные резолверы без нарушения работы DNS Privacy (Stubby DoT) и VPN.
-                        </div>
-
-                        <!-- Status Overview Card -->
-                        <div class="splitdns-card">
-                            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-                                <div>
-                                    <span id="status_badge" class="splitdns-badge running">Активен</span>
-                                    &nbsp;
-                                    <span style="color:#63b9f3; font-weight:bold;"><span data-i18n="slot_label">Слот страницы:</span> <span id="active_slot_display">user3.asp</span></span>
-                                </div>
-                                <div style="display:flex; gap:14px; font-size:11px;">
-                                    <span><span data-i18n="active_rules_badge">Активных правил:</span> <b id="active_rules_val" style="color:#2ecc71;">0</b></span>
-                                    <span><span data-i18n="active_resolver_badge">Текущий резолвер:</span> <b id="active_resolver_val" style="color:#63b9f3;">77.88.8.8</b></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Section 1: Master Control & Presets -->
-                        <table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" bordercolor="#6b8fa3" class="FormTable">
-                        <thead>
-                            <tr>
-                                <td colspan="2" data-i18n="sec_general_title">Основные параметры и быстрые пресеты</td>
-                            </tr>
-                        </thead>
-                        <tr>
-                            <th width="30%">
-                                <span data-i18n="master_switch_label">Включить Split DNS</span>
-                                <span class="hint-icon" onclick="showTooltip('master_switch');">[?]</span>
-                            </th>
-                            <td>
-                                <input type="radio" name="splitdns_enable_radio" id="splitdns_enable_1" value="1" class="input" checked="checked" onclick="setMasterSwitch('1');" />
-                                <label for="splitdns_enable_1">Yes</label>
-                                &nbsp;&nbsp;
-                                <input type="radio" name="splitdns_enable_radio" id="splitdns_enable_0" value="0" class="input" onclick="setMasterSwitch('0');" />
-                                <label for="splitdns_enable_0">No</label>
-                                <span style="margin-left: 14px; color:#888888; font-size:11px;" data-i18n="master_switch_desc">Активирует условную маршрутизацию DNS-запросов через dnsmasq</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                <span data-i18n="preset_national_label">Национальные доменные зоны (.ru, .рф, .su, .москва, .рус, .tatar, .дети)</span>
-                                <span class="hint-icon" onclick="showTooltip('preset_national_zones');">[?]</span>
-                            </th>
-                            <td>
-                                <input type="checkbox" id="preset_national_cb" class="input" checked="checked" onchange="setDirty(true);" />
-                                <span style="margin-left:8px; color:#c9d6df; font-size:11px;" data-i18n="preset_national_desc">Перенаправляет запросы ко всем доменам в национальных зонах РФ на выбранный профиль</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                <span data-i18n="preset_gov_label">Государственные и социально значимые ресурсы РФ</span>
-                                <span class="hint-icon" onclick="showTooltip('preset_gov_services');">[?]</span>
-                            </th>
-                            <td>
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <div>
-                                        <input type="checkbox" id="preset_gov_cb" class="input" checked="checked" onchange="setDirty(true);" />
-                                        <span style="margin-left:8px; color:#c9d6df; font-size:11px;" data-i18n="preset_gov_desc">Перенаправляет порталы органов власти, Госуслуги, ФНС, банки, РЖД и реестры доверенных УЦ</span>
-                                    </div>
-                                    <input type="button" class="button_gen_sub" data-i18n-val="btn_view_gov_catalog" value="Показать каталог доменов (54)" onclick="showGovCatalog();" />
-                                </div>
-                            </td>
-                        </tr>
-                        </table>
-
-                        <!-- Section 2: DNS Upstream Profiles -->
-                        <table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" bordercolor="#6b8fa3" class="FormTable" style="margin-top:12px;">
-                        <thead>
-                            <tr>
-                                <td colspan="2" data-i18n="sec_profile_title">Профиль DNS-серверов (Апстрим)</td>
-                            </tr>
-                        </thead>
-                        <tr>
-                            <th width="30%">
-                                <span data-i18n="profile_selector_label">Выбор апстрим-резолвера</span>
-                                <span class="hint-icon" id="profile_tip_link" onclick="showTooltip('profile_yandex_basic');">[?]</span>
-                            </th>
-                            <td>
-                                <select id="splitdns_profile_select" class="input_option" style="width:340px;" onchange="onProfileChange();">
-                                    <option value="yandex_basic" data-i18n="prof_yandex_basic">Яндекс.DNS Базовый (77.88.8.8, 77.88.8.1)</option>
-                                    <option value="yandex_safe" data-i18n="prof_yandex_safe">Яндекс.DNS Безопасный (77.88.8.88, 77.88.8.2)</option>
-                                    <option value="yandex_family" data-i18n="prof_yandex_family">Яндекс.DNS Семейный (77.88.8.7, 77.88.8.3)</option>
-                                    <option value="nsdi" data-i18n="prof_nsdi">НСДИ / MSK-IX (195.208.4.1, 195.208.5.1)</option>
-                                    <option value="isp" data-i18n="prof_isp">DNS интернет-провайдера (Автоматически с WAN)</option>
-                                    <option value="custom" data-i18n="prof_custom">Свой DNS-сервер (Ручная настройка)</option>
-                                </select>
-                                <div id="wan_dns_notice" style="display:none; margin-top:6px; font-size:11px; color:#888;">
-                                    <span data-i18n="detected_wan_dns_label">Обнаруженный WAN DNS провайдера:</span> <span id="wan_dns_display" style="color:#63b9f3; font-family:monospace;">-</span>
-                                </div>
-                            </td>
-                        </tr>
-                        <tbody id="custom_dns_rows" style="display:none;">
-                        <tr>
-                            <th>
-                                <span data-i18n="custom_dns1_label">Основной DNS-сервер</span>
-                            </th>
-                            <td>
-                                <input type="text" id="custom_dns_primary_input" class="input_25_table" maxlength="32" data-i18n-ph="custom_dns_placeholder" placeholder="например, 77.88.8.8 или 192.168.1.53#5353" onchange="setDirty(true);" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                <span data-i18n="custom_dns2_label">Резервный DNS-сервер</span>
-                            </th>
-                            <td>
-                                <input type="text" id="custom_dns_secondary_input" class="input_25_table" maxlength="32" data-i18n-ph="custom_dns_placeholder" placeholder="например, 77.88.8.8 или 192.168.1.53#5353" onchange="setDirty(true);" />
-                            </td>
-                        </tr>
-                        </tbody>
-                        </table>
-
-                        <!-- Section 3: Custom Rules & Exceptions Table -->
-                        <table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" bordercolor="#6b8fa3" class="FormTable" style="margin-top:12px;">
-                        <thead>
-                            <tr>
-                                <td colspan="2" data-i18n="sec_rules_title">Пользовательские правила и исключения</td>
-                            </tr>
-                        </thead>
-                        <tr>
-                            <td colspan="2" style="background:#2F3A3E; padding:10px;">
-                                <div style="font-size:11px; color:#c9d6df; margin-bottom:8px;" data-i18n="sec_rules_desc">
-                                    Маршрутизация отдельных доменов и групп доменов на профиль, в обход пресетов (DoT 127.0.1.1) или на выделенный IP.
-                                </div>
-
-                                <!-- Add Rule Form Box -->
-                                <div style="background:#1F2D35; border:1px solid #6b8fa3; border-radius:4px; padding:10px; margin-bottom:10px;">
-                                    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
-                                        <div style="flex:2; min-width:200px;">
-                                            <input type="text" id="new_rule_domains" class="input_25_table" style="width:96%;" data-i18n-ph="input_domains_placeholder" placeholder="например, lkfl2.nalog.ru, corp.ru, mydomain.com" />
-                                        </div>
-                                        <div style="flex:1; min-width:180px;">
-                                            <select id="new_rule_target_type" class="input_option" style="width:100%;" onchange="onNewRuleTargetTypeChange();">
-                                                <option value="profile" data-i18n="target_type_profile">По умолчанию (из профиля выше)</option>
-                                                <option value="router" data-i18n="target_type_router">Штатный DNS роутера / DoT (127.0.1.1 — исключение)</option>
-                                                <option value="custom" data-i18n="target_type_custom">Свой IP (IPv4#порт)</option>
-                                            </select>
-                                        </div>
-                                        <div id="new_rule_target_ip_container" style="display:none; flex:1; min-width:130px;">
-                                            <input type="text" id="new_rule_target_ip" class="input_15_table" style="width:95%;" data-i18n-ph="input_custom_ip_placeholder" placeholder="192.168.50.2#5353" />
-                                        </div>
-                                        <div style="flex:1; min-width:150px;">
-                                            <input type="text" id="new_rule_comment" class="input_18_table" style="width:95%;" data-i18n-ph="input_comment_placeholder" placeholder="например, Налоговая / Исключение для работы" />
-                                        </div>
-                                        <div>
-                                            <input type="button" class="button_gen_sub" data-i18n-val="btn_add_rule" value="+ Добавить правило" onclick="addRuleFromInputs();" style="padding:4px 12px; font-weight:bold; background:#2e88c7; border-color:#5bb2ec;" />
-                                        </div>
-                                    </div>
-                                    <div style="display:flex; gap:12px; margin-top:6px; font-size:10px; color:#888;">
-                                        <span><span class="hint-icon" onclick="showTooltip('target_type_profile');">[?]</span> <span data-i18n="target_type_profile">По умолчанию</span></span>
-                                        <span><span class="hint-icon" onclick="showTooltip('target_type_router');">[?]</span> <span data-i18n="target_type_router">Штатный DNS / DoT (127.0.1.1)</span></span>
-                                        <span><span class="hint-icon" onclick="showTooltip('target_type_custom');">[?]</span> <span data-i18n="target_type_custom">Свой IP#порт</span></span>
-                                    </div>
-                                </div>
-
-                                <!-- Dynamic Custom Rules Table -->
-                                <table class="splitdns-table-rules">
-                                <thead>
-                                    <tr>
-                                        <th style="width:40px; text-align:center;" data-i18n="table_th_status">Вкл</th>
-                                        <th data-i18n="table_th_domains">Домены (через запятую/пробел)</th>
-                                        <th style="width:180px;" data-i18n="table_th_target_type">Целевой DNS</th>
-                                        <th style="width:140px;" data-i18n="table_th_target_ip">Сервер / IP#порт</th>
-                                        <th data-i18n="table_th_comment">Комментарий</th>
-                                        <th style="width:110px; text-align:center;" data-i18n="table_th_actions">Действие</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="custom_rules_tbody">
-                                    <tr class="table_empty_row">
-                                        <td colspan="6" style="text-align:center; padding:18px; color:#888888;" data-i18n="table_empty">
-                                            Пользовательские правила отсутствуют. Добавьте первое правило с помощью формы ниже.
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                        </table>
-
-                        <!-- Section 4: Live DNS Diagnostics -->
-                        <table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" bordercolor="#6b8fa3" class="FormTable" style="margin-top:12px;">
-                        <thead>
-                            <tr>
-                                <td colspan="2" data-i18n="sec_diag_title">Диагностика резолвинга (Live DNS Diagnostic)</td>
-                            </tr>
-                        </thead>
-                        <tr>
-                            <td colspan="2" style="background:#2F3A3E; padding:10px;">
-                                <div style="font-size:11px; color:#c9d6df; margin-bottom:8px;" data-i18n="sec_diag_desc">
-                                    Мгновенная проверка разрешения доменных имён через локальный dnsmasq роутера и настроенный апстрим.
-                                </div>
-                                <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                                    <input type="text" id="diag_domain" class="input_25_table" style="width:280px;" data-i18n-ph="diag_domain_placeholder" placeholder="lkfl2.nalog.ru" value="lkfl2.nalog.ru" />
-                                    <input type="button" id="btn_diag_test" class="button_gen" data-i18n-val="btn_test_dns" value="Проверить DNS" onclick="runLiveDnsDiagnostic();" />
-                                </div>
-                                <div style="margin-top:6px; font-size:11px;">
-                                    <span style="color:#888;" data-i18n="diag_quick_links">Быстрые примеры:</span>
-                                    <span class="quick-chip" onclick="setDiagDomain('lkfl2.nalog.ru');">lkfl2.nalog.ru</span>
-                                    <span class="quick-chip" onclick="setDiagDomain('gosuslugi.ru');">gosuslugi.ru</span>
-                                    <span class="quick-chip" onclick="setDiagDomain('cbr.ru');">cbr.ru</span>
-                                    <span class="quick-chip" onclick="setDiagDomain('sberbank.ru');">sberbank.ru</span>
-                                </div>
-
-                                <!-- Diagnostic Results Display Panel -->
-                                <div id="diag_result_card" class="splitdns-card" style="display:none; margin-top:10px;">
-                                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #34495e; padding-bottom:6px; margin-bottom:8px;">
-                                        <b><span data-i18n="diag_status_label">Статус:</span> <span id="diag_status_badge">-</span></b>
-                                        <span style="font-size:11px;"><span data-i18n="diag_time_label">Время отклика:</span> <b id="diag_res_latency" style="color:#f39c12;">-</b></span>
-                                    </div>
-                                    <div style="display:grid; grid-template-columns: 140px 1fr; gap:6px; font-size:12px;">
-                                        <span style="color:#888;" data-i18n="diag_domain_label">Тестируемый домен:</span>
-                                        <span id="diag_res_domain" style="font-weight:bold; color:#ecf0f1;">-</span>
-                                        <span style="color:#888;" data-i18n="diag_ips_label">Полученные IP-адреса:</span>
-                                        <span id="diag_res_ips" style="font-family:monospace; color:#2ecc71;">-</span>
-                                        <span style="color:#888;" data-i18n="diag_resolver_label">Использованный резолвер:</span>
-                                        <span id="diag_res_resolver" style="font-family:monospace; color:#63b9f3;">-</span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        </table>
-
-                        <!-- Section 5: Version & Update Manager -->
-                        <table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" bordercolor="#6b8fa3" class="FormTable" style="margin-top:12px;">
-                        <thead>
-                            <tr>
-                                <td colspan="2" data-i18n="sec_update_title">Версия и обновление аддона</td>
-                            </tr>
-                        </thead>
-                        <tr>
-                            <th width="30%">
-                                <span data-i18n="current_version_label">Текущая версия:</span>
-                            </th>
-                            <td>
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <div>
-                                        <b style="color:#63b9f3; font-size:13px;">v1.0.0</b>
-                                        &nbsp;&nbsp;
-                                        <span id="update_info_text" style="font-size:11px; color:#888;"></span>
-                                    </div>
-                                    <div>
-                                        <input type="button" id="btn_check_update" class="button_gen" data-i18n-val="btn_check_update" value="Проверить обновления" onclick="checkAddonUpdate();" />
-                                        <input type="button" id="btn_update_now" class="button_gen" data-i18n-val="btn_update_now" value="Обновить аддон" style="display:none; background:#27ae60; color:#fff;" />
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        </table>
-
-                        <!-- Section 6: Backup, Restore & Reset -->
-                        <table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" bordercolor="#6b8fa3" class="FormTable" style="margin-top:12px;">
-                        <thead>
-                            <tr>
-                                <td colspan="2" data-i18n="sec_maintenance_title">Резервное копирование и сброс</td>
-                            </tr>
-                        </thead>
-                        <tr>
-                            <td colspan="2" style="background:#2F3A3E; padding:10px;">
-                                <div style="font-size:11px; color:#c9d6df; margin-bottom:8px;" data-i18n="sec_maintenance_desc">
-                                    Экспорт и импорт правил в формате JSON, а также безопасный сброс настроек аддона.
-                                </div>
-                                <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                                    <input type="button" class="button_gen" data-i18n-val="btn_export_json" value="Экспорт настроек (JSON)" onclick="exportConfigurationBackup();" />
-                                    <input type="button" class="button_gen" data-i18n-val="btn_import_json" value="Импорт настроек (JSON)" onclick="triggerRestoreFileInput();" />
-                                    <input type="file" id="backup_restore_file" accept=".json" style="display:none;" onchange="handleRestoreFileSelect(this);" />
-                                    <input type="button" class="button_gen" data-i18n-val="btn_reset_settings" value="Сбросить настройки (Surgical Reset)" onclick="confirmSurgicalReset();" style="background:#8b0000; color:#ffffff;" />
-                                </div>
-                            </td>
-                        </tr>
-                        </table>
-
-                        <!-- Main Apply Button Area -->
-                        <div class="apply_gen" style="margin-top:16px;">
-                            <input class="button_gen" id="btn_apply_main" type="button" data-i18n-val="btn_apply" value="Применить" onclick="applyConfigurationForm();" />
-                        </div>
-                    </td>
-                </tr>
-                </table>
-            </td>
-        </tr>
-        </table>
-    </td>
-</tr>
-</table>
-</form>
-
-<div id="footer"></div>
-
-<!-- Generic Contextual Help / Catalog Modal Dialog -->
-<div id="generic_modal_overlay" class="modal-overlay" style="display:none;" onclick="closeTooltip();">
-    <div class="modal-content" onclick="event.stopPropagation();">
-        <div class="modal-title" id="generic_modal_title">Help</div>
-        <div class="modal-body" id="generic_modal_body"></div>
-        <div class="modal-footer">
-            <input type="button" class="button_gen" value="Close" onclick="closeTooltip();" />
-        </div>
-    </div>
-</div>
-
 </body>
 </html>
