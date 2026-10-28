@@ -146,18 +146,12 @@ sh /jffs/addons/splitdns/install.sh
 ### Релизы и история версий
 
 #### [v1.1.0](https://github.com/normannskald/asuswrt-merlin-splitdns/releases/tag/v1.1.0) — 2026-10-28
-- **Нативный интерфейс в стиле Asuswrt-Merlin**: таблица правил оформлена по образцу страницы DHCP-сервера (`FormTable_table` + `list_table`), блок диагностики — по образцу Netstat, блок резервного копирования — по образцу страницы системных настроек.
-- **Быстрые пресеты в единой таблице**: пресеты национальных зон и госсервисов перенесены в удобные кнопки подстановки в строку ввода правил перед нажатием кнопки `+`.
-- **Редактирование правил и Drag-and-Drop**: добавлено редактирование строк по кнопке с карандашом (`.edit_btn`) и перетаскивание строк мышью (`⋮⋮`) с приоритетом правил сверху вниз.
-- **Подсказки полей через overlib**: штатный стиль подсказок из `/help.js` с курсором `?` и открытием компактного окна по клику.
-- **Интеграция с языком прошивки**: автоматическое следование системному выпадающему списку `preferred_lang` в шапке прошивки.
-- **Контроль таймаута авто-разлогинивания**: точный учёт системного времени бездействия (`http_autologout`) с автоматическим перенаправлением на страницу логина.
+- **Обновлённый интерфейс**: дизайн таблицы правил, диагностики и управления настройками приведён в полное соответствие со стилем прошивки Asuswrt-Merlin.
+- **Удобные пресеты**: кнопки быстрой подстановки национальных зон и госсервисов прямо над таблицей правил.
+- **Управление правилами**: добавлено редактирование строк и изменение приоритета перетаскиванием (Drag-and-Drop).
 
 #### [v1.0.0](https://github.com/normannskald/asuswrt-merlin-splitdns/releases/tag/v1.0.0) — 2026-10-27
-- Первый стабильный релиз аддона.
-- Условная маршрутизация DNS (`dnsmasq`) для обхода гео-блокировок при включённом DoT/VPN.
-- Динамическое выделение слотов страниц (`am_get_webui_page`) и бесконфликтное соседство с AmneziaWG и XrayUI.
-- 6 профилей DNS, исключения из DoT (`127.0.1.1`), резервное копирование и хирургический сброс настроек.
+- Первый релиз аддона. Условная маршрутизация DNS (`dnsmasq`) для обхода гео-блокировок при включённом DoT/VPN, 6 профилей DNS, веб-интерфейс и диагностика.
 
 ---
 
@@ -292,18 +286,12 @@ and select option `5) Uninstall Addon`.
 ### Releases & Changelog
 
 #### [v1.1.0](https://github.com/normannskald/asuswrt-merlin-splitdns/releases/tag/v1.1.0) — 2026-10-28
-- **Native Asuswrt-Merlin UI Style**: rules table redesigned in the style of DHCP Server (`FormTable_table` + `list_table`), diagnostics redesigned in the style of Netstat, backup/restore in the style of Administration settings.
-- **Unified Rules Table with Quick Presets**: National Zones and Russian Gov/Social presets available as quick-fill helper buttons directly above the table before clicking `+`.
-- **In-Place Rule Editing & Drag-and-Drop**: edit existing rules via the pencil icon (`.edit_btn`) and reorder rules via drag handles (`⋮⋮`) with top-to-bottom rule precedence.
-- **Native Tooltips via overlib**: restored native Asuswrt tooltip styling with `?` hover cursor and compact dialogs via `/help.js`.
-- **Firmware Language Sync**: automatically adapts to the stock `preferred_lang` dropdown in the firmware header.
-- **Session Timeout Enforcement**: wall-clock idle timer tracking `http_autologout` with automatic redirect to the login screen.
+- **Redesigned Web UI**: rules table, diagnostics, and settings management now adhere to native Asuswrt-Merlin UI guidelines.
+- **Quick-Fill Presets**: one-click helper buttons for National Zones and Gov/Social domains right above the rules table.
+- **Rule Management**: added in-place rule editing and drag-and-drop rule priority reordering.
 
 #### [v1.0.0](https://github.com/normannskald/asuswrt-merlin-splitdns/releases/tag/v1.0.0) — 2026-10-27
-- Initial release of Split DNS for Asuswrt-Merlin.
-- Conditional DNS routing (`dnsmasq`) for bypassing geo-blocks while preserving global DoT/VPN.
-- Dynamic slot allocation (`am_get_webui_page`) with zero conflict against AmneziaWG, XrayUI, and others.
-- 6 DNS profiles, router DoT exceptions (`127.0.1.1`), backup/restore, and surgical reset.
+- Initial release. Conditional DNS forwarding (`dnsmasq`) for bypassing geo-blocks with DoT/VPN, 6 DNS profiles, native Web UI, and diagnostics.
 
 ---
 
