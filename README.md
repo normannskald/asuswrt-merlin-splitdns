@@ -8,7 +8,7 @@
 **[🇷🇺 Русская документация](#-русская-документация) | [🇬🇧 English Documentation](#-english-documentation)**
 
 <p align="center">
-  <img src="assets/splitdns_webui.png" alt="Split DNS Web UI on Asuswrt-Merlin" width="700" />
+  <img src="assets/splitdns_webui.png" alt="Split DNS Web UI on Asuswrt-Merlin" />
 </p>
 
 ---
