@@ -547,6 +547,8 @@ class TestTier1FeatureCoverage(unittest.TestCase):
         self.assertIn('id="dns_profiles_table"', asp_content, "Missing #dns_profiles_table in Web UI")
         self.assertIn('id="profile_modal"', asp_content, "Missing #profile_modal in Web UI")
         self.assertIn('id="profile_modal_bg"', asp_content, "Missing #profile_modal_bg in Web UI")
+        self.assertIn('splitdns-modal-divider', asp_content, "Missing .splitdns-modal-divider in Web UI")
+        self.assertIn('#overDiv', asp_content, "Missing #overDiv z-index styling in Web UI")
         self.assertIn('openProfileModal', asp_content, "Missing openProfileModal() function in Web UI")
         self.assertIn('saveProfileFromModal', asp_content, "Missing saveProfileFromModal() function in Web UI")
         self.assertIn('onModalPresetChange', asp_content, "Missing onModalPresetChange() function in Web UI")

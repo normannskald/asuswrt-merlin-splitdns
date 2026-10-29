@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v1.2.1] — 2026-10-29
+
+### 🇷🇺 Русский
+- **Фикс модального окна**: подсказки к полям (hint) теперь корректно отображаются поверх модального окна.
+- **Фикс разделительной линии**: ширина линии в модальном окне выровнена по ширине формы.
+
+### 🇬🇧 English
+- **Modal dialog fix**: field help tooltips now render properly on top of the modal window.
+- **Divider line fix**: modal header separator line now fits within the dialog width.
+
+---
+
 ## [v1.2.0] — 2026-10-29
 
 ### 🇷🇺 Русский

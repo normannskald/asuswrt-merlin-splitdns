@@ -112,6 +112,15 @@
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
     padding: 16px;
 }
+.splitdns-modal-divider {
+    width: 100%;
+    height: 1px;
+    background-color: #5A6A70;
+    margin-bottom: 12px;
+}
+#overDiv {
+    z-index: 20002 !important;
+}
 /* ]]> */
 </style>
 </head>
@@ -123,7 +132,7 @@
 <div id="profile_modal_bg" class="popup_bg" style="display:none; z-index:10000;"></div>
 <div id="profile_modal" class="splitdns-modal-box" style="display:none;">
     <div class="formfonttitle" style="font-size:14px; margin-bottom:8px;" data-i18n="modal_prof_title">Добавление профиля DNS</div>
-    <div class="splitLine" style="margin-bottom:12px;"></div>
+    <div class="splitdns-modal-divider"></div>
     <table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" bordercolor="#6b8fa3" class="FormTable">
         <tbody>
             <tr>
@@ -244,7 +253,7 @@
                                                         <a class="hintstyle" href="javascript:void(0);" onclick="showHint('hint_version');"><span data-i18n="lbl_version">Версия аддона</span></a>
                                                     </th>
                                                     <td>
-                                                        <span id="ui_current_version" style="font-weight: bold; color: #FFFFFF;">v1.2.0</span>
+                                                        <span id="ui_current_version" style="font-weight: bold; color: #FFFFFF;">v1.2.1</span>
                                                         <span id="ui_update_badge" class="splitdns-badge" style="display: none;"></span>
                                                         <input type="button" class="button_gen" id="btn_check_update" value="Проверить обновление" data-i18n-val="btn_check_update" onclick="checkAddonUpdate();" style="margin-left: 10px;" />
                                                         <input type="button" class="button_gen" id="btn_do_update" value="Обновить" data-i18n-val="btn_do_update" onclick="runAddonUpdate();" style="margin-left: 6px; display: none;" />
@@ -693,7 +702,7 @@ var dragSrcIndex = null;
 var authStartTs = Date.now();
 var autologoutMinutes = 0;
 var routerStatus = {
-    version: "1.2.0",
+    version: "1.2.1",
     enabled: 1,
     service_status: "running",
     wan_dns1: "77.88.8.8",
@@ -760,7 +769,12 @@ function showHint(hintKey) {
         }
     }
     if (typeof overlib === "function") {
-        return overlib(caption, HAUTO, VAUTO);
+        var ret = overlib(caption, HAUTO, VAUTO);
+        var od = document.getElementById("overDiv");
+        if (od) {
+            od.style.zIndex = "20002";
+        }
+        return ret;
     }
     return false;
 }
@@ -1067,6 +1081,7 @@ function getProfileById(id) {
 }
 
 function openProfileModal() {
+    if (typeof nd === "function") nd();
     var bg = document.getElementById("profile_modal_bg");
     var modal = document.getElementById("profile_modal");
     var presetSel = document.getElementById("modal_prof_preset");
@@ -1087,6 +1102,7 @@ function openProfileModal() {
 }
 
 function closeProfileModal() {
+    if (typeof nd === "function") nd();
     var bg = document.getElementById("profile_modal_bg");
     var modal = document.getElementById("profile_modal");
     if (bg && modal) {

@@ -8,7 +8,7 @@
 
 set -e
 
-VERSION="1.2.0"
+VERSION="1.2.1"
 GITHUB_REPO="normannskald/asuswrt-merlin-splitdns"
 RAW_URL="https://raw.githubusercontent.com/${GITHUB_REPO}/main"
 ADDON_DIR="/jffs/addons/splitdns"
@@ -118,7 +118,7 @@ DNS_SECONDARY="77.88.8.1"
 CUSTOM_DNS_PRIMARY=""
 CUSTOM_DNS_SECONDARY=""
 SLOT="none"
-VERSION="1.2.0"
+VERSION="1.2.1"
 LAST_UPDATE=""
 EOF
         chmod 644 "${ADDON_DIR}/splitdns.conf"
