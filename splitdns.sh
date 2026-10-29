@@ -127,9 +127,11 @@ load_config() {
     SLOT="none"
     RULES_COUNT="0"
 
+    local script_ver="$VERSION"
     if [ -f "$CONF_FILE" ]; then
         . "$CONF_FILE"
     fi
+    VERSION="$script_ver"
 
     if [ ! -f "$PROFILES_FILE" ]; then
         mkdir -p "$ADDON_DIR"
