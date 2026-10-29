@@ -536,6 +536,46 @@ class TestTier1FeatureCoverage(unittest.TestCase):
         for req in guide_requirements:
             self.assertIn(req, guide)
 
+    # --- Feature 17: v1.2.0 Architecture & Web UI Contracts ---
+    def test_v120_profiles_and_multiline_support_in_webui(self):
+        """Verifies v1.2.0 Web UI features: profiles table, modal dialog, multiline textareas, and silent diagnostic."""
+        asp_path = os.path.join(PROJECT_ROOT, "splitdns_page.asp")
+        with open(asp_path, "r", encoding="utf-8") as f:
+            asp_content = f.read()
+
+        # Profiles block and modal
+        self.assertIn('id="dns_profiles_table"', asp_content, "Missing #dns_profiles_table in Web UI")
+        self.assertIn('id="profile_modal"', asp_content, "Missing #profile_modal in Web UI")
+        self.assertIn('id="profile_modal_bg"', asp_content, "Missing #profile_modal_bg in Web UI")
+        self.assertIn('openProfileModal', asp_content, "Missing openProfileModal() function in Web UI")
+        self.assertIn('saveProfileFromModal', asp_content, "Missing saveProfileFromModal() function in Web UI")
+        self.assertIn('onModalPresetChange', asp_content, "Missing onModalPresetChange() function in Web UI")
+
+        # Multiline inputs for rules
+        self.assertIn('<textarea id="new_rule_domains"', asp_content)
+        self.assertIn('<textarea id="new_rule_comment"', asp_content)
+
+        # Silent diagnostic without page reload
+        self.assertIn('runLiveDomainTest', asp_content)
+        self.assertIn('isSilent', asp_content, "Diagnostic should run silently to avoid showLoading page reload")
+
+        # Copyright footer
+        self.assertIn('2026 normannskald', asp_content)
+        self.assertIn('MIT License', asp_content)
+
+    def test_v120_backend_profiles_handling(self):
+        """Verifies v1.2.0 backend features: profiles.json support, transient profiles parsing, and status export."""
+        splitdns_sh_path = os.path.join(PROJECT_ROOT, "splitdns.sh")
+        with open(splitdns_sh_path, "r", encoding="utf-8") as f:
+            sh_content = f.read()
+
+        self.assertIn('PROFILES_FILE="$ADDON_DIR/profiles.json"', sh_content)
+        self.assertIn('splitdns_profiles_b64', sh_content)
+        self.assertIn('generate_dnsmasq_rules()', sh_content)
+        self.assertIn('prof_dns1', sh_content)
+        self.assertIn('update_status()', sh_content)
+        self.assertIn('"profiles":', sh_content)
+
 
 if __name__ == "__main__":
     unittest.main()

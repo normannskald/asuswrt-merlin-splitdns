@@ -8,7 +8,7 @@
 
 set -e
 
-VERSION="1.1.0"
+VERSION="1.2.0"
 GITHUB_REPO="normannskald/asuswrt-merlin-splitdns"
 RAW_URL="https://raw.githubusercontent.com/${GITHUB_REPO}/main"
 ADDON_DIR="/jffs/addons/splitdns"
@@ -118,7 +118,7 @@ DNS_SECONDARY="77.88.8.1"
 CUSTOM_DNS_PRIMARY=""
 CUSTOM_DNS_SECONDARY=""
 SLOT="none"
-VERSION="1.1.0"
+VERSION="1.2.0"
 LAST_UPDATE=""
 EOF
         chmod 644 "${ADDON_DIR}/splitdns.conf"
@@ -127,6 +127,13 @@ EOF
     if [ ! -f "${ADDON_DIR}/rules.json" ]; then
         echo "[]" > "${ADDON_DIR}/rules.json"
         chmod 644 "${ADDON_DIR}/rules.json"
+    fi
+
+    if [ ! -f "${ADDON_DIR}/profiles.json" ]; then
+        cat << 'EOF' > "${ADDON_DIR}/profiles.json"
+[{"id": "prof_1", "name": "Яндекс.DNS Базовый", "dns1": "77.88.8.8", "dns2": "77.88.8.1"}]
+EOF
+        chmod 644 "${ADDON_DIR}/profiles.json"
     fi
 
     # Startup hook in services-start

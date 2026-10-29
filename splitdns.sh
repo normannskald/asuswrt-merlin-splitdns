@@ -13,6 +13,7 @@ TAG="splitdns"
 ADDON_DIR="/jffs/addons/splitdns"
 CONF_FILE="$ADDON_DIR/splitdns.conf"
 RULES_FILE="$ADDON_DIR/rules.json"
+PROFILES_FILE="$ADDON_DIR/profiles.json"
 DNSMASQ_CONF="$ADDON_DIR/dnsmasq_splitdns.conf"
 DNSMASQ_ADD="/jffs/configs/dnsmasq.conf.add"
 POSTCONF_SCRIPT="/jffs/scripts/dnsmasq.postconf"
@@ -22,7 +23,7 @@ STATUS_FILE="/www/user/splitdns_status.htm"
 PAGE_SOURCE="$ADDON_DIR/splitdns_page.asp"
 LOCKFILE="/tmp/.splitdns_menutree.lock"
 GLOBAL_LOCK="/tmp/.splitdns_lock"
-VERSION="1.1.0"
+VERSION="1.2.0"
 GITHUB_REPO="normannskald/asuswrt-merlin-splitdns"
 RAW_URL="https://raw.githubusercontent.com/${GITHUB_REPO}/main"
 ROUTER_DOT_IP="127.0.1.1"
@@ -129,6 +130,12 @@ load_config() {
     if [ -f "$CONF_FILE" ]; then
         . "$CONF_FILE"
     fi
+
+    if [ ! -f "$PROFILES_FILE" ]; then
+        mkdir -p "$ADDON_DIR"
+        printf '%s\n' '[{"id": "prof_1", "name": "Яндекс.DNS Базовый", "dns1": "77.88.8.8", "dns2": "77.88.8.1"}]' > "$PROFILES_FILE"
+        chmod 644 "$PROFILES_FILE" 2>/dev/null || true
+    fi
 }
 
 save_config() {
@@ -189,6 +196,23 @@ parse_transient_settings() {
                 CUSTOM_DNS_SECONDARY=$(echo "$val" | tr -cd '0-9a-fA-F.:#')
                 config_changed=1
                 ;;
+            splitdns_profiles_b64)
+                local b64_p=$(echo "$val" | tr -cd 'A-Za-z0-9+/=')
+                if [ -n "$b64_p" ]; then
+                    if which base64 >/dev/null 2>&1; then
+                        echo "$b64_p" | base64 -d > "$PROFILES_FILE" 2>/dev/null || true
+                    elif which openssl >/dev/null 2>&1; then
+                        echo "$b64_p" | openssl base64 -d -A > "$PROFILES_FILE" 2>/dev/null || true
+                    fi
+                fi
+                config_changed=1
+                ;;
+            splitdns_profiles_json)
+                if [ -n "$val" ]; then
+                    echo "$val" > "$PROFILES_FILE"
+                fi
+                config_changed=1
+                ;;
             splitdns_rules_b64)
                 local b64_data=$(echo "$val" | tr -cd 'A-Za-z0-9+/=')
                 if [ -n "$b64_data" ]; then
@@ -244,7 +268,38 @@ EOF
     # Custom User Rules & Exceptions via Awk (top-to-bottom priority)
     if [ -f "$RULES_FILE" ] && [ -s "$RULES_FILE" ]; then
         echo "# Custom User Rules & Exceptions" >> "$tmp_conf"
-        awk -v dns1="$p_dns1" -v dns2="$p_dns2" -v dot_ip="$ROUTER_DOT_IP" '
+        awk -v dot_ip="$ROUTER_DOT_IP" -v prof_file="$PROFILES_FILE" '
+        BEGIN {
+            if (prof_file != "") {
+                p_buf = ""
+                while ((getline p_line < prof_file) > 0) {
+                    p_buf = p_buf " " p_line
+                }
+                close(prof_file)
+                while (match(p_buf, /[{][^}]+[}]/)) {
+                    p_obj = substr(p_buf, RSTART + 1, RLENGTH - 2)
+                    p_buf = substr(p_buf, RSTART + RLENGTH)
+                    p_id = ""; p_dns1 = ""; p_dns2 = ""
+                    if (match(p_obj, /"id"[ \t]*:[ \t]*"[^"]*"/)) {
+                        val = substr(p_obj, RSTART, RLENGTH); sub(/.*:[ \t]*"/, "", val); sub(/"$/, "", val); p_id = val
+                    }
+                    if (match(p_obj, /"dns1"[ \t]*:[ \t]*"[^"]*"/)) {
+                        val = substr(p_obj, RSTART, RLENGTH); sub(/.*:[ \t]*"/, "", val); sub(/"$/, "", val); p_dns1 = val
+                    }
+                    if (match(p_obj, /"dns2"[ \t]*:[ \t]*"[^"]*"/)) {
+                        val = substr(p_obj, RSTART, RLENGTH); sub(/.*:[ \t]*"/, "", val); sub(/"$/, "", val); p_dns2 = val
+                    }
+                    if (p_id != "") {
+                        prof_dns1[p_id] = p_dns1
+                        prof_dns2[p_id] = p_dns2
+                        if (first_prof_dns1 == "") {
+                            first_prof_dns1 = p_dns1
+                            first_prof_dns2 = p_dns2
+                        }
+                    }
+                }
+            }
+        }
         {
             buffer = buffer " " $0
         }
@@ -271,11 +326,17 @@ EOF
                 ip1 = ""; ip2 = ""
                 if (target_type == "router") {
                     ip1 = dot_ip
+                } else if (prof_dns1[target_type] != "") {
+                    ip1 = prof_dns1[target_type]
+                    ip2 = prof_dns2[target_type]
                 } else if (target_type == "custom" && target_ip != "") {
                     ip1 = target_ip
+                } else if (first_prof_dns1 != "") {
+                    ip1 = first_prof_dns1
+                    ip2 = first_prof_dns2
                 } else {
-                    ip1 = dns1
-                    ip2 = dns2
+                    ip1 = "77.88.8.8"
+                    ip2 = "77.88.8.1"
                 }
                 if (ip1 == "") continue
                 gsub(/\\[tnr]/, " ", domains)
@@ -478,6 +539,11 @@ update_status() {
         r_json=$(cat "$RULES_FILE" 2>/dev/null || echo "[]")
     fi
 
+    local p_json='[{"id": "prof_1", "name": "Яндекс.DNS Базовый", "dns1": "77.88.8.8", "dns2": "77.88.8.1"}]'
+    if [ -f "$PROFILES_FILE" ] && [ -s "$PROFILES_FILE" ]; then
+        p_json=$(cat "$PROFILES_FILE" 2>/dev/null || echo "$p_json")
+    fi
+
     local tmp_stat="/tmp/splitdns_status.tmp.$$"
     cat << EOF > "$tmp_stat"
 {
@@ -491,6 +557,7 @@ update_status() {
   "custom_dns_secondary": "${CUSTOM_DNS_SECONDARY:-}",
   "wan_dns1": "$w1",
   "wan_dns2": "$w2",
+  "profiles": $p_json,
   "rules": $r_json,
   "dnsmasq_running": $running,
   "dnsmasq_pid": ${pid:-0},
@@ -634,7 +701,9 @@ cmd_reset() {
     SLOT="${SLOT:-none}"
     save_config
 
-    # 4. Reset rules to empty JSON array
+    # 4. Reset rules and profiles to defaults
+    printf '%s\n' '[{"id": "prof_1", "name": "Яндекс.DNS Базовый", "dns1": "77.88.8.8", "dns2": "77.88.8.1"}]' > "$PROFILES_FILE"
+    chmod 644 "$PROFILES_FILE" 2>/dev/null || true
     echo "[]" > "$RULES_FILE"
     chmod 644 "$RULES_FILE" 2>/dev/null || true
 
@@ -676,6 +745,7 @@ cmd_uninstall() {
     safe_restart_dnsmasq
     rm -rf "$ADDON_DIR"
     rm -f /opt/bin/splitdns
+    rm -f "$PROFILES_FILE"
     log "Split DNS completely uninstalled."
 }
 
