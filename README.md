@@ -15,17 +15,17 @@
 
 ## 🇷🇺 Русская документация
 
-**Split DNS для Asuswrt-Merlin** — это аддон с полноценным веб-интерфейсом в нативном стиле прошивки Asuswrt-Merlin, предназначенный для гибкой условной маршрутизации DNS-запросов (`dnsmasq conditional forwarding`).
+**Split DNS для Asuswrt-Merlin** — это аддон для роутеров ASUS на прошивке MerlinWRT, предназначенный для гибкой условной маршрутизации DNS-запросов (`dnsmasq conditional forwarding`).
 
 ### Проблема, которую решает аддон
 
-При использовании на роутере шифрованного DNS (**DNS Privacy / DNS-over-TLS / Stubby** с зарубежными серверами Cloudflare `1.1.1.1`, Quad9 `9.9.9.9`, Google `8.8.8.8`) или VPN-туннелей многие российские государственные, банковские и региональные сайты (например, `lkfl2.nalog.ru`, `gosuslugi.ru`, `cbr.ru`, `mos.ru`) перестают открываться или отвечают ошибкой `SERVFAIL` / `DNS_PROBE_FINISHED_NXDOMAIN`.
+При использовании публичных DNS серверов (Cloudflare `1.1.1.1`, Quad9 `9.9.9.9`, Google `8.8.8.8`) или VPN-туннелей многие российские государственные, банковские и региональные сайты (например, `lkfl2.nalog.ru`, `gosuslugi.ru`, `cbr.ru`, `mos.ru`) перестают открываться или отвечают ошибкой `SERVFAIL` / `DNS_PROBE_FINISHED_NXDOMAIN`.
 
 Это происходит потому, что авторитетные NS-серверы ряда российских доменов блокируют или сбрасывают запросы, поступающие с зарубежных IP-адресов публичных DoT-резолверов.
 
-**Split DNS** решает эту проблему на уровне роутера без отключения глобального DNS-over-TLS:
+**Split DNS** решает эту проблему на уровне роутера без изменения системных настроек DNS:
 - Все мировые сайты продолжают разрешаться через зашифрованный **DNS-over-TLS (Stubby)** или VPN.
-- Запросы к выбранным национальным доменным зонам (`.ru`, `.рф`, `.su` и др.), государственным сервисам и вашим собственным правилам направляются напрямую на быстрые отечественные DNS-серверы (**Яндекс.DNS**, **НСДИ / MSK-IX** или профили провайдера).
+- Запросы к выбранным национальным доменным зонам (`.ru`, `.рф`, `.su` и др.), государственным сервисам и вашим собственным правилам направляются напрямую на выбранные вами DNS-серверы (**Яндекс.DNS**, **НСДИ / MSK-IX** или профили провайдера).
 
 ---
 
@@ -78,12 +78,12 @@ sh /jffs/addons/splitdns/install.sh
 
 ### Руководство по использованию
 
-Веб-интерфейс Split DNS полностью интегрирован в прошивку роутера, оформлен по официальным гайдлайнам Asuswrt и включает следующие возможности:
+Веб-интерфейс Split DNS встраивается в прошивку роутера, оформлен по официальным гайдлайнам Asuswrt и включает следующие возможности:
 
 #### 1. Управление профилями DNS («Профили DNS»)
 В отдельном блоке **Профили DNS** настраивается список резолверов для правил:
 - **Таблица профилей**: отображает название каждого профиля, назначенные DNS-серверы (IPv4, IPv6 с поддержкой нестандартных портов вида `#5353`) и кнопку удаления.
-- **Добавление профиля через модальное окно**: нажатие на кнопку **Добавить профиль** открывает нативное диалоговое окно в стиле Asuswrt.
+- **Добавление профиля через модальное окно**: нажатие на кнопку **Добавить профиль** открывает диалоговое окно.
 - **Быстрые пресеты в один клик**:
   - *Яндекс.DNS Базовый* (`77.88.8.8`, `77.88.8.1`)
   - *Яндекс.DNS Безопасный* (`77.88.8.88`, `77.88.8.2`)
@@ -98,8 +98,7 @@ sh /jffs/addons/splitdns/install.sh
 
 #### 2. Пользовательские правила и исключения
 Правила маршрутизации задаются в таблице **Пользовательские правила и исключения**:
-- **Многострочный ввод доменов и комментариев**: большие списки доменов и примечания легко вводить и редактировать в удобных полях `textarea`.
-- **Интеллектуальная валидация**: поддерживается разделение доменов любыми символами — переносами строк, запятыми, точками с запятой, табуляцией и пробелами. Кириллические домены IDN автоматически конвертируются в Punycode.
+- **Валидация доменов**: поддерживается разделение доменов любыми символами — переносами строк, запятыми, точками с запятой, табуляцией и пробелами. Кириллические домены IDN автоматически конвертируются в Punycode.
 - **Быстрые пресеты доменов**:
   - `Национальные доменные зоны`: заполняет поле списком `ru, рф, su, москва, рус, tatar, дети`.
   - `Гос. и соц. ресурсы РФ`: заполняет поле списком из 54 ключевых доменов (Госуслуги, ФНС, Банк России, суды, ведомства, банки, транспорт).
@@ -114,15 +113,13 @@ sh /jffs/addons/splitdns/install.sh
 - **Временное отключение**: чекбокс в колонке «Вкл» позволяет выключить правило без его удаления из списка.
 
 #### 4. Диагностика резолвинга
-Раздел оформлен в стиле *Сетевые утилиты → Netstat*:
 - Введите домен (по умолчанию подставлен `lkfl2.nalog.ru`) и нажмите **Проверить**.
-- Запрос выполняется в фоне без ложной перезагрузки веб-страницы. Роутер выводит статус разрешения, использованный DNS-сервер, список полученных IP-адресов и точное время отклика в миллисекундах.
+- Роутер выводит статус разрешения, использованный DNS-сервер, список полученных IP-адресов и точное время отклика в миллисекундах.
 
 #### 5. Управление настройками аддона
-Блок расположен в нижней части страницы в стиле *Администрирование → Восстановление/Сохранение настроек*:
 - **Сохранение настроек**: скачивает все текущие параметры, профили DNS и таблицу правил в JSON-файл резервной копии.
 - **Восстановление настроек**: загружает и валидирует конфигурацию из ранее сохранённого JSON-файла.
-- **Заводские настройки (Хирургический сброс)**: безопасно очищает только настройки и правила Split DNS, не затрагивая конфигурацию роутера или соседних аддонов.
+- **Заводские настройки**: безопасно сбрасывает настройки и правила Split DNS, не затрагивая конфигурацию роутера или соседних аддонов.
 
 #### 6. Обновление аддона
 - Кнопка **Проверить обновление** сравнивает текущую установленную версию с последней версией в репозитории GitHub.
@@ -139,7 +136,7 @@ sh /jffs/addons/splitdns/install.sh
 | `/jffs/addons/splitdns/splitdns.sh stop` | Отключить правила Split DNS от `dnsmasq` и безопасно перезапустить `dnsmasq` |
 | `/jffs/addons/splitdns/splitdns.sh restart` | Полный перезапуск службы Split DNS |
 | `/jffs/addons/splitdns/splitdns.sh apply` | Применить текущие настройки и перегенерировать правила `dnsmasq` |
-| `/jffs/addons/splitdns/splitdns.sh reset` | Выполнить хирургический сброс настроек Split DNS к начальным значениям |
+| `/jffs/addons/splitdns/splitdns.sh reset` | Выполнить сброс настроек Split DNS к начальным значениям |
 | `/jffs/addons/splitdns/splitdns.sh test_domain lkfl2.nalog.ru` | Выполнить диагностический DNS-запрос и вывести результат в формате JSON |
 | `/jffs/addons/splitdns/splitdns.sh check_update` | Проверить наличие новой версии на GitHub (выводит JSON) |
 | `/jffs/addons/splitdns/splitdns.sh update` | Скачать и установить последнюю версию с GitHub с сохранением настроек |
@@ -147,36 +144,23 @@ sh /jffs/addons/splitdns/install.sh
 
 ---
 
-### Релизы и история версий
+### История изменений (Changelog)
 
-#### [v1.2.0](https://github.com/normannskald/asuswrt-merlin-splitdns/releases/tag/v1.2.0) — 2026-10-29
-- **Блок «Профили DNS»**: возможность создавать неограниченное число апстрим-профилей с модальным окном добавления, поддержкой IPv4, IPv6, портов и готовыми пресетами популярных DNS-провайдеров.
-- **Многострочный ввод доменов и комментариев**: поля ввода правил расширены до многострочных с гибкой валидацией любых разделителей.
-- **Маршрутизация правил**: выбор конкретного профиля DNS либо «Системного DNS роутера» (`127.0.1.1`) в качестве исключения из Split DNS.
-- **Бесшовная диагностика**: фоновый запуск теста резолвинга без перезагрузки веб-страницы.
-- **Рефакторинг интерфейса**: перемещение блока настроек в нижнюю часть страницы и добавление копирайта проекта.
-
-#### [v1.1.0](https://github.com/normannskald/asuswrt-merlin-splitdns/releases/tag/v1.1.0) — 2026-10-28
-- **Обновлённый интерфейс**: дизайн таблицы правил, диагностики и управления настройками приведён в полное соответствие со стилем прошивки Asuswrt-Merlin.
-- **Удобные пресеты**: кнопки быстрой подстановки национальных зон и госсервисов прямо над таблицей правил.
-- **Управление правилами**: добавлено редактирование строк и изменение приоритета перетаскиванием (Drag-and-Drop).
-
-#### [v1.0.0](https://github.com/normannskald/asuswrt-merlin-splitdns/releases/tag/v1.0.0) — 2026-10-27
-- Первый релиз аддона. Условная маршрутизация DNS (`dnsmasq`) для обхода гео-блокировок при включённом DoT/VPN, 6 профилей DNS, веб-интерфейс и диагностика.
+История версий и подробный список изменений доступны в файле [CHANGELOG.md](CHANGELOG.md) и в разделе [Релизы GitHub](https://github.com/normannskald/asuswrt-merlin-splitdns/releases).
 
 ---
 
 ## 🇬🇧 English Documentation
 
-**Split DNS for Asuswrt-Merlin** is an addon with a full Web UI designed in the native Asuswrt-Merlin style for flexible conditional DNS routing (`dnsmasq conditional forwarding`).
+**Split DNS for Asuswrt-Merlin** is an addon for ASUS routers running MerlinWRT firmware, designed for flexible conditional DNS routing (`dnsmasq conditional forwarding`).
 
 ### Problem Statement
 
-When **DNS Privacy (DNS-over-TLS / Stubby)** with international resolvers (Cloudflare `1.1.1.1`, Quad9 `9.9.9.9`, Google `8.8.8.8`) or VPN tunnels are active on an Asuswrt-Merlin router, many Russian national, government, banking, and regional domains (such as `lkfl2.nalog.ru`, `gosuslugi.ru`, `cbr.ru`, `mos.ru`) fail to resolve (`SERVFAIL` / timeout) because their authoritative nameservers drop queries originating from foreign resolver IP addresses.
+When using public DNS servers (Cloudflare `1.1.1.1`, Quad9 `9.9.9.9`, Google `8.8.8.8`) or VPN tunnels on your router, many Russian national, government, banking, and regional domains (such as `lkfl2.nalog.ru`, `gosuslugi.ru`, `cbr.ru`, `mos.ru`) fail to resolve (`SERVFAIL` / timeout) because their authoritative nameservers drop queries originating from foreign resolver IP addresses.
 
-**Split DNS** solves this cleanly at the router level without disabling global DNS-over-TLS:
+**Split DNS** solves this cleanly at the router level without modifying system DNS settings:
 - Global traffic continues resolving through your encrypted **DNS-over-TLS (Stubby)** or VPN configuration.
-- National TLD zones (`.ru`, `.рф`, `.su`, etc.), government services, and custom domain rules are selectively routed to fast domestic DNS resolvers (**Yandex.DNS**, **NSDI / MSK-IX**, or ISP WAN profiles).
+- National TLD zones (`.ru`, `.рф`, `.su`, etc.), government services, and custom domain rules are selectively routed to your chosen DNS resolvers (**Yandex.DNS**, **NSDI / MSK-IX**, or ISP WAN profiles).
 
 ---
 
@@ -229,12 +213,12 @@ and select option `5) Uninstall Addon`.
 
 ### Usage Guide
 
-The Split DNS Web UI is fully integrated into the firmware, adhering strictly to Asuswrt UI design guidelines:
+The Split DNS Web UI integrates into the router firmware and provides the following features:
 
 #### 1. DNS Profiles Management ("DNS Profiles")
 Configure upstream DNS resolvers in the dedicated **DNS Profiles** section:
 - **Profiles Table**: lists each profile name, configured DNS server addresses (IPv4, IPv6 with optional `#port` notation), and delete action.
-- **Add Profile Modal**: clicking **Add Profile** opens a native Asuswrt dark popup dialog.
+- **Add Profile Modal**: clicking **Add Profile** opens a popup dialog.
 - **One-Click Popular Presets**:
   - *Yandex.DNS Basic* (`77.88.8.8`, `77.88.8.1`)
   - *Yandex.DNS Safe* (`77.88.8.88`, `77.88.8.2`)
@@ -249,8 +233,7 @@ Configure upstream DNS resolvers in the dedicated **DNS Profiles** section:
 
 #### 2. Custom Rules & Exceptions
 Routing rules are managed in the **Custom Rules & Exceptions** table:
-- **Multiline Inputs**: comfortably view and edit large lists of domains and comments using multiline `textarea` fields.
-- **Flexible Validation**: supports delimiters across newlines, commas, semicolons, tabs, and spaces. Cyrillic IDN domains are automatically converted to Punycode.
+- **Domain Validation**: supports delimiters across newlines, commas, semicolons, tabs, and spaces. Cyrillic IDN domains are automatically converted to Punycode.
 - **Quick-Fill Domain Presets**:
   - `National Domain Zones`: fills the input field with `ru, рф, su, москва, рус, tatar, дети`.
   - `Gov & Social Services (RF)`: fills the input field with a curated list of 54 essential domains.
@@ -264,16 +247,14 @@ Routing rules are managed in the **Custom Rules & Exceptions** table:
 - **In-Place Editing**: click the round pencil icon (`.edit_btn`) on any rule to load its values back into the input row for quick edits.
 - **Quick Enable/Disable**: use the checkbox in the "On" column to temporarily toggle a rule without deleting it.
 
-#### 4. Live Resolution Diagnostics
-Styled after *Network Tools → Netstat*:
+#### 4. Resolution Diagnostics
 - Enter any domain (default placeholder: `lkfl2.nalog.ru`) and click **Test**.
-- The diagnostic test runs asynchronously in the background without triggering a full page reload or flashing loading dialogs. Displays resolution status, resolver IP, resolved addresses, and query latency.
+- The router displays resolution status, resolver IP, resolved addresses, and query latency.
 
 #### 5. Backup, Restore & Reset
-Located at the bottom of the page, styled after *Administration → Restore/Save/Upload Setting*:
 - **Save setting**: downloads a complete JSON backup of all Split DNS settings, profiles, and custom rules.
 - **Restore setting**: uploads and validates a previously exported JSON backup file.
-- **Factory default (Surgical Reset)**: cleanly resets Split DNS configuration and rules without affecting the rest of the router or other addons.
+- **Factory default**: cleanly resets Split DNS configuration and rules without affecting the rest of the router or other addons.
 
 #### 6. Addon Updates
 - **Check Update**: checks the remote GitHub repository for newer releases.
@@ -300,20 +281,7 @@ Located at the bottom of the page, styled after *Administration → Restore/Save
 
 ### Releases & Changelog
 
-#### [v1.2.0](https://github.com/normannskald/asuswrt-merlin-splitdns/releases/tag/v1.2.0) — 2026-10-29
-- **DNS Profiles Block**: create and manage multiple upstream DNS profiles with modal dialog, IPv4/IPv6/port support, and presets for popular DNS providers.
-- **Multiline Inputs**: multiline `textarea` for domains and comments with comprehensive delimiter parsing.
-- **Target Routing**: assign rules to individual DNS profiles or back to the router's system DNS (`127.0.1.1`) as a DoT exception.
-- **Silent Diagnostics**: background execution of diagnostic DNS lookups without full page reloads.
-- **Layout & Structure Refactoring**: moved settings management block to page bottom, added project copyright footer, and rearranged documentation.
-
-#### [v1.1.0](https://github.com/normannskald/asuswrt-merlin-splitdns/releases/tag/v1.1.0) — 2026-10-28
-- **Redesigned Web UI**: rules table, diagnostics, and settings management now adhere to native Asuswrt-Merlin UI guidelines.
-- **Quick-Fill Presets**: one-click helper buttons for National Zones and Gov/Social domains right above the rules table.
-- **Rule Management**: added in-place rule editing and drag-and-drop rule priority reordering.
-
-#### [v1.0.0](https://github.com/normannskald/asuswrt-merlin-splitdns/releases/tag/v1.0.0) — 2026-10-27
-- Initial release. Conditional DNS forwarding (`dnsmasq`) for bypassing geo-blocks with DoT/VPN, 6 DNS profiles, native Web UI, and diagnostics.
+Version history and detailed changelog are available in [CHANGELOG.md](CHANGELOG.md) and on the [GitHub Releases](https://github.com/normannskald/asuswrt-merlin-splitdns/releases) page.
 
 ---
 
