@@ -2,7 +2,6 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Platform: Asuswrt-Merlin](https://img.shields.io/badge/Platform-Asuswrt--Merlin%20386%2F388%2F3004-red.svg)](https://www.asuswrt-merlin.net/)
-[![Web UI: Native Asuswrt](https://img.shields.io/badge/Web%20UI-Native%20Asuswrt%20Dark-success.svg)](#)
 [![Latest Release](https://img.shields.io/badge/Release-v1.2.0-orange.svg)](https://github.com/normannskald/asuswrt-merlin-splitdns/releases)
 
 **[🇷🇺 Русская документация](#-русская-документация) | [🇬🇧 English Documentation](#-english-documentation)**
